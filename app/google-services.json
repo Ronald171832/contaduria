@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "732690413889",
+    "firebase_url": "https://contaduria-6cc7f.firebaseio.com",
+    "project_id": "contaduria-6cc7f",
+    "storage_bucket": "contaduria-6cc7f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732690413889:android:bcfc34aef736a0c5",
+        "android_client_info": {
+          "package_name": "com.informaciones.facultad.contaduriaalacima"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732690413889-qev9cda6i8v60rh8enlhk7iklqfgcu60.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.informaciones.facultad.contaduriaalacima",
+            "certificate_hash": "668637aa4624792b6f237ed7634c3d975d222efa"
+          }
+        },
+        {
+          "client_id": "732690413889-ht3emahn9nsqkaprl037b00ae6fre32m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvZA1yTz44hvParivc56Vl8bvlYskGUBQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732690413889-ht3emahn9nsqkaprl037b00ae6fre32m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
