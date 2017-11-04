@@ -1,9 +1,9 @@
-package com.informaciones.facultad.contaduriaalacima;
+package com.informaciones.facultad.contaduriaalacima.Categorias;
+
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,57 +23,45 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.informaciones.facultad.contaduriaalacima.R;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
-public class SubirImagen extends AppCompatActivity {
+public class CrearCategorias extends AppCompatActivity {
 
-    private StorageReference storageReference;
-    private DatabaseReference databaseReference;
-    private DatabaseReference databasaRefe;
-
+    DatabaseReference dbCategoria;
+    StorageReference storageReference;
     private ImageView imageView;
-    private EditText editText;
+    private EditText et_titulo, et_descripcion;
     private Uri imguri;
-
-
-    public static final String FB_Storage_Path = "image/";
-    //public static final String FB_Database_Path = "image";
-    public static final String FB_Database_Path = "publicaciones";
-    public static final int Request_Code = 1234;
+    private static final int PICK_IMAGE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subir_imagen);
-        storageReference = FirebaseStorage.getInstance().getReference();
-        databaseReference = FirebaseDatabase.getInstance().getReference(FB_Database_Path);
-
-        imageView = (ImageView) findViewById(R.id.imageView);
-        editText = (EditText) findViewById(R.id.txtImageName);
+        setContentView(R.layout.activity_crear_categorias);
+        iniciar();
     }
 
-    public void btnBrowse_Click(View v) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select image"), Request_Code);
+    private void iniciar() {
+        dbCategoria = FirebaseDatabase.getInstance().getReference("categorias");
+        storageReference = FirebaseStorage.getInstance().getReference("categorias");
+
+        imageView = (ImageView) findViewById(R.id.imageCat);
+        et_titulo = (EditText) findViewById(R.id.et_tituloCategoria);
+        et_descripcion = (EditText) findViewById(R.id.et_descripcionCategoria);
     }
+
+    public void btnBrowse_Click1(View v) {
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Request_Code && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             imguri = data.getData();
-            try {
-                Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), imguri);
-                imageView.setImageBitmap(bm);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            imageView.setImageURI(imguri);
         }
     }
 
@@ -84,22 +72,20 @@ public class SubirImagen extends AppCompatActivity {
     }
 
     @SuppressWarnings("VisibleForTests")
-    public void btnUpload_Click(View v) {
+    public void subirImagen(View v) {
         if (imguri != null) {
             final ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setTitle("Subiendo imagen");
+            dialog.setTitle("Cargando imagen");
             dialog.show();
-            StorageReference ref = storageReference.child(FB_Storage_Path + System.currentTimeMillis() + "." + getImageExt(imguri));
+            StorageReference ref = storageReference.child(System.currentTimeMillis() + "." + getImageExt(imguri));
             ref.putFile(imguri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
-                    final ItemLayout imageUpload = new ItemLayout(editText.getText().toString(), taskSnapshot.getDownloadUrl().toString(), 1);
-                    String uploadId = editText.getText().toString();
-                    //String uploadId = "publicacion "+i;
-                    databaseReference.child(uploadId).setValue(imageUpload);
-
+                    Toast.makeText(getApplicationContext(), "Imagen Cargada", Toast.LENGTH_SHORT).show();
+                    final CategoriaModel categorias = new CategoriaModel(et_titulo.getText().toString(), taskSnapshot.getDownloadUrl().toString().trim(), et_descripcion.getText().toString().trim(), 0);
+                    String uploadId = et_titulo.getText().toString().trim();
+                    dbCategoria.child(uploadId).setValue(categorias);
                 }
             })
                     .addOnFailureListener(new OnFailureListener() {
@@ -114,16 +100,15 @@ public class SubirImagen extends AppCompatActivity {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                            dialog.setMessage("Uploaded " + (int) progress + "%");
+                            dialog.setMessage("Cargando....." + (int) progress + "%");
                         }
                     });
         } else {
-            Toast.makeText(getApplicationContext(), "Please select image", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Elegir una Imagen por favor!", Toast.LENGTH_SHORT).show();
         }
     }
-
-    public void btnShowListImage_Click(View v) {
-        Intent i = new Intent(SubirImagen.this, MainActivity.class);
+    public void listarCategorias(View v) {
+        Intent i = new Intent(CrearCategorias.this, Categorias.class);
         startActivity(i);
     }
 }
