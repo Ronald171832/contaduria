@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/layout_cuadrado"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ListView
+        android:id="@+id/lv_comentarios"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_cuadrado"
+        android:orientation="horizontal">
+        <EditText
+            android:textColor="#2e6e91"
+            android:id="@+id/et_comentario"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Escribe un mensaje..."
+            android:textColorHint="#2e6e91"
+            android:textStyle="italic"
+            android:layout_weight="1"/>
+
+        <Button
+            android:background="@drawable/send_button"
+            android:id="@+id/btnComentarioEnviar"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+    </LinearLayout>
+</LinearLayout>

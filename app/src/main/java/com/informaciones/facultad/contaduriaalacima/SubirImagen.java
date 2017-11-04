@@ -5,10 +5,10 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
@@ -31,6 +31,8 @@ public class SubirImagen extends AppCompatActivity {
 
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
+    private DatabaseReference databasaRefe;
+
     private ImageView imageView;
     private EditText editText;
     private Uri imguri;
@@ -86,28 +88,17 @@ public class SubirImagen extends AppCompatActivity {
     public void btnUpload_Click(View v) {
         if (imguri != null) {
             final ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setTitle("Uploading image");
+            dialog.setTitle("Subiendo imagen");
             dialog.show();
-
-            //Get the storage reference
             StorageReference ref = storageReference.child(FB_Storage_Path + System.currentTimeMillis() + "." + getImageExt(imguri));
-
-            //Add file to reference
-
             ref.putFile(imguri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-
-                    //Dimiss dialog when success
                     dialog.dismiss();
-                    //Display success toast msg
                     Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
-                    ItemLayout imageUpload = new ItemLayout(editText.getText().toString(), taskSnapshot.getDownloadUrl().toString(), 1);
-
-                    //Save image info in to firebase database
-                    //String uploadId = databaseReference.push().getKey();
-                    String uploadId = "publicacion 1";
+                    final ItemLayout imageUpload = new ItemLayout(editText.getText().toString(), taskSnapshot.getDownloadUrl().toString(), 1);
+                    String uploadId = editText.getText().toString();
+                    //String uploadId = "publicacion "+i;
                     databaseReference.child(uploadId).setValue(imageUpload);
 
                 }
@@ -115,10 +106,7 @@ public class SubirImagen extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-
-                            //Dimiss dialog when error
                             dialog.dismiss();
-                            //Display err toast msg
                             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -126,9 +114,6 @@ public class SubirImagen extends AppCompatActivity {
 
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            //Show upload progress
-
                             double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                             dialog.setMessage("Uploaded " + (int) progress + "%");
                         }
