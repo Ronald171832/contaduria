@@ -38,7 +38,7 @@ public class CrearCategorias extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crear_categorias);
+        setContentView(R.layout.categorias_crear);
         iniciar();
     }
 

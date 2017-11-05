@@ -3,8 +3,6 @@ package com.informaciones.facultad.contaduriaalacima.Publicaciones;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -47,7 +45,7 @@ public class Publicaciones extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_publicaciones);
+        setContentView(R.layout.publicaciones_principal);
         iniciar();
         tocarListView();
     }
@@ -103,10 +101,10 @@ public class Publicaciones extends AppCompatActivity {
                 compartir.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.id.item_iv_image);
+                      //  Bitmap icon = BitmapFactory.decodeResource(getResources(), R.id.item_iv_image);
 //Se guarda la imagen en la SDCARD
                         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                        icon.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                       // icon.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                         File f = new File(Environment.getExternalStorageDirectory() + File.separator + "tmp" + File.separator + "peter.jpg");
                         try {
                             f.createNewFile();
@@ -164,7 +162,7 @@ public class Publicaciones extends AppCompatActivity {
         final String titulo = listaPublicaciones.get(i).getTitulo();
         dbComentar = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/publicaciones/" + titulo + "/comentario");
         final Dialog dialog = new Dialog(Publicaciones.this);
-        dialog.setContentView(R.layout.comentario);
+        dialog.setContentView(R.layout.publicaciones_comentario);
         final EditText msj = (EditText) dialog.findViewById(R.id.et_comentario);
         lvComentarios = (ListView) dialog.findViewById(R.id.lv_comentarios);
         final Button boton = (Button) dialog.findViewById(R.id.btnComentarioEnviar);
@@ -182,7 +180,7 @@ public class Publicaciones extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     item.add((String) snapshot.getValue());
                 }
-                ad = new ArrayAdapter<String>(Publicaciones.this, R.layout.spinner_ronald, item);
+                ad = new ArrayAdapter<String>(Publicaciones.this, R.layout.publicaciones_comentario_estilo, item);
                 lvComentarios.setAdapter(ad);
             }
             @Override

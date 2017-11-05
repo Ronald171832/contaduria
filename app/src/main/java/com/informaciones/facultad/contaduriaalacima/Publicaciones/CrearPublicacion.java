@@ -50,7 +50,7 @@ public class CrearPublicacion extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crear_publicacion);
+        setContentView(R.layout.publicaciones_crear);
         cargarSpinner();
         iniciar();
     }
