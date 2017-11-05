@@ -12,6 +12,7 @@ import android.view.View;
 import com.informaciones.facultad.contaduriaalacima.Categorias.Categorias;
 import com.informaciones.facultad.contaduriaalacima.Categorias.CrearCategorias;
 import com.informaciones.facultad.contaduriaalacima.Chat.Chat;
+import com.informaciones.facultad.contaduriaalacima.Documentos.CrearDocumentos;
 import com.informaciones.facultad.contaduriaalacima.Fragmentos.HomeFragment;
 import com.informaciones.facultad.contaduriaalacima.Publicaciones.CrearPublicacion;
 import com.informaciones.facultad.contaduriaalacima.R;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ResideMenu resideMenu;
     private Context mContext;
     private ResideMenuItem itemHome;
+    private ResideMenuItem itemDocumento;
     private ResideMenuItem itemChat;
     private ResideMenuItem itemPreguntas;
     private ResideMenuItem itemAbout;
@@ -47,12 +49,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.setScaleValue(0.7f);
         // create menu items;
         itemHome = new ResideMenuItem(this, R.drawable.menu, "Inicio");
+        itemDocumento = new ResideMenuItem(this, R.drawable.file, "Documento");
         itemChat = new ResideMenuItem(this, R.drawable.chat, "Chat");
         itemPreguntas = new ResideMenuItem(this, R.drawable.customerservice, "Categorias");
         itemAbout = new ResideMenuItem(this, R.drawable.information, "Acerca de");
         itemContacto = new ResideMenuItem(this, R.drawable.visitcard, "Contacto");
 
         itemHome.setOnClickListener(this);
+        itemDocumento.setOnClickListener(this);
         itemChat.setOnClickListener(this);
         itemPreguntas.setOnClickListener(this);
         itemAbout.setOnClickListener(this);
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.addMenuItem(itemPreguntas, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemChat, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemAbout, ResideMenu.DIRECTION_RIGHT);
+        resideMenu.addMenuItem(itemDocumento, ResideMenu.DIRECTION_RIGHT);
         resideMenu.addMenuItem(itemContacto, ResideMenu.DIRECTION_RIGHT);
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             changeFragment(new HomeFragment());
         } else if (view == itemChat) {
             startActivity(new Intent(MainActivity.this, Chat.class));
+        } else if (view == itemDocumento) {
+            startActivity(new Intent(MainActivity.this, CrearDocumentos.class));
         } else if (view == itemPreguntas) {
             startActivity(new Intent(MainActivity.this, Categorias.class));
         } else if (view == itemAbout) {
