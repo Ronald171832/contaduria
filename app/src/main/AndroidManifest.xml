@@ -10,15 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
-        <activity android:name=".SubirImagen"></activity>
+        <activity android:name=".SubirImagen" />
         <activity android:name=".Categorias.CrearCategorias">
+        </activity>
+        <activity android:name=".Categorias.Categorias" />
+        <activity android:name=".Publicaciones.Publicaciones" />
+        <activity android:name=".Publicaciones.CrearPublicacion">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Categorias.Categorias"></activity>
     </application>
 
 </manifest>
