@@ -9,6 +9,7 @@ public class PublicacionesModel {
     public String titulo;
     public String descripcion;
     public String imagen;
+    public String[] imagenes;
     public int likes;
 
     public PublicacionesModel() {

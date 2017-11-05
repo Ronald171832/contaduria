@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class Publicaciones extends AppCompatActivity {
+
     private DatabaseReference dbPublicaciones;
     private List<PublicacionesModel> listaPublicaciones;
     private ListView lv;

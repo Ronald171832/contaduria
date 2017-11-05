@@ -13,13 +13,18 @@
         android:layout_height="wrap_content"
         android:text="Elegir Imagen"
         android:background="@color/colorAccent"
-        android:onClick="elegirImagenPublicacion"/>
+        android:onClick="elegirImagenesPublicacion"/>
 
-    <ImageView
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/vpImagenesPublicacion"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+    <!--<ImageView
         android:id="@+id/imagePublicacion"
         android:layout_width="300dp"
         android:layout_height="200dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center" />-->
 
     <EditText
         android:id="@+id/et_tituloPublicacion"

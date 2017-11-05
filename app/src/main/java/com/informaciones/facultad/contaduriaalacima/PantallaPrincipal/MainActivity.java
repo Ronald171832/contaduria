@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setUpMenu() {
-        resideMenu = new ResideMenu(MainActivity.this);
+        resideMenu = new ResideMenu(this);
         resideMenu.setBackground(R.drawable.menu_contaduria);
         resideMenu.attachToActivity(this);
         resideMenu.setMenuListener(menuListener);

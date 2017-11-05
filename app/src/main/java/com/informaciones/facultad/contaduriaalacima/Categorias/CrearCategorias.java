@@ -53,6 +53,7 @@ public class CrearCategorias extends AppCompatActivity {
 
     public void elegirImagenCategoria(View v) {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        //gallery.setType("image/*");
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
