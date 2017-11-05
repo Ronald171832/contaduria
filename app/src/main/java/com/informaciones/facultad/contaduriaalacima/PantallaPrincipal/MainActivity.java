@@ -10,8 +10,10 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.informaciones.facultad.contaduriaalacima.Categorias.Categorias;
+import com.informaciones.facultad.contaduriaalacima.Categorias.CrearCategorias;
 import com.informaciones.facultad.contaduriaalacima.Chat.Chat;
 import com.informaciones.facultad.contaduriaalacima.Fragmentos.HomeFragment;
+import com.informaciones.facultad.contaduriaalacima.Publicaciones.CrearPublicacion;
 import com.informaciones.facultad.contaduriaalacima.R;
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
@@ -89,8 +91,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view == itemPreguntas) {
             startActivity(new Intent(MainActivity.this, Categorias.class));
         } else if (view == itemAbout) {
+            startActivity(new Intent(MainActivity.this, CrearCategorias.class));
             //  changeFragment(new AcercaDeFragment()); // acerca de...
         } else if (view == itemContacto) {
+            startActivity(new Intent(MainActivity.this, CrearPublicacion.class));
             //  startActivity(new Intent(MainActivity.this, Email_Envios.class));
         }
         resideMenu.closeMenu();
