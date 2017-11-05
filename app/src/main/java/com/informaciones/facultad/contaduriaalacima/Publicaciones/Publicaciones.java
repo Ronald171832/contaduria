@@ -2,13 +2,9 @@ package com.informaciones.facultad.contaduriaalacima.Publicaciones;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,15 +22,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.informaciones.facultad.contaduriaalacima.R;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class Publicaciones extends AppCompatActivity {
     private DatabaseReference dbPublicaciones;
+    private DatabaseReference dbLike;
     private List<PublicacionesModel> listaPublicaciones;
     private ListView lv;
     private PublicacionesListAdapter adapter;
@@ -63,14 +57,13 @@ public class Publicaciones extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 progressDialog.dismiss();
-                if(listaPublicaciones.size()<=0){
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        PublicacionesModel img = snapshot.getValue(PublicacionesModel.class);
-                        listaPublicaciones.add(img);
-                    }
-                    adapter = new PublicacionesListAdapter(Publicaciones.this, R.layout.publicacion_card, listaPublicaciones);
-                    lv.setAdapter(adapter);
-                }
+                   listaPublicaciones = new ArrayList<>();
+                   for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                       PublicacionesModel img = snapshot.getValue(PublicacionesModel.class);
+                       listaPublicaciones.add(img);
+                   }
+                   adapter = new PublicacionesListAdapter(Publicaciones.this, R.layout.publicacion_card, listaPublicaciones);
+                   lv.setAdapter(adapter);
             }
 
             @Override
@@ -83,7 +76,7 @@ public class Publicaciones extends AppCompatActivity {
     private void tocarListView() {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+            public void onItemClick(final AdapterView<?> adapterView, View view, final int i, long l) {
                 ImageView comentario = view.findViewById(R.id.cardComentarPublicacion);
                 ImageView hablar = view.findViewById(R.id.cardHablarPublicacion);
                 ImageView compartir = view.findViewById(R.id.cardCompartirPublicacion);
@@ -91,34 +84,16 @@ public class Publicaciones extends AppCompatActivity {
                 like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                     /*   String titulo = imgList.get(i).getTitulo();
-                        databasevISITAS = FirebaseDatabase.getInstance().getReference("publicaciones/" + titulo);
-                        int visitas = imgList.get(i).getVisitas() + 1;
-                        databasevISITAS.child("visitas").setValue(visitas);*/
+                        String titulo = listaPublicaciones.get(i).getTitulo();
+                        int likes = listaPublicaciones.get(i).getLikes() + 1;
+                        dbLike = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/publicaciones/" + titulo + "/likes");
+                        dbLike.setValue(likes);
+                        //adapterView.setSelection(i);
                     }
                 });
-
                 compartir.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                      //  Bitmap icon = BitmapFactory.decodeResource(getResources(), R.id.item_iv_image);
-//Se guarda la imagen en la SDCARD
-                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                       // icon.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                        File f = new File(Environment.getExternalStorageDirectory() + File.separator + "tmp" + File.separator + "peter.jpg");
-                        try {
-                            f.createNewFile();
-                            FileOutputStream fo = new FileOutputStream(f);
-                            fo.write(bytes.toByteArray());
-                        } catch (Exception e) {
-                            Log.e("ERROR", e.getMessage());
-                        }
-//compartir imagen
-                        Intent share = new Intent(Intent.ACTION_SEND);
-                        share.setType("image/jpeg");
-                        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
-                        share.putExtra(Intent.EXTRA_TEXT, "Mi imagen");
-                        startActivity(Intent.createChooser(share, "Compartir imagen"));
                      /*   Intent sendIntent = new Intent(Intent.ACTION_SEND);
                         sendIntent.setType("text/plain");
                         sendIntent.putExtra(Intent.EXTRA_TEXT, imgList.get(i).getTitulo());
@@ -134,7 +109,7 @@ public class Publicaciones extends AppCompatActivity {
                                 if (status != TextToSpeech.ERROR) {
                                     Locale locSpanish = new Locale("es_ES");
                                     talk.setLanguage(locSpanish);
-                                    talk.speak(listaPublicaciones.get(i).getTitulo(), TextToSpeech.QUEUE_FLUSH, null);
+                                    talk.speak(listaPublicaciones.get(i).getTitulo() + "  " + listaPublicaciones.get(i).getDescripcion(), TextToSpeech.QUEUE_FLUSH, null);
                                     talk.setPitch(8.8f);
                                 } else {
                                     Toast.makeText(Publicaciones.this, "ERROR...", Toast.LENGTH_LONG).show();
@@ -170,7 +145,8 @@ public class Publicaciones extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dbComentar.push().setValue(msj.getText().toString().trim());
-                dialog.cancel();
+                msj.setText("");
+                //    dialog.cancel();
             }
         });
         dbComentar.addValueEventListener(new ValueEventListener() {
@@ -183,6 +159,7 @@ public class Publicaciones extends AppCompatActivity {
                 ad = new ArrayAdapter<String>(Publicaciones.this, R.layout.publicaciones_comentario_estilo, item);
                 lvComentarios.setAdapter(ad);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
