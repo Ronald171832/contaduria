@@ -46,7 +46,7 @@
             android:textColor="@color/colorNegro"
             android:textAlignment="center"
             android:textStyle="italic"
-            android:text="MANUEL SAAVEDRA\nRONALD LOPEZ" />
+            android:text="AUX. MANUEL SAAVEDRA \n AUX. RONALD LOPEZ" />
 
 
 
@@ -60,7 +60,7 @@
             android:layout_marginTop="30dp"
             android:textColor="@color/colorAzul1"
             android:textAlignment="center"
-            android:text="FERIA FACULTATIVA 2017" />
+            android:text=" Copyrigth ©  2017-2020" />
 
         <TextView
             android:id="@+id/textView"

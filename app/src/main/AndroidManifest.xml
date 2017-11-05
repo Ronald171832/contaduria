@@ -3,7 +3,6 @@
     package="com.informaciones.facultad.contaduriaalacima">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,20 +11,42 @@
         android:roundIcon="@drawable/ico_conta"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Categorias.CrearCategorias" />
-        <activity android:name=".Categorias.Categorias" />
-        <activity android:name=".Publicaciones.Publicaciones" />
-        <activity android:name=".Publicaciones.CrearPublicacion" />
-        <activity android:name=".Chat.Chat"
+        <activity
+            android:name=".Categorias.CrearCategorias"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Categorias.Categorias"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Publicaciones.Publicaciones"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Publicaciones.CrearPublicacion"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Chat.Chat"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".PantallaPrincipal.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
-
+        <activity
+            android:name=".PantallaPrincipal.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Documentos.CrearDocumentos"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Documentos.Documentos"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PantallaPrincipal.GestionDePublicaciones"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
+
 </manifest>

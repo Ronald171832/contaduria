@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.informaciones.facultad.contaduriaalacima.Documentos.CrearDocumentos">
+    <Button
+        android:textColor="@color/colorBlanco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Elegir Imagen"
+        android:background="@color/colorAccent"
+        android:onClick="elegirImagenDocumento"/>
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:id="@+id/imageDocumento"/>
+
+    <EditText
+        android:id="@+id/et_tituloDocumento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tiulo Documento" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_descripcionDocumento"
+        android:hint="Link de Descarga"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:onClick="subirImagenDocumento"
+        android:text="CARGAR DOCUMENTO DE DESCARGA"
+        android:textColor="@color/colorBlanco" />
+
+    <Button
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorBlanco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:onClick="listarDocumentos"
+        android:text="VER DOCUMENTOS" />
+
+</LinearLayout>

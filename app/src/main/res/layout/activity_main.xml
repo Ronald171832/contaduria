@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@android:color/white"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/layout_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layout_top">
-
-
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -20,43 +19,35 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:padding="7dp"
-                android:text="MENU PRINCIPAL"
-                android:textSize="24sp"
-                android:textColor="#999999"
-                android:layout_gravity="center"/>
+                android:text="CONTADURIA"
+                android:textColor="@color/colorBlanco"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
             <Button
+                android:id="@+id/title_bar_right_menu"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-
-                android:id="@+id/title_bar_right_menu"
                 android:layout_gravity="right|center_vertical"
-                android:background="@drawable/ico_conta"
-                android:layout_marginRight="10dp"/>
-
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ico_conta" />
             <Button
                 android:id="@+id/title_bar_left_menu"
                 android:layout_width="28dp"
-
                 android:layout_height="28dp"
                 android:layout_gravity="left|center_vertical"
-                android:background="@drawable/ico_conta"
-                android:layout_marginLeft="10dp" />
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ico_conta" />
         </FrameLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="#ebebeb"/>
 
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/main_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/main_fragment">
-    </FrameLayout>
+        android:orientation="vertical"></FrameLayout>
 
 </LinearLayout>
