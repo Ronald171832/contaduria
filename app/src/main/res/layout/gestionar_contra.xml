@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_cuadrado"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="INGRESAR CONTRASEÑA"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/et_gestion_contra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="3dp"
+            android:hint="Ingrresar Contraseña"
+            android:textSize="20dp" />
+        <Button
+            android:id="@+id/btn_gestion_contra"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/layout_cuadrado"
+            android:onClick="ingresar"
+            android:text="     INGRESAR     "
+            android:textColor="@color/colorNegro"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

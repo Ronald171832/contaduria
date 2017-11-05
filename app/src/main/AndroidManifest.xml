@@ -42,7 +42,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Documentos.Documentos"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PantallaPrincipal.GestionDePublicaciones"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>
