@@ -16,7 +16,7 @@ import com.informaciones.facultad.contaduriaalacima.R;
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ResideMenu resideMenu;
     private Context mContext;
     private ResideMenuItem itemHome;
@@ -24,36 +24,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ResideMenuItem itemPreguntas;
     private ResideMenuItem itemAbout;
     private ResideMenuItem itemContacto;
-    /**
-     * Called when the activity is first created.
-     */
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
         setUpMenu();
-        if(savedInstanceState == null ){
-              changeFragment(new HomeFragment());
+        if (savedInstanceState == null) {
+            changeFragment(new HomeFragment());
         }
 
     }
 
     private void setUpMenu() {
-        // attach to current activity;
         resideMenu = new ResideMenu(MainActivity.this);
         resideMenu.setBackground(R.drawable.menu_contaduria);
         resideMenu.attachToActivity(this);
         resideMenu.setMenuListener(menuListener);
-        //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip.
         resideMenu.setScaleValue(0.7f);
-
         // create menu items;
-        itemHome    = new ResideMenuItem(this, R.drawable.menu, "Inicio");
-        itemChat = new ResideMenuItem(this, R.drawable.chat,  "Chat");
+        itemHome = new ResideMenuItem(this, R.drawable.menu, "Inicio");
+        itemChat = new ResideMenuItem(this, R.drawable.chat, "Chat");
         itemPreguntas = new ResideMenuItem(this, R.drawable.customerservice, "Categorias");
         itemAbout = new ResideMenuItem(this, R.drawable.information, "Acerca de");
-        itemContacto=new ResideMenuItem(this,R.drawable.visitcard,"Contacto");
+        itemContacto = new ResideMenuItem(this, R.drawable.visitcard, "Contacto");
 
         itemHome.setOnClickListener(this);
         itemChat.setOnClickListener(this);
@@ -66,16 +61,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.addMenuItem(itemChat, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemAbout, ResideMenu.DIRECTION_RIGHT);
         resideMenu.addMenuItem(itemContacto, ResideMenu.DIRECTION_RIGHT);
-        // You can disable a direction by setting ->
-        // resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
-
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
             }
         });
-
         findViewById(R.id.title_bar_right_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return resideMenu.dispatchTouchEvent(ev);
@@ -90,16 +82,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (view == itemHome){
+        if (view == itemHome) {
             changeFragment(new HomeFragment());
-        }else if (view == itemChat){
+        } else if (view == itemChat) {
             startActivity(new Intent(MainActivity.this, Chat.class));
-        }else if (view == itemPreguntas){
+        } else if (view == itemPreguntas) {
             startActivity(new Intent(MainActivity.this, Categorias.class));
-        }else if (view == itemAbout){
-          //  changeFragment(new AcercaDeFragment()); // acerca de...
-        } else if (view==itemContacto){
-          //  startActivity(new Intent(MainActivity.this, Email_Envios.class));
+        } else if (view == itemAbout) {
+            //  changeFragment(new AcercaDeFragment()); // acerca de...
+        } else if (view == itemContacto) {
+            //  startActivity(new Intent(MainActivity.this, Email_Envios.class));
         }
         resideMenu.closeMenu();
     }
@@ -107,16 +99,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
         @Override
         public void openMenu() {
-        //    Toast.makeText(mContext, "Menu is opened!", Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(mContext, "Menu is opened!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void closeMenu() {
-         //   Toast.makeText(mContext, "Menu is closed!", Toast.LENGTH_SHORT).show();
+            //   Toast.makeText(mContext, "Menu is closed!", Toast.LENGTH_SHORT).show();
         }
     };
 
-    private void changeFragment(Fragment targetFragment){
+    private void changeFragment(Fragment targetFragment) {
         resideMenu.clearIgnoredViewList();
         getSupportFragmentManager()
                 .beginTransaction()
@@ -125,8 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .commit();
     }
 
-    // What good method is to access resideMenu？
-    public ResideMenu getResideMenu(){
+    public ResideMenu getResideMenu() {
         return resideMenu;
     }
 }

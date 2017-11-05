@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.informaciones.facultad.contaduriaalacima">
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/ico_conta"
@@ -9,14 +9,12 @@
         android:roundIcon="@drawable/ico_conta"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Categorias.CrearCategorias"></activity>
+        <activity android:name=".Categorias.CrearCategorias" />
         <activity android:name=".Categorias.Categorias" />
         <activity android:name=".Publicaciones.Publicaciones" />
-        <activity android:name=".Publicaciones.CrearPublicacion">
-        </activity>
-        <activity
-            android:name=".Chat.Chat"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <activity android:name=".Publicaciones.CrearPublicacion" />
+        <activity android:name=".Chat.Chat"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".PantallaPrincipal.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,5 +22,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
