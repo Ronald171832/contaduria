@@ -22,6 +22,7 @@ import java.util.List;
 
 public class Documentos extends AppCompatActivity {
     private DatabaseReference dbDocumentos;
+    private DatabaseReference dbDescargas;
     private List<DocumentoModel> listaDocumentos;
     private ListView lv;
     private DocumentoListAdapter adapter;
@@ -40,10 +41,14 @@ public class Documentos extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int posicion, long l) {
                 final String linkDescarga = listaDocumentos.get(posicion).getLinkDeDescarga();
-                ImageView documento = view.findViewById(R.id.card_Descarga_Documento);
+                final ImageView documento = view.findViewById(R.id.card_Descarga_Documento);
                 documento.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        String titulo = listaDocumentos.get(posicion).getTitulo();
+                        int descargas = listaDocumentos.get(posicion).getDescargas() + 1;
+                        dbDescargas = FirebaseDatabase.getInstance().getReference("documentos/" + titulo + "/descargas");
+                        dbDescargas.setValue(descargas);
                         Uri uri = Uri.parse(linkDescarga);
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent);
@@ -60,7 +65,6 @@ public class Documentos extends AppCompatActivity {
     }
 
     private void iniciar() {
-        listaDocumentos = new ArrayList<>();
         lv = (ListView) findViewById(R.id.listViewDocumentos);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Cargando Documentos...");
@@ -70,6 +74,7 @@ public class Documentos extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 progressDialog.dismiss();
+                listaDocumentos = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     DocumentoModel img = snapshot.getValue(DocumentoModel.class);
                     listaDocumentos.add(img);
