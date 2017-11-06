@@ -1,65 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:cardview="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginTop="4dp"
-    cardview:cardCornerRadius="10dp">
-    <LinearLayout
-        android:background="#efefef"
+    android:paddingLeft="5sp"
+    android:paddingRight="5sp">
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvMensaje"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="4dp"
+        card_view:cardBackgroundColor="@android:color/transparent"
+        card_view:cardElevation="0dp">
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10sp">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/fotoPerfilMensaje"
-                android:layout_width="24sp"
-                android:layout_height="24sp"
-                android:src="@drawable/user"
-            />
-        </LinearLayout>
-        <LinearLayout
+            android:id="@+id/mensajeBG"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:background="@drawable/out_message_bg"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10sp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/fotoPerfilMensaje"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
+                    android:src="@drawable/user" />
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:textColor="#000000"
-                    android:id="@+id/nombreMensaje"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Anonimo"
-                    android:textStyle="italic|bold"
-                    android:layout_weight="1"/>
-                <TextView
-                    android:textColor="#000000"
-                    android:id="@+id/horaMensaje"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="00:00"/>
-            </LinearLayout>
-            <TextView
-                android:textColor="#000000"
-                android:visibility="gone"
-                android:id="@+id/mensajeMensaje"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hola bienvenido"/>
-            <ImageView
-                android:id="@+id/mensajeFoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"/>
-        </LinearLayout>
-    </LinearLayout>
+                android:orientation="vertical">
 
-</android.support.v7.widget.CardView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/nombreMensaje"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Anonimo"
+                        android:textColor="#000000"
+                        android:textStyle="italic|bold" />
+
+                    <TextView
+                        android:id="@+id/horaMensaje"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00"
+                        android:textColor="#000000" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mensajeMensaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hola bienvenido"
+                    android:textColor="#000000"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/mensajeFoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!--<TextView
+                android:id="@+id/msTexto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="240sp"
+                android:text="hola amigos como estan" />
+            <TextView
+                android:id="@+id/msHora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12:00 pm"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>-->
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>
