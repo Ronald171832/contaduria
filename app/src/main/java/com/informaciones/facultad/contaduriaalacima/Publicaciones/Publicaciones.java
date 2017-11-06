@@ -26,12 +26,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.informaciones.facultad.contaduriaalacima.R;
 
+import org.json.JSONArray;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.reflect.Array;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class Publicaciones extends AppCompatActivity {
 
@@ -66,8 +74,30 @@ public class Publicaciones extends AppCompatActivity {
                 progressDialog.dismiss();
                 if(listaPublicaciones.size()<=0){
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        PublicacionesModel img = snapshot.getValue(PublicacionesModel.class);
-                        listaPublicaciones.add(img);
+                        PublicacionesModel publicacionesModel=new PublicacionesModel();
+                        try{
+                            Map<String,Object> img =(HashMap) snapshot.getValue();
+                            int x=1;
+                            publicacionesModel.setTitulo((String) img.get("titulo"));
+                            publicacionesModel.setDescripcion((String) img.get("descripcion"));
+                            publicacionesModel.setLikes(Integer.parseInt(img.get("likes").toString()));
+                            //Object xt=img.get("likes");
+                            //x=Integer.parseInt(xt.toString());
+                            //publicacionesModel.setLikes((int) );
+                            Map<String,Object> g=(HashMap)img.get("imagenes");
+                            Uri[] imagenes=new Uri[g.size()];
+                            for (int i=0;i<g.size();i++) {
+                                String dir=(String)g.get("imagen "+String.valueOf(i));
+                                imagenes[i]=Uri.parse(dir);
+                                //imagenes[i]=URI.create((String)g.get("imagen "+String.valueOf(i)))
+                            }
+                            publicacionesModel.setImagenes(imagenes);
+                            //String x=(String)img;
+                            listaPublicaciones.add(publicacionesModel);
+                        } catch (Exception e){
+                            String error=e.getMessage().toString();
+                        }
+
                     }
                     adapter = new PublicacionesListAdapter(Publicaciones.this, R.layout.publicacion_card, listaPublicaciones);
                     lv.setAdapter(adapter);

@@ -60,11 +60,17 @@
 
         </LinearLayout>
 
-        <ImageView
+        <android.support.v4.view.ViewPager
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/vpListarImagenesPublicacion"
+            android:layout_width="match_parent"
+            android:layout_height="170dp" />
+
+        <!--<ImageView
             android:id="@+id/cardImagenPublicacion"
             android:layout_width="match_parent"
             android:layout_height="170dp"
-            android:background="@drawable/cargando" />
+            android:background="@drawable/cargando" />-->
 
         <View
             android:layout_width="match_parent"

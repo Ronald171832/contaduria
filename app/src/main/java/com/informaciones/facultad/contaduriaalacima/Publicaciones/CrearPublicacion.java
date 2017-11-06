@@ -39,8 +39,12 @@ import com.informaciones.facultad.contaduriaalacima.Categorias.CategoriaModel;
 import com.informaciones.facultad.contaduriaalacima.Categorias.Categorias;
 import com.informaciones.facultad.contaduriaalacima.R;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class CrearPublicacion extends AppCompatActivity {
     private DatabaseReference dbCategorias;
@@ -161,46 +165,133 @@ public class CrearPublicacion extends AppCompatActivity {
 
     @SuppressWarnings("VisibleForTests")
     public void subirImagenPublicacion(View v) {
-        Toast.makeText(this,getImageExt(imgsUri[0]),Toast.LENGTH_LONG).show();
-        String categoria = spinnerCategorias.getSelectedItem().toString();
+        //Toast.makeText(this,getImageExt(imgsUri[0]),Toast.LENGTH_LONG).show();
+        String nombreCategoria = spinnerCategorias.getSelectedItem().toString();
         if (imgsUri.length>0 /*!= null*/) {
-            if (categoria.equals("Elija Categoria:")) {
+            if (nombreCategoria.equals("Elija Categoria:")) {
                 Toast.makeText(CrearPublicacion.this, "Elejir una Categoria Por favor!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            dbPublicacion = FirebaseDatabase.getInstance().getReference("categorias/" + categoria);
+            dbPublicacion = FirebaseDatabase.getInstance().getReference("categorias/" + nombreCategoria+"/publicaciones");
             final ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setTitle("Cargando imagen");
+            dialog.setTitle("Cargando Publicacion...");
             dialog.show();
-            StorageReference ref = storageReference.child(System.currentTimeMillis() + "." + getImageExt(imguri));
-            ref.putFile(imguri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Imagen Cargada", Toast.LENGTH_SHORT).show();
-                    final PublicacionesModel categorias = new PublicacionesModel(et_titulo.getText().toString().trim(), taskSnapshot.getDownloadUrl().toString().trim(), et_descripcion.getText().toString().trim(), 0);
-                    String uploadId = et_titulo.getText().toString().trim();
-                    dbPublicacion.child("publicaciones").child(uploadId).setValue(categorias);
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            dialog.dismiss();
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            String nombrePublicacion=et_titulo.getText().toString().trim();
+            String descPublicacion=et_descripcion.getText().toString().trim();
+            PublicacionesModel nuevaPublicacionModel=new PublicacionesModel(nombrePublicacion,descPublicacion);
 
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                            dialog.setMessage("Cargando....." + (int) progress + "%");
-                        }
-                    });
+            DatabaseReference refPublicacion=dbPublicacion.child(nombrePublicacion);//.setValue("lkikikip");
+            DatabaseReference refImagenesPublicacion=FirebaseDatabase.getInstance().getReference("categorias/"+nombreCategoria+"/publicaciones/"+nombrePublicacion);
+
+            refPublicacion.setValue(nuevaPublicacionModel);
+
+            imagenesURL_FB=new HashMap<>();
+            for (int i=0;i<imgsUri.length;i++){
+                addImagenPublicacionFB(imgsUri[i],nombreCategoria,nombrePublicacion,i);
+            }
+            dialog.dismiss();
+            //refImagenesPublicacion.child("imagenes").setValue(x);
+
+            //subirImagenesPublicacionFB();
+            /*Map<String,String> x=new HashMap<>();
+            x.put("clave1","https://firebasestorage.googleapis.com/v0/b/contaduria-6cc7f.appspot.com/o/categorias%2F1509905849551.jpg?alt=media&token=9ec29115-79f6-40e2-a7f5-fe6587965a39");
+            x.put("clave2","https://firebasestorage.googleapis.com/v0/b/contaduria-6cc7f.appspot.com/o/categorias%2F1509905829984.jpg?alt=media&token=2767cdac-3dd9-47e8-91b8-94283226c3e4");
+            x.put("clave3","https://firebasestorage.googleapis.com/v0/b/contaduria-6cc7f.appspot.com/o/documentos%2F1509896059643.jpg?alt=media&token=e8cb53ae-cd03-491c-bbc5-0f06d361fb92");
+            try {
+
+
+                //DatabaseReference refImgPublicacionActual=refPublicacion. child("imagenes");
+                //refImgPublicacionActual.setValue("aaaaaaaaaaa");
+                dialog.dismiss();
+            } catch (Exception e){
+                String error=e.getMessage().toString();
+            }
+            //Toast.makeText(this,dbPublicacion.getKey(),Toast.LENGTH_LONG).show();
+            //dialog.show();
+
+            // REALIZAR EL CILCLO PARA CARGAR TODAS LAS IMAGENES AL SERVIDRO
+            //dbPublicacion.child("publicaciones").child(dbPublicacion.getKey()).setValue(categorias);
+            /*for (int i=0;i<imgsUri.length;i++){
+                StorageReference ref = storageReference.child(System.currentTimeMillis() + "." + getImageExt(imguri));
+                ref.putFile(imguri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Imagen Cargada", Toast.LENGTH_SHORT).show();
+                        final PublicacionesModel categorias = new PublicacionesModel(et_titulo.getText().toString().trim(), taskSnapshot.getDownloadUrl().toString().trim(), et_descripcion.getText().toString().trim(), 0);
+                        String uploadId = et_titulo.getText().toString().trim();
+                        dbPublicacion.child("publicaciones").child(uploadId).setValue(categorias);
+                    }
+                })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                dialog.dismiss();
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                dialog.setMessage("Cargando....." + (int) progress + "%");
+                            }
+                        });
+            }*/
+
         } else {
             Toast.makeText(getApplicationContext(), "Elegir una Imagen por favor!", Toast.LENGTH_SHORT).show();
-        }*/
+        }
+    }
+    Map<String,String> imagenesURL_FB;
+    private void addImagenPublicacionFB(Uri uriImg, final String categor, final String publica, final int pos) {
+        /*final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setTitle("Cargando Publicacion...");
+        dialog.show();*/
+        if (uriImg!=null){
+            StorageReference ref = storageReference.child(System.currentTimeMillis() + "." + getImageExt(uriImg));
+            try {
+                ref.putFile(uriImg).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        DatabaseReference refImagenesPublicacion=FirebaseDatabase.getInstance().getReference("categorias/"+categor+"/publicaciones/"+publica);
+                        //Map<String,String> h=new HashMap<>();
+                        imagenesURL_FB.put("imagen "+String.valueOf(pos),taskSnapshot.getDownloadUrl().toString().trim());
+                        //imagenesURL_FB
+                        refImagenesPublicacion.child("imagenes").setValue(imagenesURL_FB);
+                        //dialog.dismiss();
+                        //urlArray.put("imagen ",taskSnapshot.getDownloadUrl().toString().trim());
+                        //imagenesURL_FB.put("imagen"+String.valueOf(pos),taskSnapshot.getDownloadUrl().toString().trim());
+                        //imagenesURL_FB.add(taskSnapshot.getDownloadUrl());
+                        //dialog.dismiss();
+                        //Toast.makeText(getApplicationContext(), "Imagen Cargada", Toast.LENGTH_SHORT).show();
+                        //final PublicacionesModel categorias = new PublicacionesModel(et_titulo.getText().toString().trim(), taskSnapshot.getDownloadUrl().toString().trim(), et_descripcion.getText().toString().trim(), 0);
+                        //String uploadId = et_titulo.getText().toString().trim();
+                        //dbPublicacion.child("publicaciones").child(uploadId).setValue(categorias);
+                    }
+                })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                //dialog.dismiss();
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        /*.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                dialog.setMessage("Cargando....." + (int) progress + "%");
+                                dialog.dismiss();
+                            }
+                        });*/
+            } catch ( Exception e){
+               String error=e.getMessage().toString();
+            }
+
+        }
     }
 
     public void listarPublicaciones(View v) {
@@ -248,10 +339,10 @@ public class CrearPublicacion extends AppCompatActivity {
             LayoutInflater inflater = LayoutInflater.from(CrearPublicacion.this);
             ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.slide_images, container, false);
             container.addView(layout);
-
             ImageView image = (ImageView) layout.findViewById(R.id.imageSlide);
 
             image.setImageURI(urlImages[position]);
+            image.setScaleType(ImageView.ScaleType.CENTER_CROP);
             //image.setImageBitmap(mImages[position]);
 
             return layout;
@@ -264,4 +355,5 @@ public class CrearPublicacion extends AppCompatActivity {
             //super.destroyItem(container, position, object);
         }
     }
+
 }
