@@ -16,6 +16,7 @@ import android.widget.EditText;
 import com.informaciones.facultad.contaduriaalacima.Categorias.Categorias;
 import com.informaciones.facultad.contaduriaalacima.Chat.Chat;
 import com.informaciones.facultad.contaduriaalacima.Documentos.CrearDocumentos;
+import com.informaciones.facultad.contaduriaalacima.Email.Contacto;
 import com.informaciones.facultad.contaduriaalacima.Fragmentos.AcercaDeFragment;
 import com.informaciones.facultad.contaduriaalacima.Fragmentos.HomeFragment;
 import com.informaciones.facultad.contaduriaalacima.R;
@@ -49,17 +50,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setUpMenu() {
         resideMenu = new ResideMenu(this);
-        resideMenu.setBackground(R.drawable.menu_contaduria);
+        resideMenu.setBackground(R.drawable.menu_contaduria5);
         resideMenu.attachToActivity(this);
         resideMenu.setMenuListener(menuListener);
         resideMenu.setScaleValue(0.7f);
         // create menu items;
-        itemHome = new ResideMenuItem(this, R.drawable.menu, "Inicio");
+        itemHome = new ResideMenuItem(this, R.drawable.img_opciones_menu, "Inicio");
         itemDocumento = new ResideMenuItem(this, R.drawable.file, "Documento");
-        itemChat = new ResideMenuItem(this, R.drawable.chat, "Chat");
-        itemPreguntas = new ResideMenuItem(this, R.drawable.customerservice, "Categorias");
-        itemAbout = new ResideMenuItem(this, R.drawable.information, "Acerca de");
-        itemContacto = new ResideMenuItem(this, R.drawable.visitcard, "Contacto");
+        itemChat = new ResideMenuItem(this, R.drawable.img_chat_menu, "Chat");
+        itemPreguntas = new ResideMenuItem(this, R.drawable.img_categ_menu, "Categorias");
+        itemAbout = new ResideMenuItem(this, R.drawable.img_acercade_menu, "Acerca de");
+        itemContacto = new ResideMenuItem(this, R.drawable.img_mail_menu, "Contacto");
         itemGestion = new ResideMenuItem(this, R.drawable.super_user, "Gestion");
 
         itemHome.setOnClickListener(this);
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view == itemAbout) {
             changeFragment(new AcercaDeFragment()); // acerca de...
         } else if (view == itemContacto) {
-            // startActivity(new Intent(MainActivity.this, Email_Envios.class));
+            startActivity(new Intent(MainActivity.this, Contacto.class));
         } else if (view == itemGestion) {
             verificarIngreso();
         }
@@ -119,21 +120,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void verificarIngreso() {
         final Dialog login_ventana = new Dialog(MainActivity.this);
-        login_ventana.setTitle("Registrar Docente");
+        login_ventana.setTitle("Ingresar Contraseña");
         login_ventana.setContentView(R.layout.gestionar_contra);
         final EditText contra = (EditText) login_ventana.findViewById(R.id.et_gestion_contra);
         Button boton = (Button) login_ventana.findViewById(R.id.btn_gestion_contra);
+        int width = (int) (MainActivity.this.getResources().getDisplayMetrics().widthPixels * 0.9);
+        // set height for dialog
+        int height = (int) (MainActivity.this.getResources().getDisplayMetrics().heightPixels * 0.35);
+        login_ventana.getWindow().setLayout(width, height);
+
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String c = contra.getText().toString().trim();
                 if (c.equals("cp2017")) {
                     startActivity(new Intent(MainActivity.this, GestionDePublicaciones.class));
-                } else {
-                    login_ventana.cancel();
                 }
+                login_ventana.cancel();
             }
         });
+
         login_ventana.show();
     }
 

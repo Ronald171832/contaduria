@@ -1,4 +1,4 @@
-package com.informaciones.facultad.contaduriaalacima.Publicaciones;
+package com.informaciones.facultad.contaduriaalacima.PantallaPrincipal;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.informaciones.facultad.contaduriaalacima.Publicaciones.PublicacionesModel;
 import com.informaciones.facultad.contaduriaalacima.R;
 import com.informaciones.facultad.contaduriaalacima.Publicaciones.CrearPublicacion.*;
 
@@ -42,7 +44,7 @@ public class PublicacionesListAdapter extends ArrayAdapter<PublicacionesModel> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-
+        //convertView=inflater.inflate(resource, parent);
         View v = inflater.inflate(resource, null);
         TextView tvTitulo = (TextView) v.findViewById(R.id.cardTituloPublicacion);
         TextView tvDescripcion = (TextView) v.findViewById(R.id.cardDescripcionPublicacion);
@@ -55,6 +57,15 @@ public class PublicacionesListAdapter extends ArrayAdapter<PublicacionesModel> {
         tvLike.setText(listImage.get(position).getLikes()+"");
         ImagePagerAdapter imgPager=new ImagePagerAdapter(listImage.get(position).getImagenes());
         vpImagenes.setAdapter(imgPager);
+        vpImagenes.requestDisallowInterceptTouchEvent(false);
+        vpImagenes.getParent().requestDisallowInterceptTouchEvent(false);
+        /*ImageView x=(ImageView)v.findViewById(R.id.cardCompartirPublicacion);
+        x.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(),"asmasmasasa",Toast.LENGTH_LONG).show();
+            }
+        });*/
         //Glide.with(context).load(listImage.get(position).getImagen()).into(imagen);
         return v;
     }

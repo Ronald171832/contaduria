@@ -46,7 +46,8 @@
         <activity
             android:name=".PantallaPrincipal.GestionDePublicaciones"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Email.Contacto"></activity>
     </application>
 
 </manifest>

@@ -19,6 +19,15 @@
             android:layout_height="4dp"
             android:background="#ffd5d5d5" />
 
+        <ImageView
+            android:id="@+id/cardImagenDocumento"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:background="@drawable/cargando"
+            android:scaleType="centerCrop" />
+
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,13 +54,6 @@
                 android:textSize="15dp" />
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/cardImagenDocumento"
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:background="@drawable/cargando"
-            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,6 +82,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginRight="8dp"
+                android:clickable="true"
                 android:background="@drawable/file" />
 
             <TextView

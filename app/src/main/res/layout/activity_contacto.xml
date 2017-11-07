@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.informaciones.facultad.contaduriaalacima.Email.Contacto">
+
+
+
+    <TextView
+        android:textColor="@color/colorPrimaryDark"
+        android:text="CONTACTO"
+        android:textAlignment="center"
+        android:textSize="30dp"
+        android:layout_marginTop="10dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        app:srcCompat="@drawable/img_email" />
+
+    <EditText
+        android:id="@+id/et_sub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        android:ems="10"
+        android:textStyle="italic"
+        android:textAlignment="center"
+        android:hint="Ingrese su Nombre completo..." />
+
+    <EditText
+        android:id="@+id/et_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textAlignment="center"
+        android:hint="Escriba el mensaje a enviar..."
+        android:layout_marginBottom="20dp"
+        android:inputType="textMultiLine"
+        android:textStyle="italic" />
+
+    <TextView
+        android:text="NOTA: El Email se enviara a : plataformainformatica2017@gmail.com"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:textColor="@color/colorNegro"
+        android:layout_marginBottom="30dp"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/layout_circular"
+        android:backgroundTint="@color/colorAzul1"
+        android:textColor="@color/colorBlanco"
+        android:id="@+id/btn_submit"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dip"
+        android:layout_width="match_parent"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Enviar Email "  />
+
+</LinearLayout>

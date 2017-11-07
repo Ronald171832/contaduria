@@ -181,7 +181,7 @@ public class CrearPublicacion extends AppCompatActivity {
             PublicacionesModel nuevaPublicacionModel=new PublicacionesModel(nombrePublicacion,descPublicacion);
 
             DatabaseReference refPublicacion=dbPublicacion.child(nombrePublicacion);//.setValue("lkikikip");
-            DatabaseReference refImagenesPublicacion=FirebaseDatabase.getInstance().getReference("categorias/"+nombreCategoria+"/publicaciones/"+nombrePublicacion);
+            //DatabaseReference refImagenesPublicacion=FirebaseDatabase.getInstance().getReference("categorias/"+nombreCategoria+"/publicaciones/"+nombrePublicacion);
 
             refPublicacion.setValue(nuevaPublicacionModel);
 

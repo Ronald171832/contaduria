@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,9 @@ public class DocumentoListAdapter extends ArrayAdapter<DocumentoModel> {
         tvTitulo.setText(listDocumentos.get(position).getTitulo());
         tvLinkDeDescarga.setText(listDocumentos.get(position).getLinkDeDescarga());
         tvDescargas.setText("Descargas "+listDocumentos.get(position).getDescargas());
+
         Glide.with(context).load(listDocumentos.get(position).getImagen()).into(imagen);
+
         return v;
     }
 
