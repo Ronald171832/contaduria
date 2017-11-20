@@ -14,6 +14,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -38,6 +43,10 @@ import com.google.firebase.storage.UploadTask;
 import com.informaciones.facultad.contaduriaalacima.Categorias.CategoriaModel;
 import com.informaciones.facultad.contaduriaalacima.Categorias.Categorias;
 import com.informaciones.facultad.contaduriaalacima.R;
+import com.informaciones.facultad.contaduriaalacima.WebServices.Constantes;
+import com.informaciones.facultad.contaduriaalacima.WebServices.VolleySingleton;
+
+import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -61,6 +70,7 @@ public class CrearPublicacion extends AppCompatActivity {
 
     public ViewPager viewImagenes;
     public ImagePagerAdapter adaptadorImgSlide;
+    Map<String,String> mapDataNotificacion=new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,11 +195,15 @@ public class CrearPublicacion extends AppCompatActivity {
 
             refPublicacion.setValue(nuevaPublicacionModel);
 
+            mapDataNotificacion.put("titulo",nombrePublicacion);
+            mapDataNotificacion.put("mensaje",descPublicacion);
             imagenesURL_FB=new HashMap<>();
             for (int i=0;i<imgsUri.length;i++){
                 addImagenPublicacionFB(imgsUri[i],nombreCategoria,nombrePublicacion,i);
             }
             dialog.dismiss();
+
+
             //refImagenesPublicacion.child("imagenes").setValue(x);
 
             //subirImagenesPublicacionFB();
@@ -258,8 +272,16 @@ public class CrearPublicacion extends AppCompatActivity {
                         DatabaseReference refImagenesPublicacion=FirebaseDatabase.getInstance().getReference("categorias/"+categor+"/publicaciones/"+publica);
                         //Map<String,String> h=new HashMap<>();
                         imagenesURL_FB.put("imagen "+String.valueOf(pos),taskSnapshot.getDownloadUrl().toString().trim());
+
                         //imagenesURL_FB
                         refImagenesPublicacion.child("imagenes").setValue(imagenesURL_FB);
+                        if (pos==0){
+                            mapDataNotificacion.put("urlimagen",imagenesURL_FB.get("imagen 0"));
+                            notificarUsers(mapDataNotificacion.get("titulo"),mapDataNotificacion.get("mensaje"),mapDataNotificacion.get("urlimagen"));
+                        }
+
+                        // FORMA DE ENVIAR LA NOTIFICACION CUANDO SE EJECUTO LA ULTIMA IMAGEN
+
                         //dialog.dismiss();
                         //urlArray.put("imagen ",taskSnapshot.getDownloadUrl().toString().trim());
                         //imagenesURL_FB.put("imagen"+String.valueOf(pos),taskSnapshot.getDownloadUrl().toString().trim());
@@ -293,6 +315,37 @@ public class CrearPublicacion extends AppCompatActivity {
 
         }
     }
+
+    private void notificarUsers(String titulo,String desc,String urlImg) {
+        String p1=urlImg.substring(0,urlImg.indexOf('&'));
+        String p2=urlImg.substring(urlImg.indexOf('&')+1);
+        VolleySingleton.getInstance(this).
+                addToRequestQueue(
+                        new JsonObjectRequest(Request.Method.GET,
+                                Constantes.URL_PETICION_NOTIFICACION +"?titulo="+titulo+"&mensaje="+desc+"&url="+p1+"&resto="+p2,
+                                new JSONObject(),
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        procesarPeticion(response);
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(), error.getMessage(),Toast.LENGTH_SHORT).show();
+                                        Log.d("TAG", "Error Volley: " + error.getMessage());
+                                    }
+                                }
+                        ));
+    }
+
+    private void procesarPeticion(JSONObject response) {
+        // ninguna accion por la peticion
+        int valor=331;
+
+    }
+
 
     public void listarPublicaciones(View v) {
         Intent i = new Intent(CrearPublicacion.this, Categorias.class);

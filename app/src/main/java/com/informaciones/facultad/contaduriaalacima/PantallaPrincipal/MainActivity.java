@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.informaciones.facultad.contaduriaalacima.Categorias.Categorias;
 import com.informaciones.facultad.contaduriaalacima.Chat.Chat;
 import com.informaciones.facultad.contaduriaalacima.Documentos.CrearDocumentos;
@@ -41,10 +43,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
+        try {
+            FirebaseMessaging.getInstance().subscribeToTopic("test");
+            FirebaseInstanceId.getInstance().getToken();
+        } catch (Exception e){
+            String error=e.getMessage().toString();
+        }
+
         setUpMenu();
         if (savedInstanceState == null) {
             changeFragment(new HomeFragment());
         }
+
 
     }
 
