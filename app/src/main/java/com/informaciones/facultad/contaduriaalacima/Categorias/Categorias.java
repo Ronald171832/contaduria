@@ -125,9 +125,17 @@ public class Categorias extends AppCompatActivity {
                 viewHolder.tvDescripcion.setText(model.getDescripcion());
                 viewHolder.tvVisitas.setText("visitas " + model.getVisitas() + "");
                 Glide.with(Categorias.this).load(model.getImagen()).into(viewHolder.imagen);
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(context,"asdasdadsasdasd",Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         };
         recyclerView.setAdapter(adapter);
+
+        //recyclerView.
     }
 
     @Override
