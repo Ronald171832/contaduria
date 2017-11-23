@@ -14,6 +14,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.informaciones.facultad.contaduriaalacima.PantallaPrincipal.MainActivity;
+import com.informaciones.facultad.contaduriaalacima.Publicaciones.Publicaciones;
 import com.informaciones.facultad.contaduriaalacima.R;
 
 public class Categorias extends AppCompatActivity {
@@ -35,14 +38,28 @@ public class Categorias extends AppCompatActivity {
     private RecyclerView recyclerView;
     private Paint p = new Paint();
     public static Context context;
+    private DatabaseReference dbVisitas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.categorias_principal);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         iniciar();
         tocarRecycler();
         tocarItem();
         context=getApplicationContext();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: //hago un case por si en un futuro agrego mas opciones
+                Log.i("ActionBar", "Atrás!");
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void tocarItem() {
@@ -110,6 +127,7 @@ public class Categorias extends AppCompatActivity {
     }
 
     private void iniciar() {
+
         recyclerView = (RecyclerView) findViewById(R.id.my_Recylerivew_);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
@@ -120,7 +138,7 @@ public class Categorias extends AppCompatActivity {
                 CategoriaModel.class, R.layout.categoria_card, myViewHolader.class, myRef
         ) {
             @Override
-            protected void populateViewHolder(myViewHolader viewHolder, CategoriaModel model, int position) {
+            protected void populateViewHolder(myViewHolader viewHolder, final CategoriaModel model, int position) {
                 viewHolder.tvTitulo.setText(model.getTitulo());
                 viewHolder.tvDescripcion.setText(model.getDescripcion());
                 viewHolder.tvVisitas.setText("visitas " + model.getVisitas() + "");
@@ -128,7 +146,13 @@ public class Categorias extends AppCompatActivity {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(context,"asdasdadsasdasd",Toast.LENGTH_LONG).show();
+                        String categoria=model.getTitulo();
+                        dbVisitas = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/visitas");
+                        dbVisitas.setValue(model.getVisitas()+1);
+                        Intent intent=new Intent(Categorias.this,Publicaciones.class);
+                        intent.putExtra("categoria",categoria);
+                        startActivity(intent);
+                        //Toast.makeText(context,"asdasdadsasdasd",Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -140,13 +164,14 @@ public class Categorias extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(Categorias.this, MainActivity.class));
+        super.onBackPressed();
+        //startActivity(new Intent(Categorias.this, MainActivity.class));
     }
 
     public static class myViewHolader extends RecyclerView.ViewHolder  {
         public TextView tvTitulo, tvVisitas, tvDescripcion;
         public ImageView imagen;
-        private DatabaseReference dbVisitas;
+
 
 
         public myViewHolader(View itemView) {
@@ -159,8 +184,8 @@ public class Categorias extends AppCompatActivity {
                 @Override
                 public void onClick(final View view) {
                     String categoria = tvTitulo.getText().toString();
-                    dbVisitas = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/visitas");
-
+                    //dbVisitas = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/visitas");
+                    //dbVisitas.setValue()
 
                     /*dbPrueba = FirebaseDatabase.getInstance().getReference("auxiliares/" + nombre + "/contra");
                     dbPrueba.setValue(contras.get(getPosition())+1+"");

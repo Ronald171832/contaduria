@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ResideMenuItem itemGestion;
     SharedPreferences sharedPreferences;
 
+    // TODO IMPLEMENTAR NUEVAMENTE EL PAQUETE DE NOTIFICACIONES Y DE WEBSERVICES CON LAS RESPECTIVAS URLS PARA EL ENVIO ,TOMAR EN CUENTA NOTIF APP DE EJEMPLO Y ADECUAR , LA NOTIFICACION ENVIARLA AL MOMENTO QUE SE GENERE EL ULTIMO ENVIO DE IAMGEN CON LA PRIMER IMAGEN Y EL RESTO DEL CONTENIDO
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
