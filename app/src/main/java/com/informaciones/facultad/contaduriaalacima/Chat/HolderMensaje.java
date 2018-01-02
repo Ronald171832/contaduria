@@ -3,6 +3,7 @@ package com.informaciones.facultad.contaduriaalacima.Chat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.informaciones.facultad.contaduriaalacima.R;
@@ -20,6 +21,8 @@ public class HolderMensaje extends RecyclerView.ViewHolder {
     private TextView hora;
     private CircleImageView fotoMensajePerfil;
     private ImageView fotoMensaje;
+    private LinearLayout enviado,recibido;
+    private LinearLayout mensajeImage;
 
     public HolderMensaje(View itemView) {
         super(itemView);
@@ -28,6 +31,33 @@ public class HolderMensaje extends RecyclerView.ViewHolder {
         hora = (TextView) itemView.findViewById(R.id.horaMensaje);
         fotoMensajePerfil = (CircleImageView) itemView.findViewById(R.id.fotoPerfilMensaje);
         fotoMensaje = (ImageView) itemView.findViewById(R.id.mensajeFoto);
+        enviado=(LinearLayout)itemView.findViewById(R.id.l_enviado);
+        recibido=(LinearLayout)itemView.findViewById(R.id.l_recibido);
+        mensajeImage=(LinearLayout)itemView.findViewById(R.id.l_mensaje);
+    }
+
+    public LinearLayout getMensajeImage() {
+        return mensajeImage;
+    }
+
+    public void setMensajeImage(LinearLayout mensajeImage) {
+        this.mensajeImage = mensajeImage;
+    }
+
+    public LinearLayout getEnviado() {
+        return enviado;
+    }
+
+    public void setEnviado(LinearLayout enviado) {
+        this.enviado = enviado;
+    }
+
+    public LinearLayout getRecibido() {
+        return recibido;
+    }
+
+    public void setRecibido(LinearLayout recibido) {
+        this.recibido = recibido;
     }
 
     public TextView getNombre() {

@@ -14,7 +14,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 
 /**
- * Created by USUARIO on 23/07/2017.
+ * Created by Ronald Lopez on 23/07/2017.
  */
 
 public final class VolleySingleton {

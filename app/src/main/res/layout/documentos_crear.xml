@@ -15,10 +15,11 @@
         android:onClick="elegirImagenDocumento"/>
 
     <ImageView
+        android:id="@+id/imageDocumento"
         android:layout_width="300dp"
         android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:id="@+id/imageDocumento"/>
+        android:onClick="listarDocumentos"
+        android:layout_gravity="center" />
 
     <EditText
         android:id="@+id/et_tituloDocumento"
@@ -41,12 +42,13 @@
         android:textColor="@color/colorBlanco" />
 
     <Button
-        android:layout_marginTop="5dp"
-        android:textColor="@color/colorBlanco"
+        android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:background="@color/colorAccent"
         android:onClick="listarDocumentos"
-        android:text="VER DOCUMENTOS" />
+        android:text="VER DOCUMENTOS"
+        android:textColor="@color/colorBlanco" />
 
 </LinearLayout>

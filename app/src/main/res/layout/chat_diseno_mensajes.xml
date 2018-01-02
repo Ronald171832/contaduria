@@ -1,94 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="5sp"
-    android:paddingRight="5sp">
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvMensaje"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/l_enviado"
+        android:layout_width="80dp"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:cardview="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="45dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="4dp"
-        card_view:cardBackgroundColor="@android:color/transparent"
-        card_view:cardElevation="0dp">
+        android:layout_weight="1"
+        android:orientation="vertical"
+        cardview:cardCornerRadius="10dp">
+
         <LinearLayout
-            android:id="@+id/mensajeBG"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/in_message_bg"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10sp">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/fotoPerfilMensaje"
-                    android:layout_width="40sp"
-                    android:layout_height="40sp"
-                    android:src="@drawable/user" />
-            </LinearLayout>
-
-            <LinearLayout
+                android:id="@+id/l_mensaje"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:background="#efefef">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="3sp">
 
-                    <TextView
-                        android:id="@+id/nombreMensaje"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Anonimo"
-                        android:textColor="#000000"
-                        android:textStyle="italic|bold" />
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/fotoPerfilMensaje"
+                                android:layout_width="30sp"
+                                android:layout_height="30sp"
+                                android:src="@drawable/ico" />
+                        </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/horaMensaje"
-                        android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/nombreMensaje"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Anonimo"
+                                    android:textColor="@color/colorBlanco"
+                                    android:textStyle="italic|bold" />
+
+                                <TextView
+                                    android:id="@+id/horaMensaje"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="00:00"
+                                    android:textColor="@color/colorBlanco"
+                                    android:textSize="8dp" />
+                            </LinearLayout>
+
+
+                            <TextView
+                                android:id="@+id/mensajeMensaje"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hola bienvenido"
+                                android:textColor="@color/colorBlanco"
+                                android:visibility="gone" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="00:00"
-                        android:textColor="#000000" />
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:scaleType="centerCrop"
+                            android:id="@+id/mensajeFoto"
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp"
+                            android:visibility="gone" />
+                    </LinearLayout>
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/mensajeMensaje"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hola bienvenido"
-                    android:textColor="#000000"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/mensajeFoto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
             </LinearLayout>
 
-            <!--<TextView
-                android:id="@+id/msTexto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxWidth="240sp"
-                android:text="hola amigos como estan" />
-            <TextView
-                android:id="@+id/msHora"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="12:00 pm"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>-->
         </LinearLayout>
+
     </android.support.v7.widget.CardView>
-</RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/l_recibido"
+        android:layout_width="80dp"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        android:visibility="gone"></LinearLayout>
+</LinearLayout>

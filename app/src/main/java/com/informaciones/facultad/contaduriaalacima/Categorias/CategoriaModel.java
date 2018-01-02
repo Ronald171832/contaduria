@@ -7,17 +7,23 @@ package com.informaciones.facultad.contaduriaalacima.Categorias;
 public class CategoriaModel {
 
     public String titulo;
-    public String imagen;
-    public String descripcion;
+    public String fecha;
     public int visitas;
 
     public CategoriaModel() {
     }
 
-    public CategoriaModel(String titulo, String imagen, String descripcion, int visitas) {
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public CategoriaModel(String titulo, String fecha, int visitas) {
         this.titulo = titulo;
-        this.imagen = imagen;
-        this.descripcion = descripcion;
+        this.fecha = fecha;
         this.visitas = visitas;
     }
 
@@ -27,22 +33,6 @@ public class CategoriaModel {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
-    }
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public int getVisitas() {

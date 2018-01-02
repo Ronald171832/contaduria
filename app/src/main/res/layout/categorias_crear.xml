@@ -7,32 +7,11 @@
     android:orientation="vertical"
     tools:context="com.informaciones.facultad.contaduriaalacima.Categorias.CrearCategorias">
 
-    <Button
-        android:textColor="@color/colorBlanco"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Elegir Imagen"
-        android:background="@color/colorAccent"
-        android:onClick="elegirImagenCategoria"/>
-
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:id="@+id/imageCat"/>
-
     <EditText
         android:id="@+id/et_tituloCategoria"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Tiulo categoria" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_descripcionCategoria"
-        android:hint="Descripcion categoria"/>
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,12 +21,12 @@
         android:textColor="@color/colorBlanco" />
 
     <Button
-        android:layout_marginTop="5dp"
-        android:textColor="@color/colorBlanco"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:background="@color/colorAccent"
         android:onClick="listarCategorias"
-        android:text="VER CATEGORIAS" />
+        android:text="VER CATEGORIAS"
+        android:textColor="@color/colorBlanco" />
 
 </LinearLayout>

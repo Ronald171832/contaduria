@@ -1,77 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--android:background="#ECEFF1"-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/ll_chat"
     android:layout_height="match_parent"
-    android:background="#ECEFF1"
-    tools:context=".Chat.Chat"
-    android:padding="5sp"
-    android:orientation="vertical">
+    android:background="@drawable/fondochat"
+    android:orientation="vertical"
+    tools:context=".Chat.Chat">
 
-    <LinearLayout
-        android:backgroundTint="@color/colorNegro"
-        android:background="@drawable/layout_cuadrado"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/fotoPerfil"
-            android:layout_width="48sp"
-            android:layout_height="48sp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/user" />
-        <TextView
-            android:onClick="cambiarNombre"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:layout_marginLeft="10dp"
-            android:textColor="#ffffff"
-            android:id="@+id/nombre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Usuario Anonimo"
-            android:layout_gravity="center"/>
-
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvMensajes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="#ffffff"></android.support.v7.widget.RecyclerView>
+    <include
+        android:id="@+id/toolbarChat"
+        layout="@layout/chat_nav_bar"></include>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/layout_cuadrado"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5sp">
 
-        <ImageButton
-            android:id="@+id/btnEnviarFoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/gallery" />
-
-        <EditText
-            android:textColor="#2e6e91"
-            android:id="@+id/txtMensaje"
-            android:layout_marginLeft="10dp"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvMensajes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Escribe un mensaje..."
-            android:textColorHint="#2e6e91"
-            android:textStyle="italic"
-            android:layout_weight="1"/>
+            android:layout_weight="1"></android.support.v7.widget.RecyclerView>
 
-        <Button
-            android:background="@drawable/send_button"
-            android:id="@+id/btnEnviar"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_cuadrado"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnEnviarFoto"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/galeria" />
+
+            <EditText
+                android:id="@+id/txtMensaje"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:hint="Escribe un mensaje..."
+                android:textColor="#2e6e91"
+                android:textColorHint="#2e6e91"
+                android:textStyle="italic" />
+
+            <Button
+                android:id="@+id/btnEnviar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/send_in" />
+        </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>

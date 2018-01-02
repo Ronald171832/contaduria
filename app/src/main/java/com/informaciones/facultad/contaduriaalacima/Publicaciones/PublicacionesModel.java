@@ -10,21 +10,23 @@ public class PublicacionesModel {
 
     public String titulo;
     public String descripcion;
-    //public String imagen;
+    public String fecha;
     public Uri[] imagenes;
     public int likes;
 
     public PublicacionesModel() {
     }
 
-    public PublicacionesModel(String titulo, String descripcion) {
+    public PublicacionesModel(String titulo, String descripcion,String fecha) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.likes=0;
+        this.fecha = fecha;
     }
 
-    public PublicacionesModel(String titulo, String imagen, String descripcion, int likes, Uri[] imagenesURL) {
+    public PublicacionesModel(String titulo, String imagen, String descripcion, int likes, Uri[] imagenesURL,String fecha) {
         this.titulo = titulo;
+        this.fecha = fecha;
         this.descripcion = descripcion;
         //this.imagen = imagen;
         this.likes = likes;
@@ -47,13 +49,13 @@ public class PublicacionesModel {
         this.descripcion = descripcion;
     }
 
-    /*public String getImagen() {
-        return imagen;
+    public String getFecha() {
+        return fecha;
     }
 
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }*/
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
 
     public int getLikes() {
         return likes;

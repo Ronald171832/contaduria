@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -105,8 +106,16 @@ public class CrearDocumentos extends AppCompatActivity {
         }
     }
     public void listarDocumentos(View v) {
-        Intent i = new Intent(CrearDocumentos.this, Documentos.class);
-        startActivity(i);
+        /*Intent i = new Intent(CrearDocumentos.this, Documentos.class);
+        startActivity(i);*/
+
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(imguri, "image/*");
+        startActivity(intent);
+        /*Intent intent = new Intent(Intent.ACTION_VIEW,imguri);
+        startActivity(intent);*/
     }
 
 

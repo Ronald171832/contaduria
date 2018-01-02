@@ -8,16 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.informaciones.facultad.contaduriaalacima.R;
 
 import java.util.List;
 
 /**
- * Created by Admin on 6/21/2017.
+ * Created by Ronald Lopez on 6/21/2017.
  */
 
 public class CategoriaListAdapter extends ArrayAdapter<CategoriaModel> {
@@ -37,15 +35,14 @@ public class CategoriaListAdapter extends ArrayAdapter<CategoriaModel> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View v = inflater.inflate(resource, null);
-        TextView tvTitulo = (TextView) v.findViewById(R.id.cardTitulo);
-        ImageView imagen = (ImageView) v.findViewById(R.id.cardImagenCATEGORIA);
-        TextView tvDescripcion = (TextView) v.findViewById(R.id.cardDescripcion);
-        TextView tvVisitas = (TextView) v.findViewById(R.id.cardVisitas);
+        TextView tvTitulo = (TextView) v.findViewById(R.id.cardCategoriaTitulo);
+        TextView tvVisitas = (TextView) v.findViewById(R.id.cardCategoriaVisitas);
+        TextView tvFecha = (TextView) v.findViewById(R.id.cardCategoriaFecha);
 
         tvTitulo.setText(listCategorias.get(position).getTitulo());
-        tvDescripcion.setText(listCategorias.get(position).getDescripcion());
+        tvFecha.setText(listCategorias.get(position).getFecha());
         tvVisitas.setText("visitas "+listCategorias.get(position).getVisitas()+"");
-        Glide.with(context).load(listCategorias.get(position).getImagen()).into(imagen);
+        tvVisitas.setText("visitas "+listCategorias.get(position).getVisitas()+"");
         return v;
     }
 

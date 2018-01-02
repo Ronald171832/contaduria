@@ -10,35 +10,29 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.informaciones.facultad.contaduriaalacima.PantallaPrincipal.MainActivity;
 import com.informaciones.facultad.contaduriaalacima.Publicaciones.Publicaciones;
 import com.informaciones.facultad.contaduriaalacima.R;
 
 public class Categorias extends AppCompatActivity {
 
     private DatabaseReference myRef;
-    private RecyclerView recyclerView;
+    private RecyclerView rvCategorias;
     private Paint p = new Paint();
     public static Context context;
     private DatabaseReference dbVisitas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +40,7 @@ public class Categorias extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         iniciar();
         tocarRecycler();
-        tocarItem();
-        context=getApplicationContext();
+        context = getApplicationContext();
     }
 
     @Override
@@ -62,15 +55,6 @@ public class Categorias extends AppCompatActivity {
         }
     }
 
-    private void tocarItem() {
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        /*recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });*/
-    }
 
 
     private void tocarRecycler() {
@@ -103,7 +87,6 @@ public class Categorias extends AppCompatActivity {
                     float width = height / 3;
 
                     if (dX > 0) {
-
                         p.setColor(Color.parseColor("#388E3C"));
                         RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
                         c.drawRect(background, p);
@@ -123,156 +106,54 @@ public class Categorias extends AppCompatActivity {
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        itemTouchHelper.attachToRecyclerView(rvCategorias);
     }
 
     private void iniciar() {
 
-        recyclerView = (RecyclerView) findViewById(R.id.my_Recylerivew_);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
+        rvCategorias = (RecyclerView) findViewById(R.id.my_Recylerivew_);
+        rvCategorias.setLayoutManager(new LinearLayoutManager(this));
+        rvCategorias.setHasFixedSize(true);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("categorias");
         myRef.keepSynced(true);
-        FirebaseRecyclerAdapter<CategoriaModel, myViewHolader> adapter = new FirebaseRecyclerAdapter<CategoriaModel, myViewHolader>(
-                CategoriaModel.class, R.layout.categoria_card, myViewHolader.class, myRef
-        ) {
-            @Override
-            protected void populateViewHolder(myViewHolader viewHolder, final CategoriaModel model, int position) {
-                viewHolder.tvTitulo.setText(model.getTitulo());
-                viewHolder.tvDescripcion.setText(model.getDescripcion());
-                viewHolder.tvVisitas.setText("visitas " + model.getVisitas() + "");
-                Glide.with(Categorias.this).load(model.getImagen()).into(viewHolder.imagen);
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        FirebaseRecyclerAdapter<CategoriaModel, myViewHolader> adapter =
+                new FirebaseRecyclerAdapter<CategoriaModel, myViewHolader>(CategoriaModel.class, R.layout.categoria_card, myViewHolader.class, myRef) {
                     @Override
-                    public void onClick(View view) {
-                        String categoria=model.getTitulo();
-                        dbVisitas = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/visitas");
-                        dbVisitas.setValue(model.getVisitas()+1);
-                        Intent intent=new Intent(Categorias.this,Publicaciones.class);
-                        intent.putExtra("categoria",categoria);
-                        startActivity(intent);
-                        //Toast.makeText(context,"asdasdadsasdasd",Toast.LENGTH_LONG).show();
+                    protected void populateViewHolder(myViewHolader viewHolder, final CategoriaModel model, int position) {
+                        viewHolder.tvTitulo.setText(model.getTitulo());
+                        viewHolder.tvVisitas.setText("visitas " + model.getVisitas() + "");
+                        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String categoria = model.getFecha();
+                                dbVisitas = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/visitas");
+                                dbVisitas.setValue(model.getVisitas() + 1);
+                                Intent intent = new Intent(Categorias.this, Publicaciones.class);
+                                intent.putExtra("categoria", categoria);
+                                startActivity(intent);
+                            }
+                        });
                     }
-                });
-            }
-        };
-        recyclerView.setAdapter(adapter);
-
-        //recyclerView.
+                };
+        rvCategorias.setAdapter(adapter);
     }
 
-    @Override
+   /* @Override
     public void onBackPressed() {
         super.onBackPressed();
         //startActivity(new Intent(Categorias.this, MainActivity.class));
-    }
+    }*/
 
-    public static class myViewHolader extends RecyclerView.ViewHolder  {
-        public TextView tvTitulo, tvVisitas, tvDescripcion;
-        public ImageView imagen;
-
+    public static class myViewHolader extends RecyclerView.ViewHolder {
+        public TextView tvTitulo, tvVisitas, tvFecha;
 
 
         public myViewHolader(View itemView) {
             super(itemView);
-            tvTitulo = (TextView) itemView.findViewById(R.id.cardTitulo);
-            imagen = (ImageView) itemView.findViewById(R.id.cardImagenCATEGORIA);
-            tvDescripcion = (TextView) itemView.findViewById(R.id.cardDescripcion);
-            tvVisitas = (TextView) itemView.findViewById(R.id.cardVisitas);
-            tvVisitas.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View view) {
-                    String categoria = tvTitulo.getText().toString();
-                    //dbVisitas = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/visitas");
-                    //dbVisitas.setValue()
-
-                    /*dbPrueba = FirebaseDatabase.getInstance().getReference("auxiliares/" + nombre + "/contra");
-                    dbPrueba.setValue(contras.get(getPosition())+1+"");
-                    contras.set(getPosition(),contras.get(getPosition())+1);*/
-                    /*dbVisitas.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            int visitas=Integer.parseInt(dataSnapshot.getValue().toString());
-                            visitas++; // aunmentar un like
-                            dbVisitas.setValue(visitas);
-                            //Toast.makeText(context,,Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                    //String x=dbVisitas.toString();
-                    //dbVisitas.
-                    //Toast.makeText(,x,Toast.LENGTH_LONG).show();
-                    //dbVisitas.setValue(4);*/
-                }
-            });
+            tvTitulo = (TextView) itemView.findViewById(R.id.cardCategoriaTitulo);
+            tvVisitas = (TextView) itemView.findViewById(R.id.cardCategoriaVisitas);
+            tvFecha = (TextView) itemView.findViewById(R.id.cardCategoriaFecha);
         }
-
-
     }
-
-
-    /*private DatabaseReference dbCategorias;
-    private List<CategoriaModel> listaCategorias;
-    private ListView lv;
-    private CategoriaListAdapter adapter;
-    private ProgressDialog progressDialog;
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.categorias_principal);
-        iniciar();
-        tocarListView();
-    }
-
-    private void tocarListView() {
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, final int posicion, long l) {
-                String categoria=listaCategorias.get(posicion).getTitulo();
-                Intent intent=new Intent(Categorias.this,Publicaciones.class);
-                intent.putExtra("categoria",categoria);
-                startActivity(intent);
-            }
-        });
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(Categorias.this,"ASASASA",Toast.LENGTH_LONG).show();
-                return false;
-            }
-        });
-    }
-
-    private void iniciar() {
-        listaCategorias = new ArrayList<>();
-        lv = (ListView) findViewById(R.id.listViewCategorias);
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Cargando Categorias...");
-        progressDialog.show();
-        dbCategorias = FirebaseDatabase.getInstance().getReference("categorias");
-        dbCategorias.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                progressDialog.dismiss();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    CategoriaModel img = snapshot.getValue(CategoriaModel.class);
-                    listaCategorias.add(img);
-                }
-                adapter = new CategoriaListAdapter(Categorias.this, R.layout.categoria_card, listaCategorias);
-                lv.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                progressDialog.dismiss();
-            }
-        });
-    }*/
 }

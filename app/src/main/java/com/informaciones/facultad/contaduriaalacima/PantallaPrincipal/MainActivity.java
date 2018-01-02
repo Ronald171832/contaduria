@@ -1,34 +1,36 @@
 package com.informaciones.facultad.contaduriaalacima.PantallaPrincipal;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.informaciones.facultad.contaduriaalacima.Categorias.Categorias;
 import com.informaciones.facultad.contaduriaalacima.Chat.Chat;
-import com.informaciones.facultad.contaduriaalacima.Documentos.CrearDocumentos;
+import com.informaciones.facultad.contaduriaalacima.Documentos.Documentos;
 import com.informaciones.facultad.contaduriaalacima.Email.Contacto;
 import com.informaciones.facultad.contaduriaalacima.Fragmentos.AcercaDeFragment;
 import com.informaciones.facultad.contaduriaalacima.Fragmentos.HomeFragment;
 import com.informaciones.facultad.contaduriaalacima.R;
+import com.informaciones.facultad.contaduriaalacima.RegistroDeDatos.Registro_Datos;
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ResideMenu resideMenu;
     private Context mContext;
-    private ResideMenuItem itemHome;
+    private ResideMenuItem itemHomeR;
+    private ResideMenuItem itemHomeI;
     private ResideMenuItem itemDocumento;
     private ResideMenuItem itemChat;
     private ResideMenuItem itemPreguntas;
@@ -44,12 +46,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        cosultarRegistroDeDatos();
         mContext = this;
         try {
             FirebaseMessaging.getInstance().subscribeToTopic("test");
             FirebaseInstanceId.getInstance().getToken();
-        } catch (Exception e){
-            String error=e.getMessage().toString();
+        } catch (Exception e) {
+            String error = e.getMessage().toString();
         }
 
         setUpMenu();
@@ -60,14 +63,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void cosultarRegistroDeDatos() {
+        sharedPreferences = getSharedPreferences("nombre", MODE_PRIVATE);
+        boolean registrarDatos = sharedPreferences.getBoolean("registrarDatos", true);
+        if(registrarDatos){
+           startActivity(new Intent(MainActivity.this, Registro_Datos.class));
+        }
+    }
+
     private void setUpMenu() {
         resideMenu = new ResideMenu(this);
-        resideMenu.setBackground(R.drawable.menu_contaduria5);
+        resideMenu.setBackgroundColor(Color.BLUE);
+        //resideMenu.setBackground(R.drawable.p3);
         resideMenu.attachToActivity(this);
         resideMenu.setMenuListener(menuListener);
-        resideMenu.setScaleValue(0.7f);
+        resideMenu.setScaleValue(0.5f);
         // create menu items;
-        itemHome = new ResideMenuItem(this, R.drawable.img_opciones_menu, "Inicio");
+        itemHomeR = new ResideMenuItem(this, R.drawable.img_opciones_menu, "Inicio");
+        itemHomeI = new ResideMenuItem(this, R.drawable.img_opciones_menu, "Inicio");
         itemDocumento = new ResideMenuItem(this, R.drawable.file, "Documento");
         itemChat = new ResideMenuItem(this, R.drawable.img_chat_menu, "Chat");
         itemPreguntas = new ResideMenuItem(this, R.drawable.img_categ_menu, "Categorias");
@@ -75,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         itemContacto = new ResideMenuItem(this, R.drawable.img_mail_menu, "Contacto");
         itemGestion = new ResideMenuItem(this, R.drawable.super_user, "Gestion");
 
-        itemHome.setOnClickListener(this);
+        itemHomeR.setOnClickListener(this);
+        itemHomeI.setOnClickListener(this);
         itemDocumento.setOnClickListener(this);
         itemChat.setOnClickListener(this);
         itemPreguntas.setOnClickListener(this);
@@ -83,11 +97,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         itemContacto.setOnClickListener(this);
         itemGestion.setOnClickListener(this);
 
-        resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
+        resideMenu.addMenuItem(itemHomeR, ResideMenu.DIRECTION_RIGHT);
+        resideMenu.addMenuItem(itemHomeI, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemPreguntas, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemChat, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemAbout, ResideMenu.DIRECTION_RIGHT);
-        resideMenu.addMenuItem(itemDocumento, ResideMenu.DIRECTION_RIGHT);
+        resideMenu.addMenuItem(itemDocumento, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemGestion, ResideMenu.DIRECTION_RIGHT);
         resideMenu.addMenuItem(itemContacto, ResideMenu.DIRECTION_RIGHT);
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
@@ -111,26 +126,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (view == itemHome) {
+        if (view == itemHomeR) {
+            changeFragment(new HomeFragment());
+        } else if (view == itemHomeI) {
             changeFragment(new HomeFragment());
         } else if (view == itemChat) {
             startActivity(new Intent(MainActivity.this, Chat.class));
         } else if (view == itemDocumento) {
-            startActivity(new Intent(MainActivity.this, CrearDocumentos.class));
+            startActivity(new Intent(MainActivity.this, Documentos.class));
         } else if (view == itemPreguntas) {
             startActivity(new Intent(MainActivity.this, Categorias.class));
         } else if (view == itemAbout) {
-            changeFragment(new AcercaDeFragment()); // acerca de...
+            changeFragment(new AcercaDeFragment());
         } else if (view == itemContacto) {
             startActivity(new Intent(MainActivity.this, Contacto.class));
         } else if (view == itemGestion) {
             verificarIngreso();
         }
-
         resideMenu.closeMenu();
     }
 
     private void verificarIngreso() {
+        startActivity(new Intent(MainActivity.this, GestionDePublicaciones.class));
+/*
         final Dialog login_ventana = new Dialog(MainActivity.this);
         login_ventana.setTitle("Ingresar Contraseña");
         login_ventana.setContentView(R.layout.gestionar_contra);
@@ -151,8 +169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 login_ventana.cancel();
             }
         });
-
-        login_ventana.show();
+        login_ventana.show();*/
     }
 
     private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
@@ -189,6 +206,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public ResideMenu getResideMenu() {
         return resideMenu;
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder ventana = new AlertDialog.Builder(MainActivity.this);
+        ventana.setTitle("Salir");
+        ventana.setMessage("Elija una opcion:");
+        ventana.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finishAffinity();
+            }
+        });
+        ventana.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //
+            }
+        });
+        ventana.show();
     }
 }
 

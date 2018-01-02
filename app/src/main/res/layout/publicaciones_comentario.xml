@@ -1,41 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="@drawable/layout_cuadrado"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/layout_cuadrado"
+    android:orientation="vertical"
+    android:padding="5dp">
+
     <TextView
-        android:textSize="18dp"
-        android:text="Comentarios......"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
+        android:text="Comentarios......"
         android:textColor="@color/colorNegro"
+        android:textSize="18dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_publicaciones_comentario"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <ListView
-        android:layout_weight="1"
-        android:id="@+id/lv_comentarios"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/layout_cuadrado"
         android:orientation="horizontal">
+
         <EditText
-            android:textColor="#2e6e91"
             android:id="@+id/et_comentario"
-            android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
             android:hint="Escribe un mensaje..."
+            android:inputType="textLongMessage"
+            android:textColor="#2e6e91"
             android:textColorHint="#2e6e91"
-            android:textStyle="italic"
-            android:layout_weight="1"/>
+            android:textStyle="italic" />
 
         <Button
-            android:background="@drawable/send_button"
             android:id="@+id/btnComentarioEnviar"
             android:layout_width="30dp"
-            android:layout_height="30dp" />
+            android:layout_height="30dp"
+            android:background="@drawable/send_in" />
     </LinearLayout>
 </LinearLayout>

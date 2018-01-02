@@ -1,0 +1,33 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.rldevelopers.jps.togetherforever.Chat.Chat">
+
+    <item
+        android:id="@+id/item_foto_perfil"
+        android:orderInCategory="100"
+        android:title="Actualizar Foto de Perfil"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/item_nombre"
+        android:orderInCategory="100"
+        android:title="Actualizar Nombre"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/item_imagen_subir"
+        android:orderInCategory="100"
+        android:title="Subir Imagenen Galeria"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/item_fondo"
+        android:orderInCategory="100"
+        android:title="Fondo"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/item_salir"
+        android:orderInCategory="100"
+        android:title="Salir"
+        app:showAsAction="never" />
+</menu>

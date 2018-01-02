@@ -35,6 +35,7 @@ public class Constantes {
     public static final String INSERT = "http://" + IP + PUERTO_HOST + "/I%20Wish/insertar_meta.php";*/
 
     public static final String URL_PETICION_NOTIFICACION = "http://" + IP + PUERTO_HOST + "/Notificacion_Contaduria/push_notification.php";
+
     public static final String URL_VISITAS="http://" + IP + PUERTO_HOST + "/WebServices_Maptu/Controller_User.php";
     public static final String HTTP_NEGOCIO = "http://" + IP + PUERTO_HOST + "/WebServices_Maptu/Controller_ObtenerNegocio.php";
     public static final String URL_INFORMACION="http://" + IP + PUERTO_HOST + "/Webservices_ContaduriaCima/Controller_Informacion.php";

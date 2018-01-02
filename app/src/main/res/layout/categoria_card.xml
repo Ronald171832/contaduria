@@ -10,80 +10,72 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical">
-
-        <View
-            android:id="@+id/linea"
-            android:layout_width="wrap_content"
-            android:layout_height="4dp"
-            android:background="#ffd5d5d5" />
-
-        <ImageView
-            android:id="@+id/cardImagenCATEGORIA"
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:scaleType="centerCrop"
-            android:background="@drawable/cargando" />
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:weightSum="1">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/imgIconCateg"
-                android:layout_width="35dp"
-                android:layout_height="30dp"
-                android:layout_marginBottom="10dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@drawable/ico" />
 
-            <TextView
-                android:layout_marginTop="5dp"
-                android:id="@+id/cardTitulo"
-                android:layout_width="220dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="6dp"
-                android:layout_weight="1"
-                android:text="Large Text"
-                android:textColor="@color/colorNegro"
-                android:textSize="15dp"
-
-                />
-
-            <TextView
-                android:layout_gravity="center"
-                android:id="@+id/cardVisitas"
-                android:layout_width="wrap_content"
-                android:layout_height="16dp"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="Visitas: "
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/colorPrimaryDark" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:textSize="15dp"
-                android:id="@+id/cardDescripcion"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:gravity="left"
-                android:text="Descripcion"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/colorPrimaryDark" />
-        </LinearLayout>
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="5">
 
+                <TextView
+                    android:id="@+id/cardCategoriaTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="HOLA"
+                    android:textColor="@color/colorAzul"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="4"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:id="@+id/cardCategoriaVisitas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="8dp"
+                        android:gravity="right"
+                        android:text="Visitas: "
+                        android:textColor="@color/colorPlomo"
+                        android:textSize="12dp" />
+
+                    <TextView
+
+                        android:id="@+id/cardCategoriaFecha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="8dp"
+                        android:gravity="right"
+                        android:text="Fecha: "
+                        android:textColor="@color/colorPlomo"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
