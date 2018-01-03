@@ -56,6 +56,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -159,7 +160,6 @@ public class Publicaciones extends AppCompatActivity {
         categoria = getIntent().getStringExtra("categoria");
         adapter = new PublicacionesAdapter(this, listaPublicaciones);
         rvPublicaciones.setAdapter(adapter);
-
         dbPublicaciones = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/publicaciones");
       /*  FirebaseRecyclerAdapter<PublicacionesModel, ViewHolderPublicacion> adapter = new FirebaseRecyclerAdapter<PublicacionesModel, ViewHolderPublicacion>(
                 PublicacionesModel.class, R.layout.publicacion_card, Publicaciones.ViewHolderPublicacion.class, dbPublicaciones
@@ -190,6 +190,8 @@ public class Publicaciones extends AppCompatActivity {
 
         };
         rvPublicaciones.setAdapter(adapter);*/
+
+        // codigo funcional
         dbPublicaciones.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -224,8 +226,7 @@ public class Publicaciones extends AppCompatActivity {
         });
     }
 
-
-    // TODO ARREGLAR AQUI LA CLASS ADAPTER PARA EL RECYCLER  Y AGREGAR EL FILTERLIST CON PRIORIDAD SOBRE TODO AL FILTERLIST PARA TOMAR EN CUENTA PARA LA PUBLICACION DE ITEMS
+    // CLASE ADAPTER PARA LAS PUBLICACIONES
     public class PublicacionesAdapter extends RecyclerView.Adapter<ViewHolderPublicacion> implements Filterable {
         private ArrayList<PublicacionesModel> publicacionesList;
         private ArrayList<PublicacionesModel> publicacionesFilterList;
@@ -380,6 +381,10 @@ public class Publicaciones extends AppCompatActivity {
         private ViewPager vpImagenes;
         private LinearLayout hablar, compartir, comentar;
         private ImageView opciones;
+        private ComentariosAdapter adapter2;
+        private RecyclerView recyclerViewComentario;
+        private ArrayList<ComentarioModel> listaComentarios;
+
 
         public ViewHolderPublicacion(final View v) {
             super(v);
@@ -393,6 +398,7 @@ public class Publicaciones extends AppCompatActivity {
             compartir = (LinearLayout) v.findViewById(R.id.cardCompartirPublicacion);
             opciones = (ImageView) v.findViewById(R.id.cardOpcionesPublicacion);
             comentar = (LinearLayout) v.findViewById(R.id.cardComentarPublicacion);
+
             comentar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -479,7 +485,7 @@ public class Publicaciones extends AppCompatActivity {
             });
         }
 
-        FirebaseRecyclerAdapter adapter2;
+        //FirebaseRecyclerAdapter adapter2;
 
         public void comentar(final Context context) {
 
@@ -490,15 +496,20 @@ public class Publicaciones extends AppCompatActivity {
             listaComentarios = new ArrayList<ComentarioModel>();
             recyclerViewComentario.setLayoutManager(new LinearLayoutManager(context));
             recyclerViewComentario.setHasFixedSize(true);
+
+            adapter2 = new ComentariosAdapter(context, listaComentarios);
+
+            recyclerViewComentario.setAdapter(adapter2);
             final Button boton = (Button) dialog.findViewById(R.id.btnComentarioEnviar);
             String ruta = "categorias/" + categoria + "/publicaciones/" + TITULO_COMENTARIO + "/comentario";
             System.out.println(ruta + "  ************************************");
             dbComentar = FirebaseDatabase.getInstance().getReference(ruta);
             dbComentar.keepSynced(true);
-           /* dbComentar.addValueEventListener(new ValueEventListener() {
+
+            dbComentar.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
                     listaComentarios.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         ComentarioModel comentarioModel = new ComentarioModel();
@@ -518,39 +529,44 @@ public class Publicaciones extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
                 }
-            });*/
-            adapter2 = new FirebaseRecyclerAdapter<ComentarioModel, myViewHoladerComentario>(
+            });
+
+            /*adapter2 = new FirebaseRecyclerAdapter<ComentarioModel, myViewHoladerComentario>(
                     ComentarioModel.class, R.layout.publicacion_comentario_card, Publicaciones.myViewHoladerComentario.class, dbComentar
             ) {
                 @Override
                 protected void populateViewHolder(myViewHoladerComentario viewHolder, ComentarioModel model, int position) {
                     viewHolder.nombre.setText(model.getNombre());
+
                     viewHolder.fecha.setText(model.getfecha());
                     viewHolder.msj.setText(model.getMsj());
                     if (model.getFotoPerfil().equals("")) {
                         //viewHolder.fotoPerfil.setVisibility(View.GONE);
                         viewHolder.fotoPerfil.setBackgroundResource(R.drawable.ico);
                     } else {
-                        Glide.with(context).load(model.getFotoPerfil()).into(viewHolder.fotoPerfil);
+                        Glide.with(mContext).load(model.getFotoPerfil()).into(viewHolder.fotoPerfil);
                     }
                 }
-            };
-            recyclerViewComentario.setAdapter(adapter2);
+            };*/
+
+
             boton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Date date = new Date();
                     DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                     String fechaHora = hourdateFormat.format(date);
-                    sharedPreferences = context.getSharedPreferences("nombre", MODE_PRIVATE);
+                    sharedPreferences = mContext.getSharedPreferences("nombre", MODE_PRIVATE);
                     String url_fotoPerfil = sharedPreferences.getString("fotoPerfil", "");
                     String nombre_perfil = sharedPreferences.getString("nombre", "");
                     ComentarioModel comentarioModel = new ComentarioModel(nombre_perfil, fechaHora, msj.getText().toString().trim(), url_fotoPerfil);
                     dbComentar.child(fechaHora).setValue(comentarioModel);
                     msj.setText("");
-                    recyclerViewComentario.scrollToPosition(adapter2.getItemCount() - 1);
+                    //listaComentarios.add(comentarioModel);
+                    //recyclerViewComentario.scrollToPosition(adapter2.getItemCount() - 1);
+                    //adapter2.notifyAll();
                     //    dialog.cancel();
                 }
             });
@@ -615,5 +631,47 @@ public class Publicaciones extends AppCompatActivity {
             msj = (TextView) itemView.findViewById(R.id.tv_comentarioMensaje);
             fotoPerfil = (CircleImageView) itemView.findViewById(R.id.iv_comentario);
         }
+    }
+
+
+    // CLASE ADAPTER PARA PODER EFECTUAR LOS COMENTARIOS DE LAS PUBLICACIONES
+    public class ComentariosAdapter extends RecyclerView.Adapter<myViewHoladerComentario> {
+        private ArrayList<ComentarioModel> comentariosList;
+        private Context context;
+
+        public ComentariosAdapter(Context context, ArrayList<ComentarioModel> arrayList) {
+            comentariosList = arrayList;
+            this.context = context;
+        }
+
+
+        @Override
+        public myViewHoladerComentario onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.publicacion_comentario_card, viewGroup, false);
+            myViewHoladerComentario vh = new myViewHoladerComentario(view);
+            return vh;
+        }
+
+        @Override
+        public void onBindViewHolder(myViewHoladerComentario viewHolder, final int i) {
+
+            viewHolder.nombre.setText(comentariosList.get(i).getNombre());
+
+            viewHolder.fecha.setText(comentariosList.get(i).getfecha());
+            viewHolder.msj.setText(comentariosList.get(i).getMsj());
+            if (comentariosList.get(i).getFotoPerfil().equals("")) {
+                //viewHolder.fotoPerfil.setVisibility(View.GONE);
+                viewHolder.fotoPerfil.setBackgroundResource(R.drawable.ico);
+            } else {
+                Glide.with(context).load(comentariosList.get(i).getFotoPerfil()).into(viewHolder.fotoPerfil);
+            }
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return comentariosList.size();
+        }
+
     }
 }
