@@ -12,6 +12,7 @@ import android.os.ParcelFileDescriptor;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.firebase.messaging.RemoteMessage;
+import com.informaciones.facultad.contaduriaalacima.Categorias.CategoriaModel;
 import com.informaciones.facultad.contaduriaalacima.PantallaPrincipal.MainActivity;
 import com.informaciones.facultad.contaduriaalacima.R;
 
@@ -52,9 +53,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        PendingIntent likeIntent = PendingIntent.getActivity(this, 2, new Intent(getApplicationContext(), MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-        PendingIntent listenIntent = PendingIntent.getActivity(this, 3, new Intent(getApplicationContext(), MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent likeIntent = PendingIntent.getActivity(this, 2, new Intent(getApplicationContext(), CategoriaModel.class), PendingIntent.FLAG_UPDATE_CURRENT);
+      //  PendingIntent listenIntent = PendingIntent.getActivity(this, 3, new Intent(getApplicationContext(), MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -66,7 +66,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setSmallIcon(R.drawable.ico_conta) //common_google_signin_btn_icon_dark)
                 .setContentIntent(pendingIntent)
                 .setSound(defaultSound)
-                .addAction(android.R.drawable.presence_video_away, "Ver", likeIntent)
+                .addAction(R.drawable.eye, "Ver Publicación", likeIntent)
                 //.addAction(android.R.drawable.btn_star_big_on,"Escuchar", listenIntent)
                 //.addAction(android.R.drawable.ic_menu_share, "Share", shareIntent)
                 .setLights(Color.GREEN, 2000, 5000)
@@ -91,7 +91,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         }
 
         notifBig.bigPicture(image)
-                .bigLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                .bigLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ico))
                 .setBigContentTitle(titulo)
                 .setSummaryText(message)
                 .build();

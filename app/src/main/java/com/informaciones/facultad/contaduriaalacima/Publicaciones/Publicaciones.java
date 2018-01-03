@@ -1,9 +1,17 @@
 package com.informaciones.facultad.contaduriaalacima.Publicaciones;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -22,11 +30,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +49,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.informaciones.facultad.contaduriaalacima.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,6 +69,8 @@ public class Publicaciones extends AppCompatActivity {
     private PublicacionesAdapter adapter;
     private ProgressDialog progressDialog;
     TextToSpeech talk;
+    private Paint p = new Paint();
+    public static Context context;
     String categoria;
     SharedPreferences sharedPreferences;
 
@@ -74,6 +88,7 @@ public class Publicaciones extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         iniciar();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -129,6 +144,7 @@ public class Publicaciones extends AppCompatActivity {
     }
 
     private void iniciar() {
+        context = getApplicationContext();
         Display display = getWindowManager().getDefaultDisplay();
         width = display.getWidth();
         height = display.getHeight() / 2;
@@ -186,7 +202,6 @@ public class Publicaciones extends AppCompatActivity {
                         publicacionesModel.setTitulo((String) mapPublicacion.get("titulo"));
                         publicacionesModel.setFecha((String) mapPublicacion.get("fecha"));
                         publicacionesModel.setDescripcion((String) mapPublicacion.get("descripcion"));
-                        publicacionesModel.setLikes(Integer.parseInt(mapPublicacion.get("likes").toString()));
                         Map<String, Object> mapImg = (HashMap) mapPublicacion.get("imagenes");
                         Uri[] imagenes = new Uri[mapImg.size()];
                         for (int i = 0; i < mapImg.size(); i++) {
@@ -201,6 +216,7 @@ public class Publicaciones extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 progressDialog.dismiss();
@@ -239,34 +255,12 @@ public class Publicaciones extends AppCompatActivity {
             viewHolder.tvDescripcion.setText(publicacionesFilterList.get(i).getDescripcion());
             ImagePagerAdapter imgPager = new ImagePagerAdapter(publicacionesFilterList.get(i).getImagenes());
             viewHolder.vpImagenes.setAdapter(imgPager);
+            sharedPreferences = getSharedPreferences("nombre", MODE_PRIVATE);
+            Boolean aBoolean = sharedPreferences.getBoolean("superUsuario", false);
+            if (aBoolean) {
+                viewHolder.opciones.setVisibility(View.VISIBLE);
 
-           /* viewHolder.compartir.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //  Bitmap icon = BitmapFactory.decodeResource(getResources(), R.id.item_iv_image);
-                    //Se guarda la imagen en la SDCARD
-                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    // icon.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                    File f = new File(Environment.getExternalStorageDirectory() + File.separator + "tmp" + File.separator + "peter.jpg");
-                    try {
-                        f.createNewFile();
-                        FileOutputStream fo = new FileOutputStream(f);
-                        fo.write(bytes.toByteArray());
-                    } catch (Exception e) {
-                        Log.e("ERROR", e.getMessage());
-                    }
-                    //compartir imagen
-                    Intent share = new Intent(Intent.ACTION_SEND);
-                    share.setType("image/jpeg");
-                    share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
-                    share.putExtra(Intent.EXTRA_TEXT, "Mi imagen");
-                    startActivity(Intent.createChooser(share, "Compartir imagen"));
-                    Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                    sendIntent.setType("text/plain");
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, publicacionesFilterList.get(i).getTitulo());
-                    startActivity(Intent.createChooser(sendIntent, "COMPARTIR APLICACIÓN:"));
-                }
-            });*/
+            }
             viewHolder.hablar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -384,7 +378,8 @@ public class Publicaciones extends AppCompatActivity {
         public Context mContext;
         private TextView tvTitulo, tvDescripcion, tvCantImagenes, tvFecha;
         private ViewPager vpImagenes;
-        private ImageView hablar, compartir, comentar;
+        private LinearLayout hablar, compartir, comentar;
+        private ImageView opciones;
 
         public ViewHolderPublicacion(final View v) {
             super(v);
@@ -394,14 +389,92 @@ public class Publicaciones extends AppCompatActivity {
             tvDescripcion = (TextView) v.findViewById(R.id.cardDescripcionPublicacion);
             tvCantImagenes = (TextView) v.findViewById(R.id.cardCantImagenesPublicacion);
             vpImagenes = (ViewPager) v.findViewById(R.id.vpListarImagenesPublicacion);
-            hablar = (ImageView) v.findViewById(R.id.cardHablarPublicacion);
-            compartir = (ImageView) v.findViewById(R.id.cardCompartirPublicacion);
-            comentar = (ImageView) v.findViewById(R.id.cardComentarPublicacion);
+            hablar = (LinearLayout) v.findViewById(R.id.cardHablarPublicacion);
+            compartir = (LinearLayout) v.findViewById(R.id.cardCompartirPublicacion);
+            opciones = (ImageView) v.findViewById(R.id.cardOpcionesPublicacion);
+            comentar = (LinearLayout) v.findViewById(R.id.cardComentarPublicacion);
             comentar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     TITULO_COMENTARIO = tvFecha.getText().toString().trim();
                     comentar(mContext);
+                }
+            });
+            compartir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    compartirPublicacion(getPosition(), vpImagenes);
+                }
+            });
+            opciones.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    final ArrayList<String> listItems = new ArrayList<>();
+                    listItems.add("✏ Editar Datos");
+                    listItems.add("❌ Eliminar Publicacion");
+
+                    new AlertDialog.Builder(v.getContext())
+                            .setTitle("Elija una Opción:")
+                            .setCancelable(false)
+                            .setAdapter(new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_list_item_1, listItems),
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(final DialogInterface dialog, int item) {
+                                            switch (item) {
+                                                case 0:
+                                                    final Dialog dialogEditar = new Dialog(Publicaciones.this);
+                                                    dialogEditar.setTitle("Editar");
+                                                    dialogEditar.setCancelable(false);
+                                                    dialogEditar.setContentView(R.layout.ventana_emergente);
+                                                    final EditText nombrePerfil = (EditText) dialogEditar.findViewById(R.id.et_nombre_ventana_emergente);
+                                                    final TextView titulo = (TextView) dialogEditar.findViewById(R.id.textViewTitulo_ventana);
+                                                    Button boton = (Button) dialogEditar.findViewById(R.id.bt_ventana_emergente);
+                                                    titulo.setText("Editar Publicación");
+                                                    int width = (int) (Publicaciones.this.getResources().getDisplayMetrics().widthPixels * 1);
+                                                    int height = (int) (Publicaciones.this.getResources().getDisplayMetrics().heightPixels * 0.50);
+                                                    dialogEditar.getWindow().setLayout(width, height);
+                                                    nombrePerfil.setText(listaPublicaciones.get(getPosition()).getTitulo());
+                                                    boton.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            if (nombrePerfil.getText().toString().equals("")) {
+                                                                Toast.makeText(getApplicationContext(), "INSERTE NOMBRE!", Toast.LENGTH_SHORT).show();
+                                                            } else {
+                                                                DatabaseReference currentUserBD = dbPublicaciones.child(listaPublicaciones.get(getPosition()).getFecha()).child("titulo");
+                                                                currentUserBD.setValue(nombrePerfil.getText().toString().trim());
+                                                                dialogEditar.cancel();
+                                                            }
+                                                        }
+                                                    });
+                                                    dialogEditar.show();
+                                                    break;
+                                                case 1:
+                                                    AlertDialog.Builder ventana = new AlertDialog.Builder(Publicaciones.this);
+                                                    ventana.setTitle("ELIMINAR PUBLICACIÓN");
+                                                    ventana.setCancelable(false);
+                                                    ventana.setMessage("Elija una opcion:");
+                                                    ventana.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            DatabaseReference currentUserBD = dbPublicaciones.child(listaPublicaciones.get(getPosition()).getFecha());
+                                                            currentUserBD.removeValue();
+                                                        }
+                                                    });
+                                                    ventana.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            finish();
+                                                            startActivity(getIntent());
+                                                        }
+                                                    });
+                                                    ventana.show();
+                                                    break;
+                                            }
+                                        }
+                                    }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    }).show();
                 }
             });
         }
@@ -414,7 +487,7 @@ public class Publicaciones extends AppCompatActivity {
             dialog.setContentView(R.layout.publicaciones_comentario);
             final EditText msj = (EditText) dialog.findViewById(R.id.et_comentario);
             final RecyclerView recyclerViewComentario = (RecyclerView) dialog.findViewById(R.id.rv_publicaciones_comentario);
-            listaComentarios=new ArrayList<ComentarioModel>();
+            listaComentarios = new ArrayList<ComentarioModel>();
             recyclerViewComentario.setLayoutManager(new LinearLayoutManager(context));
             recyclerViewComentario.setHasFixedSize(true);
             final Button boton = (Button) dialog.findViewById(R.id.btnComentarioEnviar);
@@ -486,6 +559,49 @@ public class Publicaciones extends AppCompatActivity {
             dialog.show();
         }
     }
+
+    private ProgressDialog progressCompartir;
+
+    private void compartirPublicacion(int pos, ViewPager viewPager) {
+        progressCompartir = new ProgressDialog(this);
+        progressCompartir.setMessage("Cargando ...");
+        progressCompartir.show();
+        try {
+            Bitmap bitmap = getBitmapFromView(viewPager);
+            File file = new File(this.getExternalCacheDir(), "compartir.png");
+            FileOutputStream fOut = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+            file.setReadable(true, false);
+            final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            String msj = listaPublicaciones.get(pos).getTitulo() + "\n\n" + listaPublicaciones.get(pos).getDescripcion();
+            msj += "\n\nContaduria a la cima";
+            intent.putExtra(Intent.EXTRA_TEXT, msj);
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+            intent.setType("image/png");
+            progressCompartir.dismiss();
+            startActivity(Intent.createChooser(intent, "Compartir imagen via:"));
+        } catch (Exception e) {
+            Toast.makeText(Publicaciones.this, "No disponible para compartir!", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+    }
+
+    private Bitmap getBitmapFromView(View view) {
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable = view.getBackground();
+        if (bgDrawable != null) {
+            bgDrawable.draw(canvas);
+        } else {
+            canvas.drawColor(Color.BLACK);
+        }
+        view.draw(canvas);
+        return returnedBitmap;
+    }
+
     private ArrayList<ComentarioModel> listaComentarios;
 
     public class myViewHoladerComentario extends RecyclerView.ViewHolder {

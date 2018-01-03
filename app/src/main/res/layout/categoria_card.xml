@@ -26,8 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="5">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/cardCategoriaTitulo"
@@ -43,10 +42,9 @@
                     android:textStyle="bold" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_weight="4"
                     android:orientation="vertical">
 
                     <TextView
@@ -55,9 +53,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="8dp"
                         android:gravity="right"
-                        android:text="Visitas: "
+                        android:text="Visitas:      "
                         android:textColor="@color/colorPlomo"
                         android:textSize="12dp" />
 

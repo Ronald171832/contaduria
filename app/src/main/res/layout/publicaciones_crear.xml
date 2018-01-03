@@ -3,64 +3,78 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.informaciones.facultad.contaduriaalacima.Publicaciones.CrearPublicacion">
 
-    <Button
-        android:textColor="@color/colorBlanco"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Elegir Imagen"
-        android:background="@color/colorAccent"
-        android:onClick="elegirImagenesPublicacion"/>
+        android:layout_height="match_parent">
 
-    <android.support.v4.view.ViewPager
-        android:visibility="gone"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/vpImagenesPublicacion"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
-    <!--<ImageView
-        android:id="@+id/imagePublicacion"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center" />-->
+        <LinearLayout
+            android:layout_width="match_parent"
 
-    <EditText
-        android:id="@+id/et_tituloPublicacion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Tiulo Publicacion" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_descripcionPublicacion"
-        android:hint="Descripcion Publicacion"/>
-    <Spinner
-        android:id="@+id/sp_Categorias"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:onClick="elegirImagenesPublicacion"
+                android:text="Elegir Imagen"
+                android:textColor="@color/colorBlanco" />
 
-    </Spinner>
-    <Button
-        android:textColor="@color/colorBlanco"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="CARGAR Publicacion"
-        android:background="@color/colorAccent"
-        android:onClick="subirImagenPublicacion"/>
+            <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/vpImagenesPublicacion"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:visibility="gone" />
+            <!--<ImageView
+                android:id="@+id/imagePublicacion"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center" />-->
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/colorAccent"
-        android:onClick="listarPublicaciones"
-        android:text="VER Publicacion"
-        android:textColor="@color/colorBlanco" />
+            <EditText
+                android:id="@+id/et_tituloPublicacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tiulo Publicacion" />
 
+            <EditText
+                android:id="@+id/et_descripcionPublicacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Descripcion Publicacion" />
+
+            <Spinner
+                android:id="@+id/sp_Categorias"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+            </Spinner>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:onClick="subirImagenPublicacion"
+                android:text="CARGAR Publicacion"
+                android:textColor="@color/colorBlanco" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorAccent"
+                android:onClick="listarPublicaciones"
+                android:text="VER Publicacion"
+                android:textColor="@color/colorBlanco" />
+
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

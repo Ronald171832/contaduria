@@ -18,13 +18,14 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="1dp"
                 android:layout_marginTop="3dp"
                 android:background="@drawable/ico" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
@@ -51,6 +52,14 @@
                     android:textColor="@color/colorNegro"
                     android:textSize="10dp" />
             </LinearLayout>
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/cardOpcionesPublicacion"
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:background="@drawable/menu_publicacion" />
 
         </LinearLayout>
 
@@ -112,6 +121,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/cardComentarPublicacion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -127,9 +137,8 @@
                     android:textSize="12dp" />
 
                 <ImageView
-                    android:id="@+id/cardComentarPublicacion"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="7dp"
                     android:background="@drawable/comentar" />
@@ -137,6 +146,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/cardCompartirPublicacion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -152,15 +162,15 @@
                     android:textSize="12dp" />
 
                 <ImageView
-                    android:id="@+id/cardCompartirPublicacion"
                     android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_height="18dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="7dp"
                     android:background="@drawable/share" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/cardHablarPublicacion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -176,7 +186,6 @@
                     android:textSize="12dp" />
 
                 <ImageView
-                    android:id="@+id/cardHablarPublicacion"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"

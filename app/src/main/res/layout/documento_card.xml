@@ -13,18 +13,6 @@
         android:animateLayoutChanges="true"
         android:orientation="vertical">
 
-        <View
-            android:id="@+id/linea"
-            android:layout_width="wrap_content"
-            android:layout_height="4dp"
-            android:background="#ffd5d5d5" />
-
-        <ImageView
-            android:id="@+id/cardImagenDocumento"
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:background="@drawable/cargando"
-            android:scaleType="centerCrop" />
 
 
         <LinearLayout
@@ -33,14 +21,14 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:layout_marginLeft="3dp"
                 android:id="@+id/imgIconCateg"
                 android:layout_width="35dp"
-                android:layout_height="30dp"
-                android:layout_marginBottom="10dp"
+                android:layout_height="35dp"
                 android:background="@drawable/ico" />
 
             <TextView
-                android:id="@+id/cardTituloDocumento"
+                android:id="@+id/cardTituloDescarga"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -48,11 +36,18 @@
                 android:layout_marginRight="6dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
-                android:text="Large Text"
+                android:text="Titulo"
+                android:textStyle="bold"
                 android:textColor="@color/colorNegro"
-                android:textSize="15dp" />
+                android:textSize="16dp" />
 
         </LinearLayout>
+        <View
+            android:id="@+id/linea"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,14 +55,13 @@
             android:animateLayoutChanges="true"
             android:orientation="horizontal"
             android:weightSum="1">
-
-
             <TextView
-                android:visibility="invisible"
-                android:id="@+id/cardDescripcionDocumento"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:id="@+id/cardLinkDescarga"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 android:gravity="left"
                 android:text="Link de Descarga:"
@@ -75,24 +69,44 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="15dp" />
 
+            <TextView
+                android:layout_gravity="center"
+                android:id="@+id/cardFechaDescarga"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="Fecha"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15dp" />
+
             <ImageView
                 android:layout_gravity="center"
-                android:id="@+id/card_Descarga_Documento"
+                android:id="@+id/card_img_Descarga"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginRight="5dp"
-                android:clickable="true"
-                android:background="@drawable/file" />
-
+                android:layout_marginRight="8dp"
+                android:background="@drawable/descarga" />
             <TextView
-                android:id="@+id/cardDescargas"
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
                 android:layout_gravity="center"
-                android:layout_marginRight="12dp"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="Descargas: "
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/colorPrimaryDark" />
+            <TextView
+                android:id="@+id/cardCantidadDescargas"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="0"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/colorPrimaryDark" />
         </LinearLayout>

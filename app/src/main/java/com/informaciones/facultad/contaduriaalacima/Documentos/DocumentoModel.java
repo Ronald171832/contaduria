@@ -7,18 +7,18 @@ package com.informaciones.facultad.contaduriaalacima.Documentos;
 public class DocumentoModel {
 
     public String titulo;
-    public String imagen;
     public String linkDeDescarga;
     public int descargas;
+    public String fecha;
 
     public DocumentoModel() {
     }
 
-    public DocumentoModel(String titulo, String imagen, String linkDeDescarga, int descargas) {
+    public DocumentoModel(String titulo, String linkDeDescarga, int descargas, String fecha) {
         this.titulo = titulo;
-        this.imagen = imagen;
         this.linkDeDescarga = linkDeDescarga;
         this.descargas = descargas;
+        this.fecha = fecha;
     }
 
     public String getTitulo() {
@@ -27,14 +27,6 @@ public class DocumentoModel {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
-    }
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
     }
 
     public String getLinkDeDescarga() {
@@ -51,5 +43,13 @@ public class DocumentoModel {
 
     public void setDescargas(int descargas) {
         this.descargas = descargas;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 }

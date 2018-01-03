@@ -12,7 +12,6 @@ public class PublicacionesModel {
     public String descripcion;
     public String fecha;
     public Uri[] imagenes;
-    public int likes;
 
     public PublicacionesModel() {
     }
@@ -20,7 +19,6 @@ public class PublicacionesModel {
     public PublicacionesModel(String titulo, String descripcion,String fecha) {
         this.titulo = titulo;
         this.descripcion = descripcion;
-        this.likes=0;
         this.fecha = fecha;
     }
 
@@ -28,8 +26,6 @@ public class PublicacionesModel {
         this.titulo = titulo;
         this.fecha = fecha;
         this.descripcion = descripcion;
-        //this.imagen = imagen;
-        this.likes = likes;
         this.imagenes=imagenesURL;
     }
 
@@ -55,14 +51,6 @@ public class PublicacionesModel {
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
-    }
-
-    public int getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
     }
 
     public Uri[] getImagenes() {
