@@ -11,7 +11,7 @@ import com.informaciones.facultad.contaduriaalacima.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by user on 04/09/2017. 04
+ * Created by Ronald Lopez on 04/09/2017. 04
  */
 
 public class HolderMensaje extends RecyclerView.ViewHolder {

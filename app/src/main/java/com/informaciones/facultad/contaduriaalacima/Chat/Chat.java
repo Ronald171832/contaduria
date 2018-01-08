@@ -33,7 +33,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -41,6 +41,9 @@ import com.informaciones.facultad.contaduriaalacima.R;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -177,15 +180,24 @@ public class Chat extends AppCompatActivity {
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String mensajeSend = txtMensaje.getText().toString().trim();
                 if (mensajeSend.isEmpty()) {
                     txtMensaje.setError("Debe escribir algo...");
                     txtMensaje.requestFocus();
                     return;
-                }else {
-                    databaseReference.push().setValue(new MensajeEnviar(mensajeSend, nombre.getText().toString(), fotoPerfilCadena, "1", ServerValue.TIMESTAMP, id, null));
-                    txtMensaje.setText("");
+                } else {
+                    bloqueado();
+                    boolean b = sharedPreferences.getBoolean("bloqueado", false);
+                    if (b) {
+                        txtMensaje.setError("Usted esta bloqueado!");
+                        txtMensaje.requestFocus();
+                    } else {
+                        Date date = new Date();
+                        DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        String fechaHora = hourdateFormat.format(date);
+                        databaseReference.child(fechaHora).setValue(new MensajeEnviar(mensajeSend, nombre.getText().toString(), fotoPerfilCadena, "1", fechaHora, id, null));
+                        txtMensaje.setText("");
+                    }
                 }
             }
         });
@@ -220,25 +232,42 @@ public class Chat extends AppCompatActivity {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
 
+    }
+
+
+    private void bloqueado() {
+        DatabaseReference reference = database.getReference("bloqueados");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String b = snapshot.getValue(String.class);
+                    if (b.equals(id)) {
+                        sharedPreferences.edit().putBoolean("bloqueado", true).commit();
+                    }
+                }
+                //sharedPreferences.edit().putBoolean("bloqueado", false).commit();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
 
@@ -316,10 +345,11 @@ public class Chat extends AppCompatActivity {
             fotoReferencia.putFile(ur).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri u = taskSnapshot.getDownloadUrl();// aqui  me sale error cuando lo emulo de una api, podrias abrir el enmulador?si aqui es una api
-                    //25 corre bien ahorita corre una api 19, y en la 19 si funcuiona?
-                    //ya da :v sos un genio ""d nacda Rmuchas graciASe
-                    MensajeEnviar m = new MensajeEnviar(nombre.getText().toString() + " envio una foto", u.toString(), nombre.getText().toString(), fotoPerfilCadena, "2", ServerValue.TIMESTAMP, id, ur.toString());
+                    Uri u = taskSnapshot.getDownloadUrl();
+                    Date date = new Date();
+                    DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    String fechaHora = hourdateFormat.format(date);
+                    MensajeEnviar m = new MensajeEnviar(nombre.getText().toString() + " envio una foto", u.toString(), nombre.getText().toString(), fotoPerfilCadena, "2", fechaHora, id, ur.toString());
                     databaseReference.push().setValue(m);
                 }
             });
@@ -333,7 +363,11 @@ public class Chat extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri u = taskSnapshot.getDownloadUrl();
                     fotoPerfilCadena = u.toString();
-                    MensajeEnviar m = new MensajeEnviar(nombre.getText().toString() + " actualizo su foto de perfil", u.toString(), nombre.getText().toString(), fotoPerfilCadena, "2", ServerValue.TIMESTAMP, id, null);
+                    Date date = new Date();
+                    DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    String fechaHora = hourdateFormat.format(date);
+                    //ServerValue.TIMESTAMP;
+                    MensajeEnviar m = new MensajeEnviar(nombre.getText().toString() + " actualizo su foto de perfil", u.toString(), nombre.getText().toString(), fotoPerfilCadena, "2", fechaHora, id, null);
                     databaseReference.push().setValue(m);
                     Glide.with(Chat.this).load(u.toString()).into(fotoPerfil);
                     //Glide.with(Chat.this).load(u.toString()).into(fotoPerfilMensaje);
