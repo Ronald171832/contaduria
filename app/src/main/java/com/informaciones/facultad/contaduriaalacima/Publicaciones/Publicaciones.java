@@ -46,6 +46,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.informaciones.facultad.contaduriaalacima.Bloqueados.BloqueadoModel;
 import com.informaciones.facultad.contaduriaalacima.R;
 
 import java.io.File;
@@ -134,7 +135,7 @@ public class Publicaciones extends AppCompatActivity {
         }
     }
 
-    private void    verificarContenido(String newText) {
+    private void verificarContenido(String newText) {
         if (adapter.publicacionesFilterList.isEmpty() && newText.length() > 0) {
             rvPublicaciones.setVisibility(View.GONE);
 
@@ -144,6 +145,7 @@ public class Publicaciones extends AppCompatActivity {
     }
 
     private void iniciar() {
+        verifBloqueado_NoBloqqueado();
         context = getApplicationContext();
         Display display = getWindowManager().getDefaultDisplay();
         width = display.getWidth();
@@ -221,6 +223,45 @@ public class Publicaciones extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 progressDialog.dismiss();
+            }
+        });
+    }
+
+
+    List<String> bloqueados;
+
+    private void verifBloqueado_NoBloqqueado() {
+        final String id = sharedPreferences.getString("id", "");
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("bloqueados");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                bloqueados = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    BloqueadoModel bloqueadoModel = snapshot.getValue(BloqueadoModel.class);
+                    String b = bloqueadoModel.getId();
+                    bloqueados.add(b);
+                }
+                int i;
+                for (i = 0; i < bloqueados.size(); i++) {
+                    //   System.out.println(bloqueados.get(i) + "***************");
+                    if (bloqueados.get(i).equals(id)) {
+                        i = bloqueados.size() + 1;
+                    }
+                }
+                //System.out.println(bloqueados.size() + "-------------------------------------");
+                // System.out.println(i + "-------------------------------------");
+                if (i == bloqueados.size()) {
+                    sharedPreferences.edit().putBoolean("bloqueado", false).commit();
+                } else if (i == bloqueados.size() + 2) {
+                    sharedPreferences.edit().putBoolean("bloqueado", true).commit();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
             }
         });
     }
@@ -554,15 +595,22 @@ public class Publicaciones extends AppCompatActivity {
             boton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Date date = new Date();
-                    DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                    String fechaHora = hourdateFormat.format(date);
-                    sharedPreferences = mContext.getSharedPreferences("nombre", MODE_PRIVATE);
-                    String url_fotoPerfil = sharedPreferences.getString("fotoPerfil", "");
-                    String nombre_perfil = sharedPreferences.getString("nombre", "");
-                    ComentarioModel comentarioModel = new ComentarioModel(nombre_perfil, fechaHora, msj.getText().toString().trim(), url_fotoPerfil);
-                    dbComentar.child(fechaHora).setValue(comentarioModel);
-                    msj.setText("");
+
+                    boolean b = sharedPreferences.getBoolean("bloqueado", false);
+                    if (b) {
+                        msj.setError("Usted esta bloqueado!");
+                        msj.requestFocus();
+                    } else {
+                        Date date = new Date();
+                        DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        String fechaHora = hourdateFormat.format(date);
+                        sharedPreferences = mContext.getSharedPreferences("nombre", MODE_PRIVATE);
+                        String url_fotoPerfil = sharedPreferences.getString("fotoPerfil", "");
+                        String nombre_perfil = sharedPreferences.getString("nombre", "");
+                        ComentarioModel comentarioModel = new ComentarioModel(nombre_perfil, fechaHora, msj.getText().toString().trim(), url_fotoPerfil);
+                        dbComentar.child(fechaHora).setValue(comentarioModel);
+                        msj.setText("");
+                    }
                     //listaComentarios.add(comentarioModel);
                     //recyclerViewComentario.scrollToPosition(adapter2.getItemCount() - 1);
                     //adapter2.notifyAll();

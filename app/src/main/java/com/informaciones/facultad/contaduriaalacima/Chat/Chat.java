@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -37,13 +38,16 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.informaciones.facultad.contaduriaalacima.Bloqueados.BloqueadoModel;
 import com.informaciones.facultad.contaduriaalacima.R;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -123,6 +127,7 @@ public class Chat extends AppCompatActivity {
     }
 
     private void iniciar() {
+        verifBloqueado_NoBloqqueado();
         linearLayout = (LinearLayout) findViewById(R.id.ll_chat);
         sharedPreferences = getSharedPreferences("nombre", MODE_PRIVATE);
      /*   boolean generarID = sharedPreferences.getBoolean("generar", false);
@@ -149,10 +154,14 @@ public class Chat extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (TextUtils.isEmpty(txtMensaje.getText())) {
-                    btnEnviar.setBackground(getDrawable(R.drawable.send_out));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        btnEnviar.setBackground(getDrawable(R.drawable.send_out));
+                    }
                     btnEnviar.setEnabled(false);
                 } else {
-                    btnEnviar.setBackground(getDrawable(R.drawable.send_in));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        btnEnviar.setBackground(getDrawable(R.drawable.send_in));
+                    }
                     btnEnviar.setEnabled(true);
                 }
             }
@@ -186,7 +195,7 @@ public class Chat extends AppCompatActivity {
                     txtMensaje.requestFocus();
                     return;
                 } else {
-                    bloqueado();
+
                     boolean b = sharedPreferences.getBoolean("bloqueado", false);
                     if (b) {
                         txtMensaje.setError("Usted esta bloqueado!");
@@ -201,6 +210,8 @@ public class Chat extends AppCompatActivity {
                 }
             }
         });
+
+
         // TODO: VALIDAR QUE SE CARGUE DE LAS IMAGENES DE FIREBASE COMO DE LA GALERIA LOCAL
         btnEnviarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,19 +260,40 @@ public class Chat extends AppCompatActivity {
 
     }
 
+    List<String> bloqueados;
 
-    private void bloqueado() {
+    private void verifBloqueado_NoBloqqueado() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("bloqueados");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                bloqueados = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String b = snapshot.getValue(String.class);
-                    if (b.equals(id)) {
-                        sharedPreferences.edit().putBoolean("bloqueado", true).commit();
+                    BloqueadoModel bloqueadoModel =  snapshot.getValue(BloqueadoModel.class);
+                    String b = bloqueadoModel.getId();
+                    bloqueados.add(b);
+                }
+                int i;
+                for (i = 0; i < bloqueados.size(); i++) {
+                 //   System.out.println(bloqueados.get(i) + "***************");
+                    if (bloqueados.get(i).equals(id)) {
+                        i = bloqueados.size() + 1;
                     }
                 }
-                //sharedPreferences.edit().putBoolean("bloqueado", false).commit();
+                //System.out.println(bloqueados.size() + "-------------------------------------");
+               // System.out.println(i + "-------------------------------------");
+                if (i == bloqueados.size()) {
+                    sharedPreferences.edit().putBoolean("bloqueado", false).commit();
+                    String nombre_perfil = sharedPreferences.getString("nombre", "Anonimo");
+                    nombre.setText(nombre_perfil);
+                } else if (i == bloqueados.size() + 2) {
+                    String nombre_perfil = sharedPreferences.getString("nombre", "Anonimo");
+                    nombre.setText(nombre_perfil + "  BLOQUEADO!");
+                    nombre.setError("");
+                    nombre.requestFocus();
+                    sharedPreferences.edit().putBoolean("bloqueado", true).commit();
+                }
             }
 
             @Override

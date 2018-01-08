@@ -15,9 +15,13 @@ import android.widget.ArrayAdapter;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.informaciones.facultad.contaduriaalacima.Bloqueados.BloqueadoModel;
 import com.informaciones.facultad.contaduriaalacima.R;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -31,9 +35,9 @@ public class AdapterMensajes extends RecyclerView.Adapter<HolderMensaje> {
     private List<MensajeRecibir> listMensaje = new ArrayList<>();
     private Context c;
     SharedPreferences sharedPreferences;
-    private List<String> bloqueados = new ArrayList<>();
+    //private List<String> bloqueados = new ArrayList<>();
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference currentUserBD;
+    DatabaseReference dbBloqueados;
 
 
     public AdapterMensajes(Context c) {
@@ -72,9 +76,14 @@ public class AdapterMensajes extends RecyclerView.Adapter<HolderMensaje> {
                                     public void onClick(DialogInterface dialog, int item) {
                                         switch (item) {
                                             case 0:
+                                                Date date = new Date();
+                                                DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                                                String fechaHora = hourdateFormat.format(date);
                                                 String codigo = listMensaje.get(position).getEnviado_recibido();
-                                                currentUserBD = database.getReference("bloqueados").child(codigo);
-                                                currentUserBD.setValue(codigo);
+                                                dbBloqueados = database.getReference("bloqueados").child(codigo);
+                                                BloqueadoModel bloqueadoModel = new BloqueadoModel(listMensaje.get(position).getNombre(), fechaHora,
+                                                        listMensaje.get(position).getMensaje(), listMensaje.get(position).getFotoPerfil(), codigo);
+                                                dbBloqueados.setValue(bloqueadoModel);
                                                 /*DatabaseReference reference = database.getReference("chat");
                                                 reference.orderByChild("enviado_recibido").equalTo(listMensaje.get(position).getEnviado_recibido()).addChildEventListener(new ChildEventListener() {
                                                     @Override
@@ -102,10 +111,11 @@ public class AdapterMensajes extends RecyclerView.Adapter<HolderMensaje> {
 
                                                     }
                                                 });
-*/                                                break;
+*/
+                                                break;
                                             case 1:
-                                                currentUserBD = database.getReference("chat").child(holder.getHora().getText().toString());
-                                                currentUserBD.removeValue();
+                                                dbBloqueados = database.getReference("chat").child(holder.getHora().getText().toString());
+                                                dbBloqueados.removeValue();
                                                 listMensaje.remove(position);
                                                 break;
                                         }

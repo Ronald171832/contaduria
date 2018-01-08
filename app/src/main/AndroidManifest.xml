@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.informaciones.facultad.contaduriaalacima">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -18,15 +18,14 @@
             android:name=".Categorias.CrearCategorias"
             android:screenOrientation="portrait" />
         <activity
-            android:label="Categorias"
             android:name=".Categorias.Categorias"
+            android:label="Categorias"
             android:screenOrientation="portrait" />
         <activity
-            android:label="Publicaciones"
             android:name=".Publicaciones.Publicaciones"
+            android:label="Publicaciones"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Publicaciones.CrearPublicacion"
             android:screenOrientation="portrait" />
@@ -54,7 +53,7 @@
             android:name=".PantallaPrincipal.GestionDePublicaciones"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Email.Contacto"></activity>
+        <activity android:name=".Email.Contacto" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -63,13 +62,12 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
         <activity
-            android:screenOrientation="portrait"
-            android:name=".RegistroDeDatos.Registro_Datos"></activity>
-
+            android:name=".RegistroDeDatos.Registro_Datos"
+            android:screenOrientation="portrait" />
 
         <service android:name=".Notificaciones.FirebaseMessagingService">
             <intent-filter>
@@ -81,6 +79,9 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:label="Lista de Bloqueados"
+            android:name=".Bloqueados.Bloqueados"></activity>
     </application>
 
 </manifest>

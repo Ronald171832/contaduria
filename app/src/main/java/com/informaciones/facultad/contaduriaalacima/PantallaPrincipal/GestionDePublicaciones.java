@@ -22,13 +22,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.informaciones.facultad.contaduriaalacima.Bloqueados.Bloqueados;
 import com.informaciones.facultad.contaduriaalacima.Categorias.CrearCategorias;
 import com.informaciones.facultad.contaduriaalacima.Documentos.CrearDocumentos;
 import com.informaciones.facultad.contaduriaalacima.Publicaciones.CrearPublicacion;
 import com.informaciones.facultad.contaduriaalacima.R;
 
 public class GestionDePublicaciones extends AppCompatActivity {
-    Button categoria, publicaciones, documento, pantalla;
+    Button categoria, publicaciones, documento, pantalla, bloqueados;
     SharedPreferences sharedPreferences;
     private static final int PICK_IMAGE = 100;
     private Uri imguri;
@@ -49,6 +50,7 @@ public class GestionDePublicaciones extends AppCompatActivity {
         sharedPreferences.edit().putBoolean("superUsuario", true).apply();
 
         categoria = (Button) findViewById(R.id.bt_ges_cate);
+        bloqueados = (Button) findViewById(R.id.bt_ges_bloque);
         pantalla = (Button) findViewById(R.id.bt_ges_pant);
         publicaciones = (Button) findViewById(R.id.bt_ges_publi);
         documento = (Button) findViewById(R.id.bt_ges_docu);
@@ -61,11 +63,16 @@ public class GestionDePublicaciones extends AppCompatActivity {
         publicaciones.setAnimation(animationder);
         documento.setAnimation(animationizq);
         pantalla.setAnimation(animationder);
+        bloqueados.setAnimation(animationizq);
 
     }
 
     public void documentos(View view) {
         startActivity(new Intent(this, CrearDocumentos.class));
+    }
+
+    public void bloqueados(View view) {
+        startActivity(new Intent(this, Bloqueados.class));
     }
 
     public void publicaciones(View view) {

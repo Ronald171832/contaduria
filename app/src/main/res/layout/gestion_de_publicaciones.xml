@@ -74,5 +74,21 @@
         android:textColor="@color/colorPrimary"
         android:textSize="25dp"
         android:textStyle="bold" />
+    <Button
+        android:id="@+id/bt_ges_bloque"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/layout_cuadrado"
+        android:onClick="bloqueados"
+        android:padding="20dp"
+        android:text="LISTA DE BLOQUEADOS"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25dp"
+        android:textStyle="bold" />
 
 </LinearLayout>

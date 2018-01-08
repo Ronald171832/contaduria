@@ -167,6 +167,7 @@ public class Categorias extends AppCompatActivity {
         }
     }
 
+
     private void iniciar() {
         context = getApplicationContext();
         progressDialog = new ProgressDialog(this);
@@ -216,7 +217,7 @@ public class Categorias extends AppCompatActivity {
 
         public myViewHolader(View itemView) {
             super(itemView);
-            tvFecha.setPadding(0,0,0,0);
+            //  tvFecha.setPadding(0,0,0,0);
             tvTitulo = (TextView) itemView.findViewById(R.id.cardCategoriaTitulo);
             tvVisitas = (TextView) itemView.findViewById(R.id.cardCategoriaVisitas);
             tvFecha = (TextView) itemView.findViewById(R.id.cardCategoriaFecha);

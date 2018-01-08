@@ -54,17 +54,17 @@ public class Documentos extends AppCompatActivity {
         tocarRecycler();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: //hago un case por si en un futuro agrego mas opciones
-                Log.i("ActionBar", "Atrás!");
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            switch (item.getItemId()) {
+                case android.R.id.home: //hago un case por si en un futuro agrego mas opciones
+                    Log.i("ActionBar", "Atrás!");
+                    finish();
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
         }
-    }
 
 
     private void tocarRecycler() {
