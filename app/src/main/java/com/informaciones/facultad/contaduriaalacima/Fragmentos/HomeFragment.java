@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String perfilModel = snapshot.getValue(String.class);
+                        String perfilModel = snapshot.getValue(String.class);
                     Glide.with(HomeFragment.this).load(perfilModel).into(portada);
                 }
             }

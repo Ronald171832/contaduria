@@ -251,6 +251,7 @@ public class Publicaciones extends AppCompatActivity {
                         i = bloqueados.size() + 1;
                     }
                 }
+                //MANUEL SOS PROPIO XD
                 //System.out.println(bloqueados.size() + "-------------------------------------");
                 // System.out.println(i + "-------------------------------------");
                 if (i == bloqueados.size()) {
