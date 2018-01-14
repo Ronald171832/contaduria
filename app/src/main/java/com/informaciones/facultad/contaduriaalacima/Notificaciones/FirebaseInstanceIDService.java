@@ -17,7 +17,8 @@ import okhttp3.RequestBody;
 public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     //public static final String URL_REGISTER_LOCAL="http://192.168.43.168:8080/Notificacion_Firebase/register.php";
-    public static final String URL_REGISTER_REMOTO="http://pruebaws.hol.es/Notificacion_Contaduria/register.php";
+    //public static final String URL_REGISTER_REMOTO="http://pruebaws.hol.es/Notificacion_Contaduria/register.php";
+    public static final String URL_REGISTER_REMOTO="http://manueldeveloper.xyz/rm/Notificacion_Contaduria/register.php";
 
     @Override
     public void onTokenRefresh() {

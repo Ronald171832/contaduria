@@ -70,6 +70,7 @@ public class CrearPublicacion extends AppCompatActivity {
     public ViewPager viewImagenes;
     public ImagePagerAdapter adaptadorImgSlide;
     Map<String, String> mapDataNotificacion = new HashMap<>();
+    public boolean isPublicacionWithImg = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +130,7 @@ public class CrearPublicacion extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             //imguri = data.getData();
+            isPublicacionWithImg = true;
             try {
                 viewImagenes.setVisibility(View.VISIBLE);
                 if (data == null) {
@@ -154,8 +156,6 @@ public class CrearPublicacion extends AppCompatActivity {
                     viewImagenes.setAdapter(adaptadorImgSlide);
                     return;
                 }
-
-
             } catch (Exception e) {
                 String error = e.getMessage().toString();
                 System.out.println(error);
@@ -183,39 +183,39 @@ public class CrearPublicacion extends AppCompatActivity {
         }
         //String nombreCategoria = spinnerCategorias.getSelectedItem().toString();
         String nombreCategoria = listaFechas.get(spinnerCategorias.getSelectedItemPosition());
-        if (imgsUri == null) {
-
-        } else {
-            if (imgsUri.length > 0 /*!= null*/) {
-                if (nombreCategoria.equals("Elija Categoria:")) {
-                    Toast.makeText(CrearPublicacion.this, "Elejir una Categoria Por favor!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                dbPublicacion = FirebaseDatabase.getInstance().getReference("categorias/" + nombreCategoria + "/publicaciones");
-                final ProgressDialog dialog = new ProgressDialog(this);
-                dialog.setTitle("Cargando Publicacion...");
-                dialog.show();
-                Date date = new Date();
-                DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                final String fechaHora = hourdateFormat.format(date);
-                String nombrePublicacion = et_titulo.getText().toString().trim();
-                String descPublicacion = et_descripcion.getText().toString().trim();
-                PublicacionesModel nuevaPublicacionModel = new PublicacionesModel(nombrePublicacion, descPublicacion,fechaHora);
-
-                DatabaseReference refPublicacion = dbPublicacion.child(fechaHora);//.setValue("lkikikip");
-                //DatabaseReference refImagenesPublicacion=FirebaseDatabase.getInstance().getReference("categorias/"+nombreCategoria+"/publicaciones/"+nombrePublicacion);
-
-                refPublicacion.setValue(nuevaPublicacionModel);
-
-                mapDataNotificacion.put("titulo", nombrePublicacion);
-                mapDataNotificacion.put("mensaje", descPublicacion);
-                imagenesURL_FB = new HashMap<>();
-                for (int i = 0; i < imgsUri.length; i++) {
-                    addImagenPublicacionFB(imgsUri[i], nombreCategoria, i,fechaHora);
-                }
-                dialog.dismiss();
-            }
+        if (nombreCategoria.equals("Elija Categoria:")) {
+            Toast.makeText(CrearPublicacion.this, "Elejir una Categoria Por favor!", Toast.LENGTH_SHORT).show();
+            return;
         }
+        dbPublicacion = FirebaseDatabase.getInstance().getReference("categorias/" + nombreCategoria + "/publicaciones");
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setTitle("Cargando Publicacion...");
+        dialog.show();
+        Date date = new Date();
+        DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        final String fechaHora = hourdateFormat.format(date);
+        String nombrePublicacion = et_titulo.getText().toString().trim();
+        String descPublicacion = et_descripcion.getText().toString().trim();
+        PublicacionesModel nuevaPublicacionModel = new PublicacionesModel(nombrePublicacion, descPublicacion, fechaHora);
+
+        DatabaseReference refPublicacion = dbPublicacion.child(fechaHora);//.setValue("lkikikip");
+        //DatabaseReference refImagenesPublicacion=FirebaseDatabase.getInstance().getReference("categorias/"+nombreCategoria+"/publicaciones/"+nombrePublicacion);
+
+        refPublicacion.setValue(nuevaPublicacionModel);
+
+        mapDataNotificacion.put("titulo", nombrePublicacion);
+        mapDataNotificacion.put("mensaje", descPublicacion);
+        if (isPublicacionWithImg) {
+            imagenesURL_FB = new HashMap<>();
+            for (int i = 0; i < imgsUri.length; i++) {
+                addImagenPublicacionFB(imgsUri[i], nombreCategoria, i, fechaHora);
+            }
+        } else {
+            notificarUsers(mapDataNotificacion.get("titulo"), mapDataNotificacion.get("mensaje"), null);
+        }
+        isPublicacionWithImg = false; // volver al estado inicial
+        dialog.dismiss();
+
     }
 
     Map<String, String> imagenesURL_FB;
@@ -277,13 +277,18 @@ public class CrearPublicacion extends AppCompatActivity {
         }
     }
 
-    private void notificarUsers(String titulo, String desc, String urlImg) {
-        String p1 = urlImg.substring(0, urlImg.indexOf('&'));
-        String p2 = urlImg.substring(urlImg.indexOf('&') + 1);
+    private void notificarUsers(String titulo, String messsage, String urlImg) {
+        String peticionGET = Constantes.URL_PETICION_NOTIFICACION + "?titulo=" + titulo + "&mensaje=" + messsage;
+        if (urlImg != null) { // existe imagen para notificar a los usuarios
+            String p1 = urlImg.substring(0, urlImg.indexOf('&'));
+            String p2 = urlImg.substring(urlImg.indexOf('&') + 1);
+            peticionGET = peticionGET + "&url=" + p1 + "&resto=" + p2;
+        }
         VolleySingleton.getInstance(this).
                 addToRequestQueue(
                         new JsonObjectRequest(Request.Method.GET,
-                                Constantes.URL_PETICION_NOTIFICACION + "?titulo=" + titulo + "&mensaje=" + desc + "&url=" + p1 + "&resto=" + p2,
+                                peticionGET,
+                                //Constantes.URL_PETICION_NOTIFICACION + "?titulo=" + titulo + "&mensaje=" + messsage + "&url=" + p1 + "&resto=" + p2,
                                 new JSONObject(),
                                 new Response.Listener<JSONObject>() {
                                     @Override

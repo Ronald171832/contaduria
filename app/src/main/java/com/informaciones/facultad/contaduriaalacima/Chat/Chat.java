@@ -48,7 +48,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Chat extends AppCompatActivity {
@@ -282,7 +281,7 @@ public class Chat extends AppCompatActivity {
                     }
                 }
                 //System.out.println(bloqueados.size() + "-------------------------------------");
-               // System.out.println(i + "-------------------------------------");
+                // System.out.println(i + "-------------------------------------");
                 if (i == bloqueados.size()) {
                     sharedPreferences.edit().putBoolean("bloqueado", false).commit();
                     String nombre_perfil = sharedPreferences.getString("nombre", "Anonimo");
@@ -298,6 +297,7 @@ public class Chat extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }

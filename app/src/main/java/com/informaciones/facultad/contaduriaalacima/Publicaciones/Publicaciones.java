@@ -251,7 +251,6 @@ public class Publicaciones extends AppCompatActivity {
                         i = bloqueados.size() + 1;
                     }
                 }
-                //MANUEL SOS PROPIO XD
                 //System.out.println(bloqueados.size() + "-------------------------------------");
                 // System.out.println(i + "-------------------------------------");
                 if (i == bloqueados.size()) {
@@ -278,7 +277,6 @@ public class Publicaciones extends AppCompatActivity {
             publicacionesFilterList = arrayList;
             this.context = context;
         }
-
 
         @Override
         public ViewHolderPublicacion onCreateViewHolder(ViewGroup viewGroup, int i) {
