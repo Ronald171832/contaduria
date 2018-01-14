@@ -8,9 +8,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,6 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.BitmapDrawableResource;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -145,7 +148,7 @@ public class Publicaciones extends AppCompatActivity {
     }
 
     private void iniciar() {
-        verifBloqueado_NoBloqqueado();
+        //verifBloqueado_NoBloqqueado();
         context = getApplicationContext();
         Display display = getWindowManager().getDefaultDisplay();
         width = display.getWidth();
@@ -206,12 +209,17 @@ public class Publicaciones extends AppCompatActivity {
                         publicacionesModel.setFecha((String) mapPublicacion.get("fecha"));
                         publicacionesModel.setDescripcion((String) mapPublicacion.get("descripcion"));
                         Map<String, Object> mapImg = (HashMap) mapPublicacion.get("imagenes");
-                        Uri[] imagenes = new Uri[mapImg.size()];
-                        for (int i = 0; i < mapImg.size(); i++) {
-                            String dir = (String) mapImg.get("imagen " + String.valueOf(i));
-                            imagenes[i] = Uri.parse(dir);
+                        if (mapImg!=null){
+                            Uri[] imagenes = new Uri[mapImg.size()];
+                            for (int i = 0; i < mapImg.size(); i++) {
+                                String dir = (String) mapImg.get("imagen " + String.valueOf(i));
+                                imagenes[i] = Uri.parse(dir);
+                            }
+                            publicacionesModel.setImagenes(imagenes);
+                        } else {
+                            publicacionesModel.setImagenes(null);
                         }
-                        publicacionesModel.setImagenes(imagenes);
+
                         listaPublicaciones.add(publicacionesModel);
                     } catch (Exception e) {
                         String error = e.getMessage().toString();
@@ -291,10 +299,18 @@ public class Publicaciones extends AppCompatActivity {
             viewHolder.tvTitulo.setText(publicacionesFilterList.get(i).getTitulo());
             // System.out.println(publicacionesFilterList.get(i).getFecha()+"***********************************************");
             viewHolder.tvFecha.setText(publicacionesFilterList.get(i).getFecha());
-            viewHolder.tvCantImagenes.setText(1 + "/" + publicacionesFilterList.get(i).getImagenes().length);
             viewHolder.tvDescripcion.setText(publicacionesFilterList.get(i).getDescripcion());
-            ImagePagerAdapter imgPager = new ImagePagerAdapter(publicacionesFilterList.get(i).getImagenes());
-            viewHolder.vpImagenes.setAdapter(imgPager);
+            if (publicacionesFilterList.get(i).getImagenes()!=null) {
+                viewHolder.tvCantImagenes.setText(1 + "/" + publicacionesFilterList.get(i).getImagenes().length);
+                ImagePagerAdapter imgPager = new ImagePagerAdapter(publicacionesFilterList.get(i).getImagenes());
+                viewHolder.vpImagenes.setAdapter(imgPager);
+                viewHolder.vpImagenes.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.tvCantImagenes.setText("0/0");
+                viewHolder.vpImagenes.setVisibility(View.GONE);
+                viewHolder.vpImagenes.setAdapter(null);
+            }
+
             sharedPreferences = getSharedPreferences("nombre", MODE_PRIVATE);
             Boolean aBoolean = sharedPreferences.getBoolean("superUsuario", false);
             if (aBoolean) {
@@ -629,7 +645,12 @@ public class Publicaciones extends AppCompatActivity {
         progressCompartir.setMessage("Cargando ...");
         progressCompartir.show();
         try {
-            Bitmap bitmap = getBitmapFromView(viewPager);
+            Bitmap bitmap;
+            if (viewPager.getAdapter()!=null){
+                bitmap = getBitmapFromView(viewPager);
+            } else {
+                bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.ico_conta);
+            }
             File file = new File(this.getExternalCacheDir(), "compartir.png");
             FileOutputStream fOut = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
