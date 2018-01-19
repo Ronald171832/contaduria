@@ -15,12 +15,11 @@
 
         <ImageView
             android:background="@drawable/fondo_principal"
-
             android:id="@+id/iv_portada"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="5dp"
-            android:scaleType="fitXY" />
+            android:scaleType="centerCrop" />
     </LinearLayout>
 
 

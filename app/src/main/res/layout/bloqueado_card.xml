@@ -9,8 +9,8 @@
     android:layout_marginTop="4dp"
     android:layout_weight="1"
     android:orientation="vertical"
-    cardview:cardElevation="1dp"
-    cardview:cardCornerRadius="10dp">
+    cardview:cardCornerRadius="10dp"
+    cardview:cardElevation="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary">
+            android:background="@color/md_indigo_800">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                             android:id="@+id/bloqueado_fotoPerfilMensaje"
                             android:layout_width="60sp"
                             android:layout_height="60sp"
-                            android:src="@drawable/ico" />
+                            android:src="@drawable/userloggin" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -56,13 +56,13 @@
                             android:layout_height="wrap_content">
 
                             <TextView
-                                android:textSize="16dp"
                                 android:id="@+id/bloqueado_nombreMensaje"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Anonimo"
                                 android:textColor="@color/colorBlanco"
+                                android:textSize="16dp"
                                 android:textStyle="italic|bold" />
                         </LinearLayout>
 
@@ -73,11 +73,12 @@
                             android:layout_height="wrap_content"
                             android:text="Hola bienvenido"
                             android:textColor="@color/colorBlanco" />
+
                         <TextView
-                            android:gravity="right"
                             android:id="@+id/bloqueado_horaMensaje"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="right"
                             android:text="00:00"
                             android:textColor="@color/colorBlanco"
                             android:textSize="10dp" />

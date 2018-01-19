@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.informaciones.facultad.contaduriaalacima.Informacion.InformacionCrear">
+
+    <TextView
+        android:id="@+id/tv_blog_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPlomoBajo"
+        android:onClick="nombreTituloBlog"
+        android:text="Titulo"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:onClick="descripcionBlog"
+
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/colorPlomoBajo">
+
+        <TextView
+            android:onClick="descripcionBlog"
+            android:id="@+id/tv_blog_descripcion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Descripción"
+            android:textSize="15dp" />
+
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/iv_blog_imagen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/cargando"
+        android:onClick="elegirImagenBlog"
+        android:scaleType="centerCrop" />
+</LinearLayout>

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -112,10 +113,17 @@ public class Chat extends AppCompatActivity {
     }
 
     private void enviarImagenGaleria() {
-        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-        i.setType("image/jpeg");
-        i.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        startActivityForResult(Intent.createChooser(i, "Selecciona una foto"), PHOTO_SEND);
+        boolean b = sharedPreferences.getBoolean("bloqueado", false);
+        if (b){
+            Snackbar.make(linearLayout, "No puede enviar imagenes, Usted esta bloqueado!!!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        } else{
+            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+            i.setType("image/jpeg");
+            i.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            startActivityForResult(Intent.createChooser(i, "Selecciona una foto"), PHOTO_SEND);
+        }
+
     }
 
     private void cambiarFondo() {
@@ -215,8 +223,14 @@ public class Chat extends AppCompatActivity {
         btnEnviarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                startActivityForResult(gallery, PHOTO_SEND);
+                boolean b = sharedPreferences.getBoolean("bloqueado", false);
+                if (b){
+                    Snackbar.make(view, "Usted esta bloqueado!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                    startActivityForResult(gallery, PHOTO_SEND);
+                }
                 /*Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                 i.setType("image/jpeg");
                 i.putExtra(Intent.EXTRA_LOCAL_ONLY,true);

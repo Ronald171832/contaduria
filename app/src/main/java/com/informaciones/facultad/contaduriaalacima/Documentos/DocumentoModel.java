@@ -8,13 +8,13 @@ public class DocumentoModel {
 
     public String titulo;
     public String linkDeDescarga;
-    public int descargas;
+    public String descargas;
     public String fecha;
 
     public DocumentoModel() {
     }
 
-    public DocumentoModel(String titulo, String linkDeDescarga, int descargas, String fecha) {
+    public DocumentoModel(String titulo, String linkDeDescarga, String descargas, String fecha) {
         this.titulo = titulo;
         this.linkDeDescarga = linkDeDescarga;
         this.descargas = descargas;
@@ -37,11 +37,11 @@ public class DocumentoModel {
         this.linkDeDescarga = linkDeDescarga;
     }
 
-    public int getDescargas() {
+    public String getDescargas() {
         return descargas;
     }
 
-    public void setDescargas(int descargas) {
+    public void setDescargas(String descargas) {
         this.descargas = descargas;
     }
 

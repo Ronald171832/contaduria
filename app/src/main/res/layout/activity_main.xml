@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/linearLyPrincipal"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical">
@@ -13,6 +14,7 @@
         android:background="@color/colorPrimary"
         android:orientation="vertical">
         <FrameLayout
+            android:id="@+id/frPrincipal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
@@ -28,23 +30,40 @@
 
             <Button
                 android:id="@+id/title_bar_right_menu"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="right|center_vertical"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/ico_conta" />
+                android:background="#00000000"
+                android:text="☞"
+                android:textColor="#ffffff"
+                android:textSize="35dp"
+                android:textStyle="bold" />
+
             <Button
                 android:id="@+id/title_bar_left_menu"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="left|center_vertical"
                 android:layout_marginLeft="10dp"
-                android:background="@drawable/ico_conta" />
+                android:background="#00000000"
+                android:text="☜"
+                android:textColor="#ffffff"
+                android:textSize="35dp"
+                android:textStyle="bold" />
         </FrameLayout>
 
     </LinearLayout>
 
+    <ImageSwitcher
+        android:layout_weight="1"
+        android:padding="2dp"
+        android:background="@color/colorPrimary"
+        android:id="@+id/imageSwitcher"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <FrameLayout
+        android:layout_weight="1"
         android:id="@+id/main_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

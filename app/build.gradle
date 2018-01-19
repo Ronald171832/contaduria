@@ -48,6 +48,7 @@ dependencies {
     compile 'com.specyci:residemenu:1.6'
     compile 'com.mcxiaoke.volley:library:1.0.+'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:multidex:1.0.0'
 }

@@ -13,23 +13,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
-                android:onClick="elegirImagenesPublicacion"
-                android:text="Elegir Imagen"
-                android:textColor="@color/colorBlanco" />
+            android:orientation="vertical"
+            android:padding="3dp">
 
             <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/vpImagenesPublicacion"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:visibility="gone" />
+                android:background="@drawable/add_picture"
+                android:onClick="elegirImagenesPublicacion" />
             <!--<ImageView
                 android:id="@+id/imagePublicacion"
                 android:layout_width="300dp"
@@ -40,13 +33,15 @@
                 android:id="@+id/et_tituloPublicacion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tiulo Publicacion" />
+                android:hint="Tiulo Publicación"
+                android:inputType="textMultiLine" />
 
             <EditText
                 android:id="@+id/et_descripcionPublicacion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Descripcion Publicacion" />
+                android:hint="Descripcion Publicación"
+                android:inputType="textMultiLine" />
 
             <Spinner
                 android:id="@+id/sp_Categorias"
@@ -60,18 +55,10 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorAccent"
                 android:onClick="subirImagenPublicacion"
-                android:text="CARGAR Publicacion"
-                android:textColor="@color/colorBlanco" />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@color/colorAccent"
-                android:onClick="listarPublicaciones"
-                android:text="VER Publicacion"
-                android:textColor="@color/colorBlanco" />
+                android:text="CARGAR PUBLICACIÓN"
+                android:textColor="@color/colorBlanco"
+                android:textSize="19dp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>

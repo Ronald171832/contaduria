@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class Categorias extends AppCompatActivity {
     private ProgressDialog progressDialog;
     SharedPreferences sharedPreferences;
     List<CategoriaModel> categorias;
+    Boolean aBoolean;//control de super usuario
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +72,6 @@ public class Categorias extends AppCompatActivity {
 
 
     private void tocarRecycler() {
-        sharedPreferences = getSharedPreferences("nombre", MODE_PRIVATE);
-        Boolean aBoolean = sharedPreferences.getBoolean("superUsuario", false);
         if (aBoolean) {
             ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
                 @Override
@@ -105,6 +105,7 @@ public class Categorias extends AppCompatActivity {
                                     DatabaseReference currentUserBD = myRef.child(categorias.get(position).getFecha()).child("titulo");
                                     currentUserBD.setValue(nombrePerfil.getText().toString().trim());
                                     dialog.cancel();
+                                    startActivity(getIntent());
                                 }
                             }
                         });
@@ -169,6 +170,8 @@ public class Categorias extends AppCompatActivity {
 
 
     private void iniciar() {
+        sharedPreferences = getSharedPreferences("nombre", MODE_PRIVATE);
+        aBoolean = sharedPreferences.getBoolean("superUsuario", false);
         context = getApplicationContext();
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Cargando Categorias...");
@@ -184,21 +187,45 @@ public class Categorias extends AppCompatActivity {
                 new FirebaseRecyclerAdapter<CategoriaModel, myViewHolader>(CategoriaModel.class, R.layout.categoria_card, myViewHolader.class, myRef) {
                     @Override
                     protected void populateViewHolder(myViewHolader viewHolder, final CategoriaModel model, int position) {
-                        viewHolder.tvTitulo.setText(model.getTitulo());
-                        CategoriaModel categoriaModel = new CategoriaModel(model.getTitulo(), model.getFecha(), 0);
-                        categorias.add(categoriaModel);
-                        viewHolder.tvVisitas.setText("visitas " + model.getVisitas() + "");
-                        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                String categoria = model.getFecha();
-                                dbVisitas = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/visitas");
-                                dbVisitas.setValue(model.getVisitas() + 1);
-                                Intent intent = new Intent(Categorias.this, Publicaciones.class);
-                                intent.putExtra("categoria", categoria);
-                                startActivity(intent);
-                            }
-                        });
+                        if (aBoolean) {
+                            viewHolder.linearLayout.setVisibility(View.VISIBLE);
+                            String t = model.getTitulo();
+                            viewHolder.tvTitulo.setText(t);
+                            viewHolder.tvFecha.setText(model.getFecha());
+                            viewHolder.tvTituloCortado.setText(t.substring(0, 1));
+                            CategoriaModel categoriaModel = new CategoriaModel(model.getTitulo(), model.getFecha(), 0);
+                            categorias.add(categoriaModel);
+                            viewHolder.tvVisitas.setText("Visitas " + model.getVisitas() + "");
+                            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    String categoria = model.getFecha();
+                                    Intent intent = new Intent(Categorias.this, Publicaciones.class);
+                                    intent.putExtra("categoria", categoria);
+                                    startActivity(intent);
+                                }
+                            });
+
+
+                        } else {
+                            String t = model.getTitulo();
+                            viewHolder.tvTitulo.setText(t);
+                            viewHolder.tvTituloCortado.setText(t.substring(0, 1));
+                            CategoriaModel categoriaModel = new CategoriaModel(model.getTitulo(), model.getFecha(), 0);
+                            categorias.add(categoriaModel);
+                            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    String categoria = model.getFecha();
+                                    dbVisitas = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/visitas");
+                                    dbVisitas.setValue(model.getVisitas() + 1);
+                                    Intent intent = new Intent(Categorias.this, Publicaciones.class);
+                                    intent.putExtra("categoria", categoria);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+
                         progressDialog.dismiss();
                     }
                 };
@@ -212,13 +239,16 @@ public class Categorias extends AppCompatActivity {
     }
 
     public static class myViewHolader extends RecyclerView.ViewHolder {
-        public TextView tvTitulo, tvVisitas, tvFecha;
+        public TextView tvTitulo, tvTituloCortado, tvVisitas, tvFecha;
+        public LinearLayout linearLayout;
 
 
         public myViewHolader(View itemView) {
             super(itemView);
             //  tvFecha.setPadding(0,0,0,0);
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.ll_categoria);
             tvTitulo = (TextView) itemView.findViewById(R.id.cardCategoriaTitulo);
+            tvTituloCortado = (TextView) itemView.findViewById(R.id.cardCategoriaTituloCortado);
             tvVisitas = (TextView) itemView.findViewById(R.id.cardCategoriaVisitas);
             tvFecha = (TextView) itemView.findViewById(R.id.cardCategoriaFecha);
         }

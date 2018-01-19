@@ -14,6 +14,7 @@ import android.view.animation.TranslateAnimation;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,11 +26,13 @@ import com.google.firebase.storage.UploadTask;
 import com.informaciones.facultad.contaduriaalacima.Bloqueados.Bloqueados;
 import com.informaciones.facultad.contaduriaalacima.Categorias.CrearCategorias;
 import com.informaciones.facultad.contaduriaalacima.Documentos.CrearDocumentos;
+import com.informaciones.facultad.contaduriaalacima.Informacion.InformacionCrear;
+import com.informaciones.facultad.contaduriaalacima.Notificaciones.CrearNotificacion;
 import com.informaciones.facultad.contaduriaalacima.Publicaciones.CrearPublicacion;
 import com.informaciones.facultad.contaduriaalacima.R;
 
 public class GestionDePublicaciones extends AppCompatActivity {
-    Button categoria, publicaciones, documento, pantalla, bloqueados;
+    RelativeLayout categoria, publicaciones, documento, pantalla, bloqueados;
     SharedPreferences sharedPreferences;
     private static final int PICK_IMAGE = 100;
     private Uri imguri;
@@ -49,13 +52,12 @@ public class GestionDePublicaciones extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("nombre", MODE_PRIVATE);
         sharedPreferences.edit().putBoolean("superUsuario", true).apply();
 
-        categoria = (Button) findViewById(R.id.bt_ges_cate);
-        bloqueados = (Button) findViewById(R.id.bt_ges_bloque);
-        pantalla = (Button) findViewById(R.id.bt_ges_pant);
-        publicaciones = (Button) findViewById(R.id.bt_ges_publi);
-        documento = (Button) findViewById(R.id.bt_ges_docu);
+        categoria = (RelativeLayout) findViewById(R.id.bt_ges_cate);
+        bloqueados = (RelativeLayout) findViewById(R.id.bt_ges_bloque);
+        pantalla = (RelativeLayout) findViewById(R.id.bt_ges_pant);
+        publicaciones = (RelativeLayout) findViewById(R.id.bt_ges_publi);
+        documento = (RelativeLayout) findViewById(R.id.bt_ges_docu);
         Animation animationizq = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-        ;
         Animation animationder = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
         animationder.setDuration(1000);
         animationizq.setDuration(1000);
@@ -70,16 +72,22 @@ public class GestionDePublicaciones extends AppCompatActivity {
     public void documentos(View view) {
         startActivity(new Intent(this, CrearDocumentos.class));
     }
+    public void notificacion(View view) {
+        startActivity(new Intent(this, CrearNotificacion.class));
+    }
 
     public void bloqueados(View view) {
         startActivity(new Intent(this, Bloqueados.class));
+    }
+    public void informacion(View view) {
+        startActivity(new Intent(this, InformacionCrear.class));
     }
 
     public void publicaciones(View view) {
         startActivity(new Intent(this, CrearPublicacion.class));
     }
 
-    public void categorias(View view) {
+    public void gestion_categoria(View view) {
         startActivity(new Intent(this, CrearCategorias.class));
     }
 
@@ -101,7 +109,7 @@ public class GestionDePublicaciones extends AppCompatActivity {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(GestionDePublicaciones.this, "Imagen Cargadando \n Esperar Segundos para la Actualizacion", Toast.LENGTH_LONG).show();
+                Toast.makeText(GestionDePublicaciones.this, "Imagen Cargando \n Esperar Segundos para la Actualizacion", Toast.LENGTH_LONG).show();
                 registrar_gasto.dismiss();
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 dbPublicaciones = database.getReference("perfil");

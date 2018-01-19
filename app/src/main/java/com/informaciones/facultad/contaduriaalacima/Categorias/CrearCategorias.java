@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -34,7 +35,6 @@ public class CrearCategorias extends AppCompatActivity {
     private void iniciar() {
         dbCategoria = FirebaseDatabase.getInstance().getReference("categorias");
         storageReference = FirebaseStorage.getInstance().getReference("categorias");
-
         et_titulo = (EditText) findViewById(R.id.et_tituloCategoria);
     }
 
@@ -44,8 +44,11 @@ public class CrearCategorias extends AppCompatActivity {
         Date date = new Date();
         DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         final String fechaHora = hourdateFormat.format(date);
-        final CategoriaModel categorias = new CategoriaModel(et_titulo.getText().toString().trim(),fechaHora, 0);
+        final CategoriaModel categorias = new CategoriaModel(et_titulo.getText().toString().trim(), fechaHora, 0);
         dbCategoria.child(fechaHora).setValue(categorias);
+        Toast.makeText(getApplicationContext(), "Categoria cargada correctamente!", Toast.LENGTH_SHORT).show();
+        et_titulo.setText("");
+
     }
 
     public void listarCategorias(View v) {

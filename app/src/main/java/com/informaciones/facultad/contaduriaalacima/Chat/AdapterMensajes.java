@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.informaciones.facultad.contaduriaalacima.Bloqueados.BloqueadoModel;
+import com.informaciones.facultad.contaduriaalacima.ImgenCompleta.ImagenCompleta;
 import com.informaciones.facultad.contaduriaalacima.R;
 
 import java.text.DateFormat;
@@ -75,7 +76,7 @@ public class AdapterMensajes extends RecyclerView.Adapter<HolderMensaje> {
                                     @Override
                                     public void onClick(DialogInterface dialog, int item) {
                                         switch (item) {
-                                            case 0:
+                                            case 0: // bloquear usuario
                                                 Date date = new Date();
                                                 DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                                                 String fechaHora = hourdateFormat.format(date);
@@ -113,7 +114,7 @@ public class AdapterMensajes extends RecyclerView.Adapter<HolderMensaje> {
                                                 });
 */
                                                 break;
-                                            case 1:
+                                            case 1: // eliminar mensaje
                                                 dbBloqueados = database.getReference("chat").child(holder.getHora().getText().toString());
                                                 dbBloqueados.removeValue();
                                                 listMensaje.remove(position);
@@ -157,14 +158,37 @@ public class AdapterMensajes extends RecyclerView.Adapter<HolderMensaje> {
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");//a pm o am
         holder.getHora().setText(sdf.format(d));*/
         holder.getHora().setText(listMensaje.get(position).getHora());
+        holder.getFotoMensajePerfil().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent visorImg = new Intent(Intent.ACTION_VIEW);
+                    Uri uriFotoActual = Uri.parse(listMensaje.get(position).getFotoPerfil());
+                    if (uriFotoActual != null) {
+                        visorImg.setDataAndType(uriFotoActual, "image/*");
+                        c.startActivity(visorImg);
+                    }
+                } catch (Exception e) {
+                    Intent intent = new Intent(c, ImagenCompleta.class);
+                    intent.putExtra("url", listMensaje.get(position).getFotoPerfil());
+                    c.startActivity(intent);
+                }
+            }
+        });
         holder.getFotoMensaje().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent visorImg = new Intent(Intent.ACTION_VIEW);
-                Uri uriFotoActual = Uri.parse(listMensaje.get(position).getUriFotoImagen());
-                if (uriFotoActual != null) {
-                    visorImg.setDataAndType(uriFotoActual, "image/*");
-                    c.startActivity(visorImg);
+                try {
+                    Intent visorImg = new Intent(Intent.ACTION_VIEW);
+                    Uri uriFotoActual = Uri.parse(listMensaje.get(position).getUriFotoImagen());
+                    if (uriFotoActual != null) {
+                        visorImg.setDataAndType(uriFotoActual, "image/*");
+                        c.startActivity(visorImg);
+                    }
+                } catch (Exception e) {
+                    Intent intent = new Intent(c, ImagenCompleta.class);
+                    intent.putExtra("url", listMensaje.get(position).getUriFotoImagen());
+                    c.startActivity(intent);
                 }
 
 

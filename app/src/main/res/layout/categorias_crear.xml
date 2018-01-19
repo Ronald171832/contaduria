@@ -11,8 +11,10 @@
         android:id="@+id/et_tituloCategoria"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tiulo categoria" />
+        android:hint="Nombre Categoria" />
     <Button
+        android:textStyle="bold"
+        android:textSize="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
@@ -20,13 +22,13 @@
         android:text="CARGAR CATEGORIA"
         android:textColor="@color/colorBlanco" />
 
-    <Button
+ <!--   <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@color/colorAccent"
         android:onClick="listarCategorias"
         android:text="VER CATEGORIAS"
-        android:textColor="@color/colorBlanco" />
+        android:textColor="@color/colorBlanco" />-->
 
 </LinearLayout>

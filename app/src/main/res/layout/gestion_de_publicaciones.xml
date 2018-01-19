@@ -7,88 +7,245 @@
     android:orientation="vertical"
     tools:context="com.informaciones.facultad.contaduriaalacima.PantallaPrincipal.GestionDePublicaciones">
 
-    <Button
-        android:id="@+id/bt_ges_cate"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:background="@drawable/layout_cuadrado"
-        android:onClick="categorias"
-        android:padding="20dp"
-        android:text="CATEGORIAS"
-        android:textColor="@color/colorPrimary"
-        android:textSize="25dp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/bt_ges_publi"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:background="@drawable/layout_cuadrado"
-        android:onClick="publicaciones"
-        android:padding="20dp"
-        android:text="PUBLICACIONES"
-        android:textColor="@color/colorPrimary"
-        android:textSize="25dp"
-        android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/bt_ges_docu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:background="@drawable/layout_cuadrado"
-        android:onClick="documentos"
-        android:padding="20dp"
-        android:text="DOCUMENTOS"
-        android:textColor="@color/colorPrimary"
-        android:textSize="25dp"
-        android:textStyle="bold" />
+            <RelativeLayout
+                android:id="@+id/bt_ges_cate"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/md_indigo_900"
+                android:onClick="gestion_categoria"
+                android:orientation="vertical">
 
-    <Button
-        android:id="@+id/bt_ges_pant"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:background="@drawable/layout_cuadrado"
-        android:onClick="fondoPantalla"
-        android:padding="20dp"
-        android:text="FONDO PANTALLA"
-        android:textColor="@color/colorPrimary"
-        android:textSize="25dp"
-        android:textStyle="bold" />
-    <Button
-        android:id="@+id/bt_ges_bloque"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:background="@drawable/layout_cuadrado"
-        android:onClick="bloqueados"
-        android:padding="20dp"
-        android:text="LISTA DE BLOQUEADOS"
-        android:textColor="@color/colorPrimary"
-        android:textSize="25dp"
-        android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:onClick="gestion_categoria"
+                    android:text="C"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="80dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/colorNegroBajo"
+                    android:gravity="center"
+                    android:onClick="gestion_categoria"
+                    android:text="Crear Categoria"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/bt_ges_publi"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/md_indigo_800"
+                android:onClick="publicaciones"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center"
+                    android:onClick="publicaciones"
+                    android:text="P"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="80dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/colorNegroBajo"
+                    android:gravity="center"
+                    android:onClick="publicaciones"
+                    android:text="Crear Publicacion"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/bt_ges_docu"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/md_indigo_700"
+                android:onClick="documentos"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:onClick="documentos"
+                    android:text="D"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="80dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/colorNegroBajo"
+                    android:gravity="center"
+                    android:onClick="documentos"
+                    android:text="Crear Documento"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/bt_ges_pant"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/md_indigo_600"
+                android:onClick="fondoPantalla"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center"
+                    android:onClick="fondoPantalla"
+                    android:text="F"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="80dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/colorNegroBajo"
+                    android:gravity="center"
+                    android:onClick="fondoPantalla"
+                    android:text="Fondo Pantalla"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/md_indigo_300"
+                android:onClick="informacion"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:onClick="informacion"
+                    android:text="I"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="80dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/colorNegroBajo"
+                    android:gravity="center"
+                    android:onClick="informacion"
+                    android:text="Crear Informacion"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/bt_ges_bloque"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/md_indigo_500"
+                android:onClick="bloqueados"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center"
+                    android:onClick="bloqueados"
+                    android:text="B"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="80dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/colorNegroBajo"
+                    android:gravity="center"
+                    android:onClick="bloqueados"
+                    android:text="LISTA DE BLOQUEADOS"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/md_indigo_400"
+                android:onClick="notificacion"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center"
+                    android:onClick="notificacion"
+                    android:text="N"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="80dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/colorNegroBajo"
+                    android:gravity="center"
+                    android:onClick="notificacion"
+                    android:text="Crear Notificacion"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

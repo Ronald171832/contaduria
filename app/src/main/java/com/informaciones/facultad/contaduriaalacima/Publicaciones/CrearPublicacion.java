@@ -39,7 +39,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.informaciones.facultad.contaduriaalacima.Categorias.CategoriaModel;
-import com.informaciones.facultad.contaduriaalacima.Categorias.Categorias;
 import com.informaciones.facultad.contaduriaalacima.R;
 import com.informaciones.facultad.contaduriaalacima.WebServices.Constantes;
 import com.informaciones.facultad.contaduriaalacima.WebServices.VolleySingleton;
@@ -311,13 +310,6 @@ public class CrearPublicacion extends AppCompatActivity {
         int valor = 331;
 
     }
-
-
-    public void listarPublicaciones(View v) {
-        Intent i = new Intent(CrearPublicacion.this, Categorias.class);
-        startActivity(i);
-    }
-
 
     // CLASE PARA EL VIEW PAGER DE IMAGENES
     public class ImagePagerAdapter extends PagerAdapter {

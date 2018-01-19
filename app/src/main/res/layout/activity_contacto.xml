@@ -8,21 +8,19 @@
     tools:context="com.informaciones.facultad.contaduriaalacima.Email.Contacto">
 
 
-
     <TextView
-        android:textColor="@color/colorPrimaryDark"
-        android:text="CONTACTO"
-        android:textAlignment="center"
-        android:textSize="30dp"
-        android:layout_marginTop="10dp"
-
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Envianos tus sugerencias o reclamos"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20dp" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
         app:srcCompat="@drawable/img_email" />
@@ -31,45 +29,44 @@
         android:id="@+id/et_sub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:ems="10"
-        android:textStyle="italic"
+        android:hint="Ingrese su Nombre completo..."
+        android:maxLength="25"
         android:textAlignment="center"
-        android:hint="Ingrese su Nombre completo..." />
+        android:textStyle="italic" />
 
     <EditText
         android:id="@+id/et_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:textAlignment="center"
         android:hint="Escriba el mensaje a enviar..."
-        android:layout_marginBottom="20dp"
         android:inputType="textMultiLine"
+        android:textAlignment="center"
         android:textStyle="italic" />
 
     <TextView
-        android:text="NOTA: El Email se enviara a : plataformainformatica2017@gmail.com"
         android:layout_width="match_parent"
-        android:textAlignment="center"
-        android:textColor="@color/colorNegro"
-        android:layout_marginBottom="30dp"
-        android:layout_height="wrap_content" />
-    <Button
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:background="@drawable/layout_circular"
-        android:backgroundTint="@color/colorAzul1"
-        android:textColor="@color/colorBlanco"
-        android:id="@+id/btn_submit"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dip"
+        android:text="El e-mail se enviara a : \n facultadalacima@gmail.com"
+        android:textAlignment="center"
+        android:textColor="@color/colorNegro" />
+
+    <Button
+        android:layout_marginTop="6dp"
+        android:id="@+id/btn_submit"
         android:layout_width="match_parent"
-        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginLeft="20dp"
-        android:text="Enviar Email "  />
+        android:layout_marginRight="20dp"
+        android:backgroundTint="@color/colorAccent"
+        android:gravity="center"
+        android:text="Enviar E-mail"
+        android:textColor="@color/colorBlanco" />
 
 </LinearLayout>

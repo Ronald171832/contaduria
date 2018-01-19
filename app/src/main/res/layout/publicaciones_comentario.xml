@@ -27,6 +27,7 @@
         android:orientation="horizontal">
 
         <EditText
+            android:maxLength="50"
             android:id="@+id/et_comentario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

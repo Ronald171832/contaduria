@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,12 +14,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.informaciones.facultad.contaduriaalacima.ImgenCompleta.ImagenCompleta;
 import com.informaciones.facultad.contaduriaalacima.R;
 
 public class Bloqueados extends AppCompatActivity {
@@ -64,6 +65,15 @@ public class Bloqueados extends AppCompatActivity {
             @Override
             protected void populateViewHolder(Bloqueados.myViewHolader viewHolder, final BloqueadoModel model, int position) {
                 viewHolder.nombre.setText(model.getNombre());
+                viewHolder.imagen.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        Intent intent = new Intent(Bloqueados.this, ImagenCompleta.class);
+                        intent.putExtra("url", model.getFotoPerfil());
+                        startActivity(intent);
+                        return false;
+                    }
+                });
                 viewHolder.fecha.setText(model.getFecha());
                 viewHolder.msj.setText(model.getMsj());
                 Glide.with(Bloqueados.this).load(model.getFotoPerfil()).into(viewHolder.imagen);
@@ -72,7 +82,7 @@ public class Bloqueados extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         AlertDialog.Builder cliente = new AlertDialog.Builder(Bloqueados.this);
-                        cliente.setTitle("Desbloquear a "+model.getNombre()+"?");
+                        cliente.setTitle("Desbloquear a " + model.getNombre() + "?");
                         cliente.setMessage("Esta seguro?");
                         cliente.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -88,7 +98,7 @@ public class Bloqueados extends AppCompatActivity {
                             }
                         });
                         cliente.show();
-                        Toast.makeText(Bloqueados.this, model.getId() + "", Toast.LENGTH_LONG).show();
+                        //  Toast.makeText(Bloqueados.this, model.getId() + "", Toast.LENGTH_LONG).show();
                     }
                 });
 

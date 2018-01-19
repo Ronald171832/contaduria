@@ -13,64 +13,68 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imgIconCateg"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/ico" />
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="150dp"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/cardCategoriaTituloCortado"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center"
+                    android:text="C"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="80dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/cardCategoriaTitulo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="HOLA"
-                    android:textColor="@color/colorAzul"
-                    android:textSize="18dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/colorNegroBajo"
+                    android:gravity="center"
+                    android:text="Crear Categoria"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="22dp"
                     android:textStyle="bold" />
+            </RelativeLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ll_categoria"
+                android:background="@color/colorPlomoBajo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+                <TextView
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:id="@+id/cardCategoriaFecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:orientation="vertical">
+                    android:layout_marginRight="8dp"
+                    android:gravity="center"
+                    android:text="Fecha: "
+                    android:textColor="@color/colorNegro"
+                    android:textSize="12dp" />
+                <TextView
+                    android:id="@+id/cardCategoriaVisitas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Visitas:      "
+                    android:textColor="@color/colorNegro"
+                    android:textSize="12dp" />
 
-                    <TextView
 
-                        android:id="@+id/cardCategoriaVisitas"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="right"
-                        android:text="Visitas:      "
-                        android:textColor="@color/colorPlomo"
-                        android:textSize="12dp" />
-
-                    <TextView
-
-                        android:id="@+id/cardCategoriaFecha"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="8dp"
-                        android:gravity="right"
-                        android:text="Fecha: "
-                        android:textColor="@color/colorPlomo"
-                        android:textSize="12dp" />
-
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

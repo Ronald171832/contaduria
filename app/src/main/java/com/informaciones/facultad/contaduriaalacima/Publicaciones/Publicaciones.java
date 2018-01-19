@@ -12,7 +12,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,13 +42,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.BitmapDrawableResource;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.informaciones.facultad.contaduriaalacima.Bloqueados.BloqueadoModel;
+import com.informaciones.facultad.contaduriaalacima.ImgenCompleta.ImagenCompleta;
 import com.informaciones.facultad.contaduriaalacima.R;
 
 import java.io.File;
@@ -148,7 +147,8 @@ public class Publicaciones extends AppCompatActivity {
     }
 
     private void iniciar() {
-        //verifBloqueado_NoBloqqueado();
+        sharedPreferences = getSharedPreferences("nombre", MODE_PRIVATE);
+        verifBloqueado_NoBloqqueado();
         context = getApplicationContext();
         Display display = getWindowManager().getDefaultDisplay();
         width = display.getWidth();
@@ -165,6 +165,7 @@ public class Publicaciones extends AppCompatActivity {
         adapter = new PublicacionesAdapter(this, listaPublicaciones);
         rvPublicaciones.setAdapter(adapter);
         dbPublicaciones = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/publicaciones");
+        sharedPreferences = getSharedPreferences("nombre", MODE_PRIVATE);
       /*  FirebaseRecyclerAdapter<PublicacionesModel, ViewHolderPublicacion> adapter = new FirebaseRecyclerAdapter<PublicacionesModel, ViewHolderPublicacion>(
                 PublicacionesModel.class, R.layout.publicacion_card, Publicaciones.ViewHolderPublicacion.class, dbPublicaciones
         ) {
@@ -310,6 +311,14 @@ public class Publicaciones extends AppCompatActivity {
                 viewHolder.vpImagenes.setVisibility(View.GONE);
                 viewHolder.vpImagenes.setAdapter(null);
             }
+            viewHolder.vpImagenes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent  intent=new Intent(Publicaciones.this,ImagenCompleta.class);
+                    intent.putExtra("url",publicacionesFilterList.get(i).getImagenes());
+                    startActivity(intent);
+                }
+            });
 
             sharedPreferences = getSharedPreferences("nombre", MODE_PRIVATE);
             Boolean aBoolean = sharedPreferences.getBoolean("superUsuario", false);
@@ -320,19 +329,23 @@ public class Publicaciones extends AppCompatActivity {
             viewHolder.hablar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    talk = new TextToSpeech(Publicaciones.this, new TextToSpeech.OnInitListener() {
-                        @Override
-                        public void onInit(int status) {
-                            if (status != TextToSpeech.ERROR) {
-                                Locale locSpanish = new Locale("es_ES");
-                                talk.setLanguage(locSpanish);
-                                talk.speak(publicacionesFilterList.get(i).getTitulo(), TextToSpeech.QUEUE_FLUSH, null);
-                                talk.setPitch(8.8f);
-                            } else {
-                                Toast.makeText(Publicaciones.this, "ERROR...", Toast.LENGTH_LONG).show();
+                    try {
+                        talk = new TextToSpeech(Publicaciones.this, new TextToSpeech.OnInitListener() {
+                            @Override
+                            public void onInit(int status) {
+                                if (status != TextToSpeech.ERROR) {
+                                    Locale locSpanish = new Locale("es_ES");
+                                    talk.setLanguage(locSpanish);
+                                    talk.speak(publicacionesFilterList.get(i).getTitulo()+"    "+publicacionesFilterList.get(i).getDescripcion(), TextToSpeech.QUEUE_FLUSH, null);
+                                    talk.setPitch(8.8f);
+                                } else {
+                                    Toast.makeText(Publicaciones.this, "ERROR...", Toast.LENGTH_LONG).show();
+                                }
                             }
-                        }
-                    });
+                        });
+                    }catch (Exception e){
+
+                    }
                 }
             });
 
