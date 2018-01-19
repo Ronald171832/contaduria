@@ -17,12 +17,13 @@
             android:orientation="vertical">
 
             <ImageView
-                android:scaleType="centerCrop"
                 android:id="@+id/iv_perfil_foto"
-                android:layout_width="120dp"
-                android:layout_height="150dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
+                android:onClick="elegirImagenPerfil"
+                android:scaleType="centerCrop"
                 android:src="@drawable/userloggin" />
 
 
@@ -35,43 +36,42 @@
                 android:layout_marginTop="50dp"
                 android:src="@drawable/user" />-->
 
-            <Button
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:background="@color/colorPrimary"
-                android:onClick="elegirImagenPerfil"
-                android:text="Elegir Imagen"
-                android:textColor="@color/colorBlanco"
-                android:textSize="18dp"
-                android:textStyle="bold" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:textColorHint="@color/colorBlanco"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:textColorHint="@color/colorPrimary">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/et_perfil_nombre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ingrese Nombre"
-                    android:textColorHint="@color/colorBlanco"
+                    android:hint="Ingrese Nombre..."
                     android:imeOptions="actionSend"
                     android:inputType="textMultiLine"
+                    android:maxLength="50"
                     android:scrollbars="vertical"
                     android:singleLine="true"
-                    android:maxLength="50"
-                    android:textColor="@color/colorBlanco"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@color/colorPrimary"
                     android:textSize="20dp" />
 
             </android.support.design.widget.TextInputLayout>
-
+            <Button
+                android:id="@+id/bt_registro_usuario"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:background="@color/colorAzul"
+                android:onClick="selecionarTipo"
+                android:text="Tipo de Usuario"
+                android:textColor="@color/colorBlanco"
+                android:textSize="18dp"
+                android:textStyle="bold" />
             <Button
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
@@ -87,12 +87,12 @@
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/loginFB"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
 
                 ></com.facebook.login.widget.LoginButton>
 

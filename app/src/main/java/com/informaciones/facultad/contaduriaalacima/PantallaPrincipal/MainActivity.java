@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.informaciones.facultad.contaduriaalacima.Categorias.Categorias;
 import com.informaciones.facultad.contaduriaalacima.Chat.Chat;
+import com.informaciones.facultad.contaduriaalacima.Chat.PasoDeParametros;
 import com.informaciones.facultad.contaduriaalacima.Documentos.Documentos;
 import com.informaciones.facultad.contaduriaalacima.Email.Contacto;
 import com.informaciones.facultad.contaduriaalacima.Fragmentos.AcercaDeFragment;
@@ -39,6 +41,7 @@ import com.informaciones.facultad.contaduriaalacima.RegistroDeDatos.Registro_Dat
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -258,8 +261,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.addMenuItem(itemContacto, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemAbout, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemConfiguraciones, ResideMenu.DIRECTION_LEFT);
-      //  resideMenu.addMenuItem(itemGestion, ResideMenu.DIRECTION_LEFT);
-
+        // TODO: 19/01/2018 COMENTAR PARA SER ESTUDIANTE
+        resideMenu.addMenuItem(itemGestion, ResideMenu.DIRECTION_LEFT);
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -288,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             imageSwitcher.setVisibility(View.VISIBLE);
             changeFragment(new HomeFragment());
         } else if (view == itemChat) {
-            startActivity(new Intent(MainActivity.this, Chat.class));
+            elegirChat();
         } else if (view == itemDocumento) {
             startActivity(new Intent(MainActivity.this, Documentos.class));
         } else if (view == itemPreguntas) {
@@ -300,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(MainActivity.this, Contacto.class));
         } else if (view == itemInformacion) {
             startActivity(new Intent(MainActivity.this, Informacion.class));
-        }else if (view == itemConfiguraciones) {
+        } else if (view == itemConfiguraciones) {
             startActivity(new Intent(MainActivity.this, Registro_Datos.class));
         } else if (view == itemGestion) {
             startActivity(new Intent(MainActivity.this, GestionDePublicaciones.class));
@@ -312,6 +315,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(facebookIntent);
         }
         resideMenu.closeMenu();
+    }
+
+    private void elegirChat() {
+        String TIPO = sharedPreferences.getString("tipoUsuario", "");
+        if(TIPO.equals("est")){
+            PasoDeParametros.TIPO_CHAT="est";
+
+        }else {
+            final ArrayList<String> listItems = new ArrayList<>();
+            listItems.add("Estudiante");
+            listItems.add("Administrativo");
+            listItems.add("Docente");
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Elija una Opción:")
+                    .setCancelable(false)
+                    .setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, listItems),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int item) {
+                                       /* //Toast.makeText(Cliente.this, pos + "  " + listaClientes.get(pos).getNombre(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(Cliente.this, listItems.get(item), Toast.LENGTH_LONG).show();*/
+                                    switch (item) {
+                                        case 0:
+                                            PasoDeParametros.TIPO_CHAT = "est";
+                                            break;
+                                        case 1:
+                                            PasoDeParametros.TIPO_CHAT = "adm";
+                                            break;
+                                        case 2:
+                                            PasoDeParametros.TIPO_CHAT = "doc";
+                                            break;
+                                    }
+                                }
+                            }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+
+                }
+            }).show();
+        }
+        startActivity(new Intent(MainActivity.this, Chat.class));
     }
 
     public static String FACEBOOK_URL = "https://www.facebook.com/DireccionDeCarreraContaduriaPublica";

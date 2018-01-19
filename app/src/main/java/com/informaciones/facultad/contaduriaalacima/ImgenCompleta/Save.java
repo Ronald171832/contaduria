@@ -21,7 +21,7 @@ import java.util.Calendar;
 public class Save {
 
     private Context TheThis;
-    private String NameOfFolder = "/Together_Forever";
+    private String NameOfFolder = "/Imagenes Contaduria";
     private String NameOfFile = "imagen";
 
     public String SaveImage(Context context, Bitmap ImageToSave) {

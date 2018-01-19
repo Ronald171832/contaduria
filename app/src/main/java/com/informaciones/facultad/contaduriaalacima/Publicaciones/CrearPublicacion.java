@@ -86,7 +86,6 @@ public class CrearPublicacion extends AppCompatActivity {
         et_titulo = (EditText) findViewById(R.id.et_tituloPublicacion);
         et_descripcion = (EditText) findViewById(R.id.et_descripcionPublicacion);
         viewImagenes = (ViewPager) findViewById(R.id.vpImagenesPublicacion);
-        viewImagenes.setVisibility(View.GONE);
     }
 
     private void cargarSpinner() {

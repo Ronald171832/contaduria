@@ -1,7 +1,9 @@
 package com.informaciones.facultad.contaduriaalacima.RegistroDeDatos;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -11,7 +13,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -27,9 +30,12 @@ import com.google.firebase.storage.UploadTask;
 import com.informaciones.facultad.contaduriaalacima.PantallaPrincipal.MainActivity;
 import com.informaciones.facultad.contaduriaalacima.R;
 
+import java.util.ArrayList;
+
 public class Registro_Datos extends AppCompatActivity {
     private ImageView foto;
     private EditText nombre;
+    Button tipoUsuario;
     StorageReference storageReference;
     SharedPreferences sharedPreferences;
     private FirebaseStorage storage;
@@ -55,6 +61,7 @@ public class Registro_Datos extends AppCompatActivity {
        // callbackManager=CallbackManager.Factory.create();
         foto = (ImageView) findViewById(R.id.iv_perfil_foto);
         nombre = (EditText) findViewById(R.id.et_perfil_nombre);
+        tipoUsuario = (Button) findViewById(R.id.bt_registro_usuario);
        /* loginButton=(LoginButton) findViewById(R.id.loginFB);
         loginButton.setReadPermissions("public_profile email");
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -88,10 +95,66 @@ public class Registro_Datos extends AppCompatActivity {
         }
     }
 
-    public String getImageExt(Uri uri) {
-        ContentResolver contentResolver = getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    public void selecionarTipo(View view) {
+
+        final ArrayList<String> listItems = new ArrayList<>();
+        listItems.add("ESTUDIANTE");
+        listItems.add("DOCENTE");
+        listItems.add("ADMINISTRATIVO");
+        new AlertDialog.Builder(Registro_Datos.this)
+                .setTitle("Elija una Opción:")
+                .setCancelable(false)
+                .setAdapter(new ArrayAdapter<String>(Registro_Datos.this, android.R.layout.simple_list_item_1, listItems),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int item) {
+                                       /* //Toast.makeText(Cliente.this, pos + "  " + listaClientes.get(pos).getNombre(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(Cliente.this, listItems.get(item), Toast.LENGTH_LONG).show();*/
+                                switch (item) {
+                                    case 0:
+                                        sharedPreferences.edit().putString("tipoUsuario", "est").commit();
+                                        tipoUsuario.setText("est");
+                                        break;
+                                    case 1:
+                                        pedirContra();
+                                        break;
+                                    case 2:
+                                        pedirContra();
+                                        break;
+                                }
+                            }
+                        }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        }).show();
+
+
+    }
+
+    private void pedirContra() {
+        final Dialog login_ventana = new Dialog(Registro_Datos.this);
+        login_ventana.setTitle("Ingresar Contraseña");
+        login_ventana.setContentView(R.layout.gestionar_contra);
+        final EditText contra = (EditText) login_ventana.findViewById(R.id.et_gestion_contra);
+        Button boton = (Button) login_ventana.findViewById(R.id.btn_gestion_contra);
+        int width = (int) (Registro_Datos.this.getResources().getDisplayMetrics().widthPixels * 0.9);
+        // set height for dialog
+        int height = (int) (Registro_Datos.this.getResources().getDisplayMetrics().heightPixels * 0.9);
+        login_ventana.getWindow().setLayout(width, height);
+
+        boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String c = contra.getText().toString().trim();
+                if (c.equals("cp2018")) {
+                    sharedPreferences.edit().putString("tipoUsuario", "adm").commit();
+                    tipoUsuario.setText("adm");
+                }
+                login_ventana.cancel();
+            }
+        });
+        login_ventana.show();
     }
 
     public void registrarDatos(final View view) {
@@ -107,6 +170,12 @@ public class Registro_Datos extends AppCompatActivity {
             nombre.requestFocus();
             return;
         }
+        String TIPO = sharedPreferences.getString("tipoUsuario", "");
+        if(TIPO.equals("")){
+            Snackbar.make(view, "Elije una categoria porfavo!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+
         sharedPreferences.edit().putString("nombre", nombre.getText().toString().trim()).apply();
         Uri u = imguri;
         final ProgressDialog subirImagen = new ProgressDialog(this);
@@ -121,7 +190,10 @@ public class Registro_Datos extends AppCompatActivity {
             idFotoUsuario = String.valueOf(System.currentTimeMillis());
             sharedPreferences.edit().putString("id", idFotoUsuario).commit();
         }
-
+        if (idFotoUsuario.equals("")) {
+            idFotoUsuario = System.currentTimeMillis() + "";
+            sharedPreferences.edit().putString("id", idFotoUsuario).commit();
+        }
         storageReference = storage.getReference("foto_perfil");//imagenes_chat
         final StorageReference fotoReferencia = storageReference.child(idFotoUsuario);
         fotoReferencia.putFile(u).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {

@@ -210,7 +210,7 @@ public class Publicaciones extends AppCompatActivity {
                         publicacionesModel.setFecha((String) mapPublicacion.get("fecha"));
                         publicacionesModel.setDescripcion((String) mapPublicacion.get("descripcion"));
                         Map<String, Object> mapImg = (HashMap) mapPublicacion.get("imagenes");
-                        if (mapImg!=null){
+                        if (mapImg != null) {
                             Uri[] imagenes = new Uri[mapImg.size()];
                             for (int i = 0; i < mapImg.size(); i++) {
                                 String dir = (String) mapImg.get("imagen " + String.valueOf(i));
@@ -301,7 +301,7 @@ public class Publicaciones extends AppCompatActivity {
             // System.out.println(publicacionesFilterList.get(i).getFecha()+"***********************************************");
             viewHolder.tvFecha.setText(publicacionesFilterList.get(i).getFecha());
             viewHolder.tvDescripcion.setText(publicacionesFilterList.get(i).getDescripcion());
-            if (publicacionesFilterList.get(i).getImagenes()!=null) {
+            if (publicacionesFilterList.get(i).getImagenes() != null) {
                 viewHolder.tvCantImagenes.setText(1 + "/" + publicacionesFilterList.get(i).getImagenes().length);
                 ImagePagerAdapter imgPager = new ImagePagerAdapter(publicacionesFilterList.get(i).getImagenes());
                 viewHolder.vpImagenes.setAdapter(imgPager);
@@ -314,8 +314,8 @@ public class Publicaciones extends AppCompatActivity {
             viewHolder.vpImagenes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent  intent=new Intent(Publicaciones.this,ImagenCompleta.class);
-                    intent.putExtra("url",publicacionesFilterList.get(i).getImagenes());
+                    Intent intent = new Intent(Publicaciones.this, ImagenCompleta.class);
+                    intent.putExtra("url", publicacionesFilterList.get(i).getImagenes());
                     startActivity(intent);
                 }
             });
@@ -336,14 +336,14 @@ public class Publicaciones extends AppCompatActivity {
                                 if (status != TextToSpeech.ERROR) {
                                     Locale locSpanish = new Locale("es_ES");
                                     talk.setLanguage(locSpanish);
-                                    talk.speak(publicacionesFilterList.get(i).getTitulo()+"    "+publicacionesFilterList.get(i).getDescripcion(), TextToSpeech.QUEUE_FLUSH, null);
+                                    talk.speak(publicacionesFilterList.get(i).getTitulo() + "    " + publicacionesFilterList.get(i).getDescripcion(), TextToSpeech.QUEUE_FLUSH, null);
                                     talk.setPitch(8.8f);
                                 } else {
                                     Toast.makeText(Publicaciones.this, "ERROR...", Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
-                    }catch (Exception e){
+                    } catch (Exception e) {
 
                     }
                 }
@@ -623,7 +623,6 @@ public class Publicaciones extends AppCompatActivity {
             boton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     boolean b = sharedPreferences.getBoolean("bloqueado", false);
                     if (b) {
                         msj.setError("Usted esta bloqueado!");
@@ -640,7 +639,8 @@ public class Publicaciones extends AppCompatActivity {
                         sharedPreferences = mContext.getSharedPreferences("nombre", MODE_PRIVATE);
                         String url_fotoPerfil = sharedPreferences.getString("fotoPerfil", "");
                         String nombre_perfil = sharedPreferences.getString("nombre", "");
-                        ComentarioModel comentarioModel = new ComentarioModel(nombre_perfil, fechaHora, msj.getText().toString().trim(), url_fotoPerfil);
+                        String id = sharedPreferences.getString("id", "");
+                        ComentarioModel comentarioModel = new ComentarioModel(nombre_perfil, fechaHora, msj.getText().toString().trim(), url_fotoPerfil, id);
                         dbComentar.child(fechaHora).setValue(comentarioModel);
                         msj.setText("");
                     }
@@ -656,18 +656,16 @@ public class Publicaciones extends AppCompatActivity {
         }
     }
 
-    private ProgressDialog progressCompartir;
-
     private void compartirPublicacion(int pos, ViewPager viewPager) {
         progressCompartir = new ProgressDialog(this);
         progressCompartir.setMessage("Cargando ...");
         progressCompartir.show();
         try {
             Bitmap bitmap;
-            if (viewPager.getAdapter()!=null){
+            if (viewPager.getAdapter() != null) {
                 bitmap = getBitmapFromView(viewPager);
             } else {
-                bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.ico_conta);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ico_conta);
             }
             File file = new File(this.getExternalCacheDir(), "compartir.png");
             FileOutputStream fOut = new FileOutputStream(file);
@@ -719,10 +717,16 @@ public class Publicaciones extends AppCompatActivity {
     }
 
 
+
+    String rutaComentario="categorias/"+categoria+"/publicaciones/";
+    private ProgressDialog progressCompartir;
+
     // CLASE ADAPTER PARA PODER EFECTUAR LOS COMENTARIOS DE LAS PUBLICACIONES
     public class ComentariosAdapter extends RecyclerView.Adapter<myViewHoladerComentario> {
         private ArrayList<ComentarioModel> comentariosList;
         private Context context;
+        FirebaseDatabase database;
+        DatabaseReference comentario;
 
         public ComentariosAdapter(Context context, ArrayList<ComentarioModel> arrayList) {
             comentariosList = arrayList;
@@ -739,9 +743,105 @@ public class Publicaciones extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(myViewHoladerComentario viewHolder, final int i) {
+            viewHolder.fotoPerfil.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    database = FirebaseDatabase.getInstance();
+                    final ArrayList<String> listItems = new ArrayList<>();
+                    listItems.add("✏ Editar Comentario");
+                    listItems.add("❌ Eliminar Comentario");
+                    listItems.add("❌ Bloquear Usuario");
+                    new AlertDialog.Builder(context)
+                            .setTitle("Elija una Opción para: \n" + comentariosList.get(i).getNombre())
+                            .setCancelable(false)
+                            .setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listItems),
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(final DialogInterface dialog, int item) {
+                                            switch (item) {
+                                                case 0:
+                                                    final Dialog ventana_emergente = new Dialog(context);
+                                                    ventana_emergente.setTitle("Editar Comentario");
+                                                    ventana_emergente.setContentView(R.layout.ventana_emergente);
+                                                    final EditText editText = (EditText) ventana_emergente.findViewById(R.id.et_ventana_ingresar);
+                                                    Button boton = (Button) ventana_emergente.findViewById(R.id.bt_ventana_aceptar);
+                                                    final TextView textView = (TextView) ventana_emergente.findViewById(R.id.tv_ventana_titulo);
+                                                    textView.setText("Editar Comentario");
+                                                    editText.setText(comentariosList.get(i).getMsj());
+                                                    int width = (int) (context.getResources().getDisplayMetrics().widthPixels);
+                                                    int height = (int) (context.getResources().getDisplayMetrics().heightPixels * 0.4);
+                                                    ventana_emergente.getWindow().setLayout(width, height);
+                                                    boton.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            comentario = database.getReference(rutaComentario  + comentariosList.get(i).getfecha() + "/msj");
+                                                            // System.out.println(comentario.toString() + "*******************************************");
+                                                            comentario.setValue(editText.getText().toString().trim());
+                                                            ventana_emergente.cancel();
+                                                        }
+                                                    });
+                                                    ventana_emergente.show();
+                                                    break;
+                                                case 1:
+                                                    final AlertDialog.Builder ventana = new AlertDialog.Builder(Publicaciones.this);
+                                                    ventana.setTitle("Eliminar Comentario");
+                                                    ventana.setCancelable(false);
+                                                    ventana.setMessage("Esta seguro?:");
+                                                    ventana.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            comentario = database.getReference(rutaComentario + comentariosList.get(i).getfecha());
+                                                            comentario.removeValue();
+                                                        }
+                                                    });
+                                                    ventana.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+
+                                                        }
+                                                    });
+                                                    ventana.show();
+                                                    break;
+                                                case 2:
+                                                    final AlertDialog.Builder ventana2 = new AlertDialog.Builder(Publicaciones.this);
+                                                    ventana2.setTitle("Bloquear a " + comentariosList.get(i).getNombre());
+                                                    ventana2.setCancelable(false);
+                                                    ventana2.setMessage("Esta seguro?:");
+                                                    ventana2.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+
+                                                            Date date = new Date();
+                                                            DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                                                            String fechaHora = hourdateFormat.format(date);
+                                                            String codigo = comentariosList.get(i).getIdUsuario();
+                                                            System.out.println(codigo + "*****************************");
+                                                            DatabaseReference dbBloqueados = FirebaseDatabase.getInstance().getReference("bloqueados/" + codigo);
+                                                            System.out.println(dbBloqueados.toString() + " ******************");
+                                                            BloqueadoModel bloqueadoModel = new BloqueadoModel(comentariosList.get(i).getNombre(), fechaHora,
+                                                                    comentariosList.get(i).getMsj(), comentariosList.get(i).getFotoPerfil(), codigo);
+                                                            dbBloqueados.setValue(bloqueadoModel);
+
+                                                        }
+                                                    });
+                                                    ventana2.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+
+                                                        }
+                                                    });
+                                                    ventana2.show();
+
+
+                                                    break;
+                                            }
+                                        }
+                                    }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    }).show();
+                    return false;
+                }
+            });
 
             viewHolder.nombre.setText(comentariosList.get(i).getNombre());
-
             viewHolder.fecha.setText(comentariosList.get(i).getfecha());
             viewHolder.msj.setText(comentariosList.get(i).getMsj());
             if (comentariosList.get(i).getFotoPerfil().equals("")) {

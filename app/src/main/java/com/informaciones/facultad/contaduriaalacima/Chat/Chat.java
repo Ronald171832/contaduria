@@ -178,7 +178,7 @@ public class Chat extends AppCompatActivity {
         btnEnviarFoto = (ImageButton) findViewById(R.id.btnEnviarFoto);
         fotoPerfilCadena = "";
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference("chat");//Sala de chat (nombre)
+        databaseReference = database.getReference("chat_"+PasoDeParametros.TIPO_CHAT);//Sala de chat (nombre)
         storage = FirebaseStorage.getInstance();
         String nombre_perfil = sharedPreferences.getString("nombre", "Anonimo");
         String url_fotoPerfil = sharedPreferences.getString("urlFoto", "");
@@ -386,7 +386,7 @@ public class Chat extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PHOTO_SEND && resultCode == RESULT_OK) { // ENVIAR FOTO DE PERFIL
             final Uri ur = data.getData();
-            storageReference = storage.getReference("imagenes_chat");//imagenes_chat
+            storageReference = storage.getReference("imagenes_chat_"+PasoDeParametros.TIPO_CHAT);//imagenes_chat
             final StorageReference fotoReferencia = storageReference.child(ur.getLastPathSegment());
             fotoReferencia.putFile(ur).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override

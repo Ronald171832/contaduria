@@ -1,7 +1,7 @@
 package com.informaciones.facultad.contaduriaalacima.Publicaciones;
 
 /**
- * Created by Ronald on 02/11/2017.
+ * Created by Ronald Lopez on 02/11/2017.
  */
 
 public class ComentarioModel {
@@ -10,6 +10,16 @@ public class ComentarioModel {
     public String fecha;
     public String msj;
     public String fotoPerfil;
+
+    public ComentarioModel(String nombre, String fecha, String msj, String fotoPerfil, String idUsuario) {
+        this.nombre = nombre;
+        this.fecha = fecha;
+        this.msj = msj;
+        this.fotoPerfil = fotoPerfil;
+        this.idUsuario = idUsuario;
+    }
+
+    public String idUsuario;
 
     public ComentarioModel() {
     }
@@ -23,11 +33,14 @@ public class ComentarioModel {
     }
 
 
-    public ComentarioModel(String nombre, String fecha, String msj, String fotoPerfil) {
-        this.nombre = nombre;
-        this.fecha = fecha;
-        this.msj = msj;
-        this.fotoPerfil=fotoPerfil;
+
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNombre() {
