@@ -139,7 +139,9 @@ public class CrearNotificacion extends AppCompatActivity {
             String uploadId = etTitulo.getText().toString().trim();
             dbCategoria.child(uploadId).setValue(obj);
             notificarUsers(obj.get("titulo"), etDescripcion.getText().toString().trim(), "& / %");
-            // Toast.makeText(getApplicationContext(), "Elegir una Imagen por favor!", Toast.LENGTH_SHORT).show();
+            etTitulo.setText("");
+            etDescripcion.setText("");
+                 Toast.makeText(getApplicationContext(), "Notificacion Enviada!", Toast.LENGTH_SHORT).show();
         }
     }
 

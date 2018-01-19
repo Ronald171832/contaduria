@@ -629,6 +629,11 @@ public class Publicaciones extends AppCompatActivity {
                         msj.setError("Usted esta bloqueado!");
                         msj.requestFocus();
                     } else {
+                        if (msj.getText().toString().equals("")) {
+                            msj.setError("Escribir mensaje..");
+                            msj.requestFocus();
+                            return;
+                        }
                         Date date = new Date();
                         DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                         String fechaHora = hourdateFormat.format(date);

@@ -1,5 +1,7 @@
 package com.informaciones.facultad.contaduriaalacima.ImgenCompleta;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -30,39 +32,69 @@ public class ImagenCompleta extends AppCompatActivity {
         Glide.with(ImagenCompleta.this).load(url).into(imagen);
     }
 
-    public void guardar(View view){
-        imagen.buildDrawingCache();
-        Bitmap bmap = imagen.getDrawingCache();
-        //guardar imagen
-        Save savefile = new Save();
-        savefile.SaveImage(ImagenCompleta.this, bmap);
+    public void guardar(View view) {
+        AlertDialog.Builder cliente = new AlertDialog.Builder(ImagenCompleta.this);
+        cliente.setTitle("Guardar");
+        cliente.setMessage("Desea Guardar en su Galeria:");
+        cliente.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                imagen.buildDrawingCache();
+                Bitmap bmap = imagen.getDrawingCache();
+                //guardar imagen
+                Save savefile = new Save();
+                savefile.SaveImage(ImagenCompleta.this, bmap);
+            }
+        });
+        cliente.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        cliente.show();
+
+
     }
-    public void compartir(View view){
-        Bitmap bitmap =getBitmapFromView(imagen);
-        try {
-            File file = new File(this.getExternalCacheDir(),"compartir.png");
-            FileOutputStream fOut = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-            fOut.flush();
-            fOut.close();
-            file.setReadable(true, false);
-            final Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-          intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-            intent.setType("image/png");
-            startActivity(Intent.createChooser(intent, "Compartir imagen via:"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+    public void compartir(View view) {
+        AlertDialog.Builder cliente = new AlertDialog.Builder(ImagenCompleta.this);
+        cliente.setTitle("Guardar");
+        cliente.setMessage("Desea Compartir la Imagen:");
+        cliente.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Bitmap bitmap = getBitmapFromView(imagen);
+                try {
+                    File file = new File(ImagenCompleta.this.getExternalCacheDir(), "compartir.png");
+                    FileOutputStream fOut = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                    fOut.flush();
+                    fOut.close();
+                    file.setReadable(true, false);
+                    final Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                    intent.setType("image/png");
+                    startActivity(Intent.createChooser(intent, "Compartir imagen via:"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        cliente.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        cliente.show();
+
+
     }
+
     private Bitmap getBitmapFromView(View view) {
-        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(returnedBitmap);
-        Drawable bgDrawable =view.getBackground();
-        if (bgDrawable!=null) {
+        Drawable bgDrawable = view.getBackground();
+        if (bgDrawable != null) {
             //has background drawable, then draw it on the canvas
             bgDrawable.draw(canvas);
-        }   else{
+        } else {
             //does not have background drawable, then draw white background on the canvas
             canvas.drawColor(Color.BLACK);
         }
