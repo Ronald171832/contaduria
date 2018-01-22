@@ -196,7 +196,7 @@ public class Informacion extends AppCompatActivity {
             public void run() {
                 if (recyclerView.getAdapter() != null) {
                     if (recyclerView.getAdapter().getItemCount() == 0) {
-                        recyclerView.setBackgroundResource(R.drawable.ico_conta);
+                        recyclerView.setBackgroundResource(R.drawable.fondo_principal);
                         progressDialog.cancel();
                     }
                 }

@@ -19,8 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.facebook.CallbackManager;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -41,9 +39,9 @@ public class Registro_Datos extends AppCompatActivity {
     private FirebaseStorage storage;
 
     // VARIABLES PARA REGISTRO Y LOGGIN CON FACEBOOK
-    CallbackManager callbackManager;
+ /*   CallbackManager callbackManager;
     LoginButton loginButton;
-
+*/
     private Uri imguri;
     private static final int PICK_IMAGE = 100;
 

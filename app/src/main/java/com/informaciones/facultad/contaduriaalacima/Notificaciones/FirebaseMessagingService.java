@@ -12,7 +12,6 @@ import android.os.ParcelFileDescriptor;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.firebase.messaging.RemoteMessage;
-import com.informaciones.facultad.contaduriaalacima.Categorias.CategoriaModel;
 import com.informaciones.facultad.contaduriaalacima.PantallaPrincipal.MainActivity;
 import com.informaciones.facultad.contaduriaalacima.Publicaciones.Publicaciones;
 import com.informaciones.facultad.contaduriaalacima.R;
@@ -65,7 +64,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setTicker(getString(R.string.app_name))
                 .setDefaults(-1)
                 .setContentText(message)
-                .setSmallIcon(R.drawable.ico_conta) //common_google_signin_btn_icon_dark)
+                .setSmallIcon(R.drawable.fondo_principal) //common_google_signin_btn_icon_dark)
                 .setContentIntent(pendingIntent)
                 .setSound(defaultSound)
                 .addAction(R.drawable.eye, "Ver Publicación", viewPublicationIntent)

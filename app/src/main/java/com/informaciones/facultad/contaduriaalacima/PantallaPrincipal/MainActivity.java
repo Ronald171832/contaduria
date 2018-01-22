@@ -247,7 +247,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         itemFacebook.setOnClickListener(this);
         itemAbout.setOnClickListener(this);
         itemContacto.setOnClickListener(this);
-        //itemConfiguraciones.setOnClickListener(this);
+        // TODO: 22/01/2018 comentar para subir a play store
+        itemConfiguraciones.setOnClickListener(this);
         itemGestion.setOnClickListener(this);
 
         resideMenu.addMenuItem(itemHomeR, ResideMenu.DIRECTION_RIGHT);

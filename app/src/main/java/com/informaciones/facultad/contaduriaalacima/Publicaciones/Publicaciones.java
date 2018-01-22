@@ -667,7 +667,7 @@ public class Publicaciones extends AppCompatActivity {
             if (viewPager.getAdapter() != null) {
                 bitmap = getBitmapFromView(viewPager);
             } else {
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ico_conta);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.fondo_principal);
             }
             File file = new File(this.getExternalCacheDir(), "compartir.png");
             FileOutputStream fOut = new FileOutputStream(file);
