@@ -60,6 +60,7 @@
                     android:textSize="20dp" />
 
             </android.support.design.widget.TextInputLayout>
+
             <Button
                 android:id="@+id/bt_registro_usuario"
                 android:layout_width="250dp"
@@ -68,10 +69,11 @@
                 android:layout_marginTop="25dp"
                 android:background="@color/colorAzul"
                 android:onClick="selecionarTipo"
-                android:text="Tipo de Usuario"
+                android:text="TIPO DE USUARIO"
                 android:textColor="@color/colorBlanco"
                 android:textSize="18dp"
                 android:textStyle="bold" />
+
             <Button
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
@@ -93,12 +95,14 @@
                 android:layout_marginTop="10dp"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
+                android:visibility="gone"
 
                 ></com.facebook.login.widget.LoginButton>
 
             <com.facebook.login.widget.ProfilePictureView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></com.facebook.login.widget.ProfilePictureView>
+                android:layout_height="wrap_content"
+                android:visibility="gone"></com.facebook.login.widget.ProfilePictureView>
         </LinearLayout>
     </ScrollView>
 

@@ -284,10 +284,7 @@ public class CrearPublicacion extends AppCompatActivity {
         }
         VolleySingleton.getInstance(this).
                 addToRequestQueue(
-                        new JsonObjectRequest(Request.Method.GET,
-                                peticionGET,
-                                //Constantes.URL_PETICION_NOTIFICACION + "?titulo=" + titulo + "&mensaje=" + messsage + "&url=" + p1 + "&resto=" + p2,
-                                new JSONObject(),
+                        new JsonObjectRequest(Request.Method.GET, peticionGET, new JSONObject(),
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
@@ -297,7 +294,7 @@ public class CrearPublicacion extends AppCompatActivity {
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                                       // Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                                         Log.d("TAG", "Error Volley: " + error.getMessage());
                                     }
                                 }

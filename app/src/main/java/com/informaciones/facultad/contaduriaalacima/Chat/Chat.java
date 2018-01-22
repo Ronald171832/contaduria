@@ -49,12 +49,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Chat extends AppCompatActivity {
 
     private CircleImageView fotoPerfil;
-    private TextView nombre;
+    private TextView nombre,tipo;
     private RecyclerView rvMensajes;
     private EditText txtMensaje;
     private Button btnEnviar;
@@ -114,10 +115,10 @@ public class Chat extends AppCompatActivity {
 
     private void enviarImagenGaleria() {
         boolean b = sharedPreferences.getBoolean("bloqueado", false);
-        if (b){
+        if (b) {
             Snackbar.make(linearLayout, "No puede enviar imagenes, Usted esta bloqueado!!!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-        } else{
+        } else {
             Intent i = new Intent(Intent.ACTION_GET_CONTENT);
             i.setType("image/jpeg");
             i.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
@@ -145,6 +146,10 @@ public class Chat extends AppCompatActivity {
         id = sharedPreferences.getString("id", "");
         fotoPerfil = (CircleImageView) findViewById(R.id.fotoPerfil);
         nombre = (TextView) findViewById(R.id.nombre);
+        tipo = (TextView) findViewById(R.id.tipoChat);
+        String t=PasoDeParametros.TIPO_CHAT;
+        t=t.substring(0,1);
+        tipo.setText(t);
         rvMensajes = (RecyclerView) findViewById(R.id.rvMensajes);
         txtMensaje = (EditText) findViewById(R.id.txtMensaje);
         txtMensaje.addTextChangedListener(new TextWatcher() {
@@ -178,7 +183,7 @@ public class Chat extends AppCompatActivity {
         btnEnviarFoto = (ImageButton) findViewById(R.id.btnEnviarFoto);
         fotoPerfilCadena = "";
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference("chat_"+PasoDeParametros.TIPO_CHAT);//Sala de chat (nombre)
+        databaseReference = database.getReference("chat_" + PasoDeParametros.TIPO_CHAT);//Sala de chat (nombre)
         storage = FirebaseStorage.getInstance();
         String nombre_perfil = sharedPreferences.getString("nombre", "Anonimo");
         String url_fotoPerfil = sharedPreferences.getString("urlFoto", "");
@@ -224,7 +229,7 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean b = sharedPreferences.getBoolean("bloqueado", false);
-                if (b){
+                if (b) {
                     Snackbar.make(view, "Usted esta bloqueado!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 } else {
@@ -283,13 +288,13 @@ public class Chat extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 bloqueados = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    BloqueadoModel bloqueadoModel =  snapshot.getValue(BloqueadoModel.class);
+                    BloqueadoModel bloqueadoModel = snapshot.getValue(BloqueadoModel.class);
                     String b = bloqueadoModel.getId();
                     bloqueados.add(b);
                 }
                 int i;
                 for (i = 0; i < bloqueados.size(); i++) {
-                 //   System.out.println(bloqueados.get(i) + "***************");
+                    //   System.out.println(bloqueados.get(i) + "***************");
                     if (bloqueados.get(i).equals(id)) {
                         i = bloqueados.size() + 1;
                     }
@@ -386,7 +391,7 @@ public class Chat extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PHOTO_SEND && resultCode == RESULT_OK) { // ENVIAR FOTO DE PERFIL
             final Uri ur = data.getData();
-            storageReference = storage.getReference("imagenes_chat_"+PasoDeParametros.TIPO_CHAT);//imagenes_chat
+            storageReference = storage.getReference("imagenes_chat_" + PasoDeParametros.TIPO_CHAT);//imagenes_chat
             final StorageReference fotoReferencia = storageReference.child(ur.getLastPathSegment());
             fotoReferencia.putFile(ur).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override

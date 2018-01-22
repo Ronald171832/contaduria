@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.informaciones.facultad.contaduriaalacima.Chat.PasoDeParametros;
 import com.informaciones.facultad.contaduriaalacima.PantallaPrincipal.MainActivity;
 import com.informaciones.facultad.contaduriaalacima.Publicaciones.Publicaciones;
 import com.informaciones.facultad.contaduriaalacima.R;
@@ -201,7 +202,8 @@ public class Categorias extends AppCompatActivity {
                                 public void onClick(View view) {
                                     String categoria = model.getFecha();
                                     Intent intent = new Intent(Categorias.this, Publicaciones.class);
-                                    intent.putExtra("categoria", categoria);
+                                    //intent.putExtra("categoria", categoria);
+                                    PasoDeParametros.CATEGORIA=categoria;
                                     startActivity(intent);
                                 }
                             });

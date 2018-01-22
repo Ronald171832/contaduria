@@ -234,16 +234,12 @@ public class Documentos extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     DocumentoModel publicacionesModel = new DocumentoModel();
                     try {
-                        System.out.println("************************************************************");
                         Map<String, Object> mapPublicacion = (HashMap) snapshot.getValue();
-                        System.out.println("******************************************0");
                         publicacionesModel.setFecha((String) mapPublicacion.get("fecha"));
-                        System.out.println("******************************************1");
                         publicacionesModel.setLinkDeDescarga((String) mapPublicacion.get("linkDeDescarga"));
                         publicacionesModel.setDescargas((String) mapPublicacion.get("descargas"));
-                        System.out.println("******************************************3");
                         publicacionesModel.setTitulo((String) mapPublicacion.get("titulo"));
-                        System.out.println("******************************************4");
+                        documentos.add(publicacionesModel);
                         listaInformaciones.add(publicacionesModel);
                     } catch (Exception e) {
                         System.out.println("----------------------------------------------------------------");

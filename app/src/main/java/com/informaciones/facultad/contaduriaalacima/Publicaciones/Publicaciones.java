@@ -48,6 +48,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.informaciones.facultad.contaduriaalacima.Bloqueados.BloqueadoModel;
+import com.informaciones.facultad.contaduriaalacima.Chat.PasoDeParametros;
 import com.informaciones.facultad.contaduriaalacima.ImgenCompleta.ImagenCompleta;
 import com.informaciones.facultad.contaduriaalacima.R;
 
@@ -161,7 +162,8 @@ public class Publicaciones extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Cargando Publicaciones...");
         progressDialog.show();
-        categoria = getIntent().getStringExtra("categoria");
+        categoria = PasoDeParametros.CATEGORIA;
+        rutaComentario = "categorias/" + categoria + "/publicaciones/";
         adapter = new PublicacionesAdapter(this, listaPublicaciones);
         rvPublicaciones.setAdapter(adapter);
         dbPublicaciones = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/publicaciones");
@@ -717,8 +719,7 @@ public class Publicaciones extends AppCompatActivity {
     }
 
 
-
-    String rutaComentario="categorias/"+categoria+"/publicaciones/";
+    String rutaComentario;
     private ProgressDialog progressCompartir;
 
     // CLASE ADAPTER PARA PODER EFECTUAR LOS COMENTARIOS DE LAS PUBLICACIONES
@@ -747,6 +748,8 @@ public class Publicaciones extends AppCompatActivity {
                 @Override
                 public boolean onLongClick(View view) {
                     database = FirebaseDatabase.getInstance();
+                    final String codigoPersona=comentariosList.get(i).getIdUsuario();
+                    final String nombrePersona=comentariosList.get(i).getNombre();
                     final ArrayList<String> listItems = new ArrayList<>();
                     listItems.add("✏ Editar Comentario");
                     listItems.add("❌ Eliminar Comentario");
@@ -762,7 +765,7 @@ public class Publicaciones extends AppCompatActivity {
                                                 case 0:
                                                     final Dialog ventana_emergente = new Dialog(context);
                                                     ventana_emergente.setTitle("Editar Comentario");
-                                                    ventana_emergente.setContentView(R.layout.ventana_emergente);
+                                                    ventana_emergente.setContentView(R.layout.ventana_emergente2);
                                                     final EditText editText = (EditText) ventana_emergente.findViewById(R.id.et_ventana_ingresar);
                                                     Button boton = (Button) ventana_emergente.findViewById(R.id.bt_ventana_aceptar);
                                                     final TextView textView = (TextView) ventana_emergente.findViewById(R.id.tv_ventana_titulo);
@@ -774,7 +777,7 @@ public class Publicaciones extends AppCompatActivity {
                                                     boton.setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
-                                                            comentario = database.getReference(rutaComentario  + comentariosList.get(i).getfecha() + "/msj");
+                                                            comentario = database.getReference(rutaComentario + TITULO_COMENTARIO + "/comentario/" + comentariosList.get(i).getfecha() + "/msj");
                                                             // System.out.println(comentario.toString() + "*******************************************");
                                                             comentario.setValue(editText.getText().toString().trim());
                                                             ventana_emergente.cancel();
@@ -789,7 +792,7 @@ public class Publicaciones extends AppCompatActivity {
                                                     ventana.setMessage("Esta seguro?:");
                                                     ventana.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int which) {
-                                                            comentario = database.getReference(rutaComentario + comentariosList.get(i).getfecha());
+                                                            comentario = database.getReference(rutaComentario+ TITULO_COMENTARIO + "/comentario/"  + comentariosList.get(i).getfecha());
                                                             comentario.removeValue();
                                                         }
                                                     });
@@ -802,21 +805,19 @@ public class Publicaciones extends AppCompatActivity {
                                                     break;
                                                 case 2:
                                                     final AlertDialog.Builder ventana2 = new AlertDialog.Builder(Publicaciones.this);
-                                                    ventana2.setTitle("Bloquear a " + comentariosList.get(i).getNombre());
+                                                    ventana2.setTitle("Bloquear a " + nombrePersona);
                                                     ventana2.setCancelable(false);
                                                     ventana2.setMessage("Esta seguro?:");
                                                     ventana2.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int which) {
-
                                                             Date date = new Date();
                                                             DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                                                             String fechaHora = hourdateFormat.format(date);
-                                                            String codigo = comentariosList.get(i).getIdUsuario();
-                                                            System.out.println(codigo + "*****************************");
-                                                            DatabaseReference dbBloqueados = FirebaseDatabase.getInstance().getReference("bloqueados/" + codigo);
+                                                            String cod=sharedPreferences.getString("id","");
+                                                            DatabaseReference dbBloqueados = FirebaseDatabase.getInstance().getReference("bloqueados/" + cod);
                                                             System.out.println(dbBloqueados.toString() + " ******************");
                                                             BloqueadoModel bloqueadoModel = new BloqueadoModel(comentariosList.get(i).getNombre(), fechaHora,
-                                                                    comentariosList.get(i).getMsj(), comentariosList.get(i).getFotoPerfil(), codigo);
+                                                                    comentariosList.get(i).getMsj(), comentariosList.get(i).getFotoPerfil(), cod);
                                                             dbBloqueados.setValue(bloqueadoModel);
 
                                                         }

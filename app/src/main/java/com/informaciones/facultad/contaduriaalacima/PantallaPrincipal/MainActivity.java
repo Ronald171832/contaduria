@@ -66,10 +66,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ///carrusel de imagenes
     private ImageSwitcher imageSwitcher;
     private Timer timer = null;
-    private int[] gallery = {R.drawable.menu_contaduria, R.drawable.menu_contaduria4, R.drawable.menu_contaduria5,
-            R.drawable.p1, R.drawable.p2, R.drawable.p3};
+    private int[] gallery = {R.drawable.p1, R.drawable.p2, R.drawable.p3,
+            R.drawable.p4, R.drawable.p5, R.drawable.p6};
     private int position;
-    private static final Integer DURATION = 3000;
+    private static final Integer DURATION = 4000;
 
 
     @Override
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         itemFacebook.setOnClickListener(this);
         itemAbout.setOnClickListener(this);
         itemContacto.setOnClickListener(this);
-        itemConfiguraciones.setOnClickListener(this);
+        //itemConfiguraciones.setOnClickListener(this);
         itemGestion.setOnClickListener(this);
 
         resideMenu.addMenuItem(itemHomeR, ResideMenu.DIRECTION_RIGHT);
@@ -260,9 +260,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.addMenuItem(itemFacebook, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemContacto, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemAbout, ResideMenu.DIRECTION_LEFT);
-        resideMenu.addMenuItem(itemConfiguraciones, ResideMenu.DIRECTION_LEFT);
+        // resideMenu.addMenuItem(itemConfiguraciones, ResideMenu.DIRECTION_LEFT);
         // TODO: 19/01/2018 COMENTAR PARA SER ESTUDIANTE
-        resideMenu.addMenuItem(itemGestion, ResideMenu.DIRECTION_LEFT);
+      //  resideMenu.addMenuItem(itemGestion, ResideMenu.DIRECTION_LEFT);
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -319,10 +319,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void elegirChat() {
         String TIPO = sharedPreferences.getString("tipoUsuario", "");
-        if(TIPO.equals("est")){
-            PasoDeParametros.TIPO_CHAT="est";
-
-        }else {
+        if (TIPO.equals("est")) {
+            PasoDeParametros.TIPO_CHAT = "est";
+            startActivity(new Intent(MainActivity.this, Chat.class));
+        } else {
             final ArrayList<String> listItems = new ArrayList<>();
             listItems.add("Estudiante");
             listItems.add("Administrativo");
@@ -339,12 +339,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     switch (item) {
                                         case 0:
                                             PasoDeParametros.TIPO_CHAT = "est";
+                                            startActivity(new Intent(MainActivity.this, Chat.class));
                                             break;
                                         case 1:
                                             PasoDeParametros.TIPO_CHAT = "adm";
+                                            startActivity(new Intent(MainActivity.this, Chat.class));
                                             break;
                                         case 2:
                                             PasoDeParametros.TIPO_CHAT = "doc";
+                                            startActivity(new Intent(MainActivity.this, Chat.class));
                                             break;
                                     }
                                 }
@@ -354,7 +357,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }).show();
         }
-        startActivity(new Intent(MainActivity.this, Chat.class));
     }
 
     public static String FACEBOOK_URL = "https://www.facebook.com/DireccionDeCarreraContaduriaPublica";

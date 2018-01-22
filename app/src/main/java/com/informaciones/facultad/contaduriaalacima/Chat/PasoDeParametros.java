@@ -6,4 +6,5 @@ package com.informaciones.facultad.contaduriaalacima.Chat;
 
 public class PasoDeParametros {
     public static  String TIPO_CHAT="";
+    public static  String CATEGORIA="";
 }

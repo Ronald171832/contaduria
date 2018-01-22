@@ -58,7 +58,7 @@ public class Registro_Datos extends AppCompatActivity {
     private void iniciar() {
         sharedPreferences = getSharedPreferences("nombre", MODE_PRIVATE);
         storage = FirebaseStorage.getInstance();
-       // callbackManager=CallbackManager.Factory.create();
+        // callbackManager=CallbackManager.Factory.create();
         foto = (ImageView) findViewById(R.id.iv_perfil_foto);
         nombre = (EditText) findViewById(R.id.et_perfil_nombre);
         tipoUsuario = (Button) findViewById(R.id.bt_registro_usuario);
@@ -113,13 +113,13 @@ public class Registro_Datos extends AppCompatActivity {
                                 switch (item) {
                                     case 0:
                                         sharedPreferences.edit().putString("tipoUsuario", "est").commit();
-                                        tipoUsuario.setText("est");
+                                        tipoUsuario.setText("Estudiante");
                                         break;
                                     case 1:
-                                        pedirContra();
+                                        pedirContra(listItems.get(1));
                                         break;
                                     case 2:
-                                        pedirContra();
+                                        pedirContra(listItems.get(2));
                                         break;
                                 }
                             }
@@ -132,7 +132,7 @@ public class Registro_Datos extends AppCompatActivity {
 
     }
 
-    private void pedirContra() {
+    private void pedirContra(final String tipo) {
         final Dialog login_ventana = new Dialog(Registro_Datos.this);
         login_ventana.setTitle("Ingresar Contraseña");
         login_ventana.setContentView(R.layout.gestionar_contra);
@@ -149,7 +149,9 @@ public class Registro_Datos extends AppCompatActivity {
                 String c = contra.getText().toString().trim();
                 if (c.equals("cp2018")) {
                     sharedPreferences.edit().putString("tipoUsuario", "adm").commit();
-                    tipoUsuario.setText("adm");
+                    tipoUsuario.setText(tipo);
+                } else {
+                    Toast.makeText(Registro_Datos.this, "Incorrecto!", Toast.LENGTH_LONG).show();
                 }
                 login_ventana.cancel();
             }
@@ -171,9 +173,10 @@ public class Registro_Datos extends AppCompatActivity {
             return;
         }
         String TIPO = sharedPreferences.getString("tipoUsuario", "");
-        if(TIPO.equals("")){
-            Snackbar.make(view, "Elije una categoria porfavo!", Snackbar.LENGTH_LONG)
+        if (TIPO.equals("")) {
+            Snackbar.make(view, "Elije Tipo de Persona porfavo!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
+            return;
         }
 
         sharedPreferences.edit().putString("nombre", nombre.getText().toString().trim()).apply();
@@ -205,8 +208,8 @@ public class Registro_Datos extends AppCompatActivity {
                 sharedPreferences.edit().putString("urlFoto", u.toString()).apply();
                 sharedPreferences.edit().putBoolean("registrarDatos", false).apply();
                 // actividad para saludar al usuario
-                Intent inicioIntent=new Intent(Registro_Datos.this,MainActivity.class);
-                inicioIntent.putExtra("saludo",nombre.getText().toString().trim());
+                Intent inicioIntent = new Intent(Registro_Datos.this, MainActivity.class);
+                inicioIntent.putExtra("saludo", nombre.getText().toString().trim());
                 startActivity(inicioIntent);
                         /*
                         Snackbar.make(view, "Bienvenido  " + nombre.getText().toString().trim(), Snackbar.LENGTH_LONG)
