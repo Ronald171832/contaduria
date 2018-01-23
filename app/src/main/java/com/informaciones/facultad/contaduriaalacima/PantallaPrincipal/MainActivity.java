@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.addMenuItem(itemAbout, ResideMenu.DIRECTION_LEFT);
         // resideMenu.addMenuItem(itemConfiguraciones, ResideMenu.DIRECTION_LEFT);
         // TODO: 19/01/2018 COMENTAR PARA SER ESTUDIANTE
-      //  resideMenu.addMenuItem(itemGestion, ResideMenu.DIRECTION_LEFT);
+        resideMenu.addMenuItem(itemGestion, ResideMenu.DIRECTION_LEFT);
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -380,28 +380,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void verificarIngreso() {
         startActivity(new Intent(MainActivity.this, GestionDePublicaciones.class));
-/*
-        final Dialog login_ventana = new Dialog(MainActivity.this);
-        login_ventana.setTitle("Ingresar Contraseña");
-        login_ventana.setContentView(R.layout.gestionar_contra);
-        final EditText contra = (EditText) login_ventana.findViewById(R.id.et_gestion_contra);
-        Button boton = (Button) login_ventana.findViewById(R.id.btn_gestion_contra);
-        int width = (int) (MainActivity.this.getResources().getDisplayMetrics().widthPixels * 0.9);
-        // set height for dialog
-        int height = (int) (MainActivity.this.getResources().getDisplayMetrics().heightPixels * 0.35);
-        login_ventana.getWindow().setLayout(width, height);
-
-        boton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String c = contra.getText().toString().trim();
-                if (c.equals("cp2017")) {
-                    startActivity(new Intent(MainActivity.this, GestionDePublicaciones.class));
-                }
-                login_ventana.cancel();
-            }
-        });
-        login_ventana.show();*/
     }
 
     private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
@@ -443,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         AlertDialog.Builder ventana = new AlertDialog.Builder(MainActivity.this);
-        ventana.setTitle("Salir");
+        ventana.setTitle("Desar Salir de Contaduria a la cima ???");
         ventana.setMessage("Elija una opcion:");
         ventana.setPositiveButton("SI", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {

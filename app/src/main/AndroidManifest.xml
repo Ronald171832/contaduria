@@ -67,9 +67,10 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Email.Contacto" />
 
+
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.provider"
+            android:authorities="com.informaciones.facultad.contaduriaalacima.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -106,6 +107,7 @@
             android:name=".Informacion.InformacionCrear"
             android:label="Información Crear"></activity>
         <activity
+
             android:name=".ImgenCompleta.ImagenCompleta"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />

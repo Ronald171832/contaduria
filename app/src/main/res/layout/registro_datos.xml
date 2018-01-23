@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/loggin1"
     tools:context="com.informaciones.facultad.contaduriaalacima.RegistroDeDatos.Registro_Datos">
 
     <ScrollView
@@ -21,7 +22,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="50dp"
                 android:onClick="elegirImagenPerfil"
                 android:scaleType="centerCrop"
                 android:src="@drawable/user" />
@@ -53,9 +54,10 @@
                     android:imeOptions="actionSend"
                     android:inputType="textMultiLine"
                     android:maxLength="50"
+                    android:textAlignment="center"
                     android:scrollbars="vertical"
                     android:singleLine="true"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorNegro"
                     android:textColorHint="@color/colorPrimary"
                     android:textSize="20dp" />
 
@@ -67,7 +69,8 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="25dp"
-                android:background="@color/colorAzul"
+                android:background="@drawable/layout_circular"
+                android:backgroundTint="@color/com_facebook_button_background_color"
                 android:onClick="selecionarTipo"
                 android:text="TIPO DE USUARIO"
                 android:textColor="@color/colorBlanco"
@@ -79,12 +82,46 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="25dp"
-                android:background="@color/colorAzul"
+                android:background="@drawable/layout_circular"
+                android:backgroundTint="@color/com_facebook_button_background_color"
                 android:onClick="registrarDatos"
                 android:text="Registrar"
                 android:textColor="@color/colorBlanco"
                 android:textSize="18dp"
                 android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_marginTop="25dp"
+                    android:layout_weight="0.3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/cardview_dark_background" />
+                <TextView
+                    android:layout_marginTop="17dp"
+                    android:textSize="17dp"
+                    android:textColor="@color/colorBlanco"
+                    android:text="o Registrate con Facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_marginTop="25dp"
+                    android:layout_width="match_parent"
+                    android:layout_weight="0.3"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/cardview_dark_background" />
+
+            </LinearLayout>
 
 
             <com.facebook.login.widget.LoginButton
@@ -92,17 +129,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="25dp"
+                android:enabled="false"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                android:visibility="gone"
 
                 ></com.facebook.login.widget.LoginButton>
 
-            <com.facebook.login.widget.ProfilePictureView
+
+
+            <!--<com.facebook.login.widget.ProfilePictureView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"></com.facebook.login.widget.ProfilePictureView>
+                android:visibility="gone"></com.facebook.login.widget.ProfilePictureView>-->
         </LinearLayout>
     </ScrollView>
 

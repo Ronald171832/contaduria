@@ -242,7 +242,7 @@ public class Documentos extends AppCompatActivity {
                         documentos.add(publicacionesModel);
                         listaInformaciones.add(publicacionesModel);
                     } catch (Exception e) {
-                        System.out.println("----------------------------------------------------------------");
+                        //System.out.println("----------------------------------------------------------------");
                         String error = e.getMessage().toString();
                     }
                 }

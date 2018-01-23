@@ -16,6 +16,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -162,7 +163,7 @@ public class Publicaciones extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Cargando Publicaciones...");
         progressDialog.show();
-        categoria = PasoDeParametros.CATEGORIA;
+        categoria = (PasoDeParametros.CATEGORIA.equals("")?getIntent().getStringExtra("categoria"):PasoDeParametros.CATEGORIA);
         rutaComentario = "categorias/" + categoria + "/publicaciones/";
         adapter = new PublicacionesAdapter(this, listaPublicaciones);
         rvPublicaciones.setAdapter(adapter);
@@ -680,11 +681,14 @@ public class Publicaciones extends AppCompatActivity {
             String msj = listaPublicaciones.get(pos).getTitulo() + "\n\n" + listaPublicaciones.get(pos).getDescripcion();
             msj += "\n\nContaduria a la cima";
             intent.putExtra(Intent.EXTRA_TEXT, msj);
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+            Uri uriShare= FileProvider.getUriForFile(getApplicationContext(), getPackageName()+".fileprovider", file);
+            intent.putExtra(Intent.EXTRA_STREAM,uriShare);//Uri.fromFile(file));
             intent.setType("image/png");
             progressCompartir.dismiss();
+            //startActivity(intent);
             startActivity(Intent.createChooser(intent, "Compartir imagen via:"));
         } catch (Exception e) {
+            String error=e.getMessage();
             Toast.makeText(Publicaciones.this, "No disponible para compartir!", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }

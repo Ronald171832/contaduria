@@ -125,7 +125,7 @@ public class GestionDePublicaciones extends AppCompatActivity {
             }
         });
         int width = (int) (GestionDePublicaciones.this.getResources().getDisplayMetrics().widthPixels);
-        int height = (int) (GestionDePublicaciones.this.getResources().getDisplayMetrics().heightPixels * 0.9);
+        int height = (int) (GestionDePublicaciones.this.getResources().getDisplayMetrics().heightPixels * 0.85);
         registrar_gasto.getWindow().setLayout(width, height);
         registrar_gasto.show();
     }

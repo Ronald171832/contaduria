@@ -19,6 +19,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -27,6 +35,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.informaciones.facultad.contaduriaalacima.PantallaPrincipal.MainActivity;
 import com.informaciones.facultad.contaduriaalacima.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -39,9 +50,9 @@ public class Registro_Datos extends AppCompatActivity {
     private FirebaseStorage storage;
 
     // VARIABLES PARA REGISTRO Y LOGGIN CON FACEBOOK
- /*   CallbackManager callbackManager;
+    CallbackManager callbackManager;
     LoginButton loginButton;
-*/
+
     private Uri imguri;
     private static final int PICK_IMAGE = 100;
 
@@ -56,16 +67,16 @@ public class Registro_Datos extends AppCompatActivity {
     private void iniciar() {
         sharedPreferences = getSharedPreferences("nombre", MODE_PRIVATE);
         storage = FirebaseStorage.getInstance();
-        // callbackManager=CallbackManager.Factory.create();
+        callbackManager=CallbackManager.Factory.create();
         foto = (ImageView) findViewById(R.id.iv_perfil_foto);
         nombre = (EditText) findViewById(R.id.et_perfil_nombre);
         tipoUsuario = (Button) findViewById(R.id.bt_registro_usuario);
-       /* loginButton=(LoginButton) findViewById(R.id.loginFB);
+        loginButton=(LoginButton) findViewById(R.id.loginFB);
         loginButton.setReadPermissions("public_profile email");
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
+                RequestData();
             }
 
             @Override
@@ -77,8 +88,84 @@ public class Registro_Datos extends AppCompatActivity {
             public void onError(FacebookException error) {
                 Toast.makeText(Registro_Datos.this  ,error.getMessage(),Toast.LENGTH_LONG).show();
             }
-        });*/
+        });
     }
+
+
+    public void RequestData(){
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+
+                JSONObject json = response.getJSONObject();
+                try {
+                    if(json != null){
+                        final String nombre = json.getString("name");//+"<br><br><b>Email :</b> "+json.getString("email")+"<br><br><b>Profile link :</b> "+json.getString("link");
+                        String idFotoUsuario = "";
+                        // GUARDAR EL NOMBRE DEL USUARIO
+                        sharedPreferences.edit().putString("nombre", nombre).apply();
+                        boolean generarID = sharedPreferences.getBoolean("generar", true);
+                        if (generarID) { // solo genera una vez el id de usuario
+                            sharedPreferences.edit().putBoolean("generar", false).commit();
+                            idFotoUsuario = String.valueOf(System.currentTimeMillis());
+                            sharedPreferences.edit().putString("id", idFotoUsuario).commit();
+                        }
+                        if (idFotoUsuario.equals("")) {
+                            idFotoUsuario = System.currentTimeMillis() + "";
+                            sharedPreferences.edit().putString("id", idFotoUsuario).commit();
+                        }
+                        Uri uriImage = Uri.parse("android.resource://" + getPackageName() +"/"+R.drawable.user);
+                        storageReference = storage.getReference("foto_perfil");//imagenes_chat
+                        final StorageReference fotoReferencia = storageReference.child(idFotoUsuario);
+                        fotoReferencia.putFile(uriImage).addOnSuccessListener(Registro_Datos.this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Uri u = taskSnapshot.getDownloadUrl();
+                                String fotoPerfilCadena = u.toString();
+                                sharedPreferences.edit().putString("fotoPerfil", fotoPerfilCadena).commit();
+                                sharedPreferences.edit().putString("urlFoto", u.toString()).apply();
+                                sharedPreferences.edit().putBoolean("registrarDatos", false).apply();
+                                // actividad para saludar al usuario
+                                Intent inicioIntent = new Intent(Registro_Datos.this, MainActivity.class);
+                                inicioIntent.putExtra("saludo", nombre);
+                                startActivity(inicioIntent);
+                        /*
+                        Snackbar.make(view, "Bienvenido  " + nombre.getText().toString().trim(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                        * */
+                                //startActivity(new Intent(Registro_Datos.this, MainActivity.class));
+                                //Toast.makeText(getApplicationContext(), "Bienvenido  " + nombre.getText().toString().trim(), Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+                                    @Override
+                                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                                                            }
+                                });
+
+                        //details_txt.setText(Html.fromHtml(text));
+                        //profile.setProfileId(json.getString("id"));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,link,email,picture");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+
 
     public void elegirImagenPerfil(View v) {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
@@ -91,6 +178,7 @@ public class Registro_Datos extends AppCompatActivity {
             imguri = data.getData();
             foto.setImageURI(imguri);
         }
+        callbackManager.onActivityResult(requestCode,resultCode,data);
     }
 
     public void selecionarTipo(View view) {
@@ -120,6 +208,7 @@ public class Registro_Datos extends AppCompatActivity {
                                         pedirContra(listItems.get(2));
                                         break;
                                 }
+                                loginButton.setEnabled(true);
                             }
                         }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -138,7 +227,7 @@ public class Registro_Datos extends AppCompatActivity {
         Button boton = (Button) login_ventana.findViewById(R.id.btn_gestion_contra);
         int width = (int) (Registro_Datos.this.getResources().getDisplayMetrics().widthPixels * 0.9);
         // set height for dialog
-        int height = (int) (Registro_Datos.this.getResources().getDisplayMetrics().heightPixels * 0.9);
+        int height = (int) (Registro_Datos.this.getResources().getDisplayMetrics().heightPixels * 0.5);
         login_ventana.getWindow().setLayout(width, height);
 
         boton.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +261,7 @@ public class Registro_Datos extends AppCompatActivity {
         }
         String TIPO = sharedPreferences.getString("tipoUsuario", "");
         if (TIPO.equals("")) {
-            Snackbar.make(view, "Elije Tipo de Persona porfavo!", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Elije Tipo de Usuario porfavor!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             return;
         }

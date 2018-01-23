@@ -111,8 +111,6 @@ public class Categorias extends AppCompatActivity {
                             }
                         });
                         dialog.show();
-
-
                         //   Toast.makeText(Categorias.this, " izquierda posicion:" + position, Toast.LENGTH_SHORT).show();
                     } else {
                         AlertDialog.Builder ventana = new AlertDialog.Builder(Categorias.this);
@@ -188,7 +186,7 @@ public class Categorias extends AppCompatActivity {
                 new FirebaseRecyclerAdapter<CategoriaModel, myViewHolader>(CategoriaModel.class, R.layout.categoria_card, myViewHolader.class, myRef) {
                     @Override
                     protected void populateViewHolder(myViewHolader viewHolder, final CategoriaModel model, int position) {
-                        if (aBoolean) {
+                        if (aBoolean) { // superusuario
                             viewHolder.linearLayout.setVisibility(View.VISIBLE);
                             String t = model.getTitulo();
                             viewHolder.tvTitulo.setText(t);
@@ -209,7 +207,7 @@ public class Categorias extends AppCompatActivity {
                             });
 
 
-                        } else {
+                        } else { // usuario comun y corriente
                             String t = model.getTitulo();
                             viewHolder.tvTitulo.setText(t);
                             viewHolder.tvTituloCortado.setText(t.substring(0, 1));

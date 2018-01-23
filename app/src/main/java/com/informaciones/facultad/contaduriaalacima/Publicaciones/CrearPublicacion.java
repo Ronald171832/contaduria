@@ -28,6 +28,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.share.ShareApi;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -205,15 +208,30 @@ public class CrearPublicacion extends AppCompatActivity {
         mapDataNotificacion.put("mensaje", descPublicacion);
         if (isPublicacionWithImg) {
             imagenesURL_FB = new HashMap<>();
-            for (int i = 0; i < imgsUri.length; i++) {
+            for (int i = 0; i < imgsUri.length; i++) { // notificacion se realiza dentro del metodo
                 addImagenPublicacionFB(imgsUri[i], nombreCategoria, i, fechaHora);
             }
+            publicarFacebook(nombreCategoria,nombrePublicacion,descPublicacion,imgsUri);
         } else {
             notificarUsers(mapDataNotificacion.get("titulo"), mapDataNotificacion.get("mensaje"), null);
         }
         isPublicacionWithImg = false; // volver al estado inicial
         dialog.dismiss();
 
+    }
+
+    private void publicarFacebook(String nombreCategoria,String nombrePublicacion, String descPublicacion, Uri[] img) {
+        String contenido=nombreCategoria+"\n\n"+nombrePublicacion+"\n"+descPublicacion;
+        for (int i=0;i<img.length;i++){
+            SharePhoto foto=new SharePhoto.Builder()
+                    .setImageUrl(img[i]).setCaption(contenido)
+                    .build();
+
+            SharePhotoContent content = new SharePhotoContent.Builder()
+                    .addPhoto(foto)
+                    .build();
+            ShareApi.share(content,null);
+        }
     }
 
     Map<String, String> imagenesURL_FB;
