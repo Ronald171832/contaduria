@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -23,14 +24,43 @@ public class HomeFragment extends Fragment {
     private ResideMenu resideMenu;
     private DatabaseReference dbPublicaciones;
     private ImageView portada;
+    private TextView estado;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragement_pantalla_principa, container, false);
         portada = (ImageView) parentView.findViewById(R.id.iv_portada);
+        estado = (TextView) parentView.findViewById(R.id.tv_perfil_estado);
         cargarImagen();
+        cargarEstado();
         //setUpViews();
         return parentView;
+    }
+
+    private void cargarEstado() {
+        System.out.println("***************************/////////////////////////////////");
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        dbPublicaciones = database.getReference("estado");
+        dbPublicaciones.keepSynced(true);
+        dbPublicaciones.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String perfilModel = snapshot.getValue(String.class);
+                    System.out.println(perfilModel+"/////////////////////////////////");
+                    if (perfilModel.equals("")) {
+                        estado.setVisibility(View.GONE);
+                    } else {
+                        estado.setVisibility(View.VISIBLE );
+                        estado.setText(perfilModel);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     private void cargarImagen() {
@@ -41,7 +71,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String perfilModel = snapshot.getValue(String.class);
+                    String perfilModel = snapshot.getValue(String.class);
                     Glide.with(HomeFragment.this).load(perfilModel).into(portada);
                 }
             }

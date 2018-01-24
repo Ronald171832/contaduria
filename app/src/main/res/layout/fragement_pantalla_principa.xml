@@ -12,7 +12,14 @@
         android:onClick="abrirLaterales"
         android:orientation="vertical"
         android:padding="2dp">
-
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_perfil_estado"
+            android:textSize="15dp"
+            android:background="@color/colorBlanco"
+            android:textColor="@color/colorNegro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <ImageView
             android:background="@drawable/fondo_principal"
             android:id="@+id/iv_portada"

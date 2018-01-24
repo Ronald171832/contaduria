@@ -170,7 +170,7 @@ public class AdapterMensajes extends RecyclerView.Adapter<HolderMensaje> {
                     }
                 } catch (Exception e) {
                     Intent intent = new Intent(c, ImagenCompleta.class);
-                    intent.putExtra("url", listMensaje.get(position).getFotoPerfil());
+                    PasoDeParametros.URL_IMAGEN = listMensaje.get(position).getFotoPerfil();
                     c.startActivity(intent);
                 }
             }
@@ -187,7 +187,7 @@ public class AdapterMensajes extends RecyclerView.Adapter<HolderMensaje> {
                     }
                 } catch (Exception e) {
                     Intent intent = new Intent(c, ImagenCompleta.class);
-                    intent.putExtra("url", listMensaje.get(position).getUriFotoImagen());
+                    PasoDeParametros.URL_IMAGEN = listMensaje.get(position).getUriFotoImagen();
                     c.startActivity(intent);
                 }
 

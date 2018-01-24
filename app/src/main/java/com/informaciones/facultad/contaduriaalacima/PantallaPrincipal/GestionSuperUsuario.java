@@ -1,7 +1,9 @@
 package com.informaciones.facultad.contaduriaalacima.PantallaPrincipal;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -12,9 +14,12 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,12 +31,15 @@ import com.google.firebase.storage.UploadTask;
 import com.informaciones.facultad.contaduriaalacima.Bloqueados.Bloqueados;
 import com.informaciones.facultad.contaduriaalacima.Categorias.CrearCategorias;
 import com.informaciones.facultad.contaduriaalacima.Documentos.CrearDocumentos;
+import com.informaciones.facultad.contaduriaalacima.GaleriaDeImagenes.GaleriaSubirImagenes;
 import com.informaciones.facultad.contaduriaalacima.Informacion.InformacionCrear;
 import com.informaciones.facultad.contaduriaalacima.Notificaciones.CrearNotificacion;
 import com.informaciones.facultad.contaduriaalacima.Publicaciones.CrearPublicacion;
 import com.informaciones.facultad.contaduriaalacima.R;
 
-public class GestionDePublicaciones extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class GestionSuperUsuario extends AppCompatActivity {
     RelativeLayout categoria, publicaciones, documento, pantalla, bloqueados;
     SharedPreferences sharedPreferences;
     private static final int PICK_IMAGE = 100;
@@ -72,6 +80,7 @@ public class GestionDePublicaciones extends AppCompatActivity {
     public void documentos(View view) {
         startActivity(new Intent(this, CrearDocumentos.class));
     }
+
     public void notificacion(View view) {
         startActivity(new Intent(this, CrearNotificacion.class));
     }
@@ -79,6 +88,11 @@ public class GestionDePublicaciones extends AppCompatActivity {
     public void bloqueados(View view) {
         startActivity(new Intent(this, Bloqueados.class));
     }
+
+    public void gestion_galeria(View view) {
+        startActivity(new Intent(this, GaleriaSubirImagenes.class));
+    }
+
     public void informacion(View view) {
         startActivity(new Intent(this, InformacionCrear.class));
     }
@@ -92,9 +106,68 @@ public class GestionDePublicaciones extends AppCompatActivity {
     }
 
     public void fondoPantalla(View view) {
+        final ArrayList<String> listItems = new ArrayList<>();
+        listItems.add("Actualizar Foto Portada");
+        listItems.add("Actulizar Estado");
+        new AlertDialog.Builder(GestionSuperUsuario.this)
+                .setTitle("Elija una Opción:")
+                .setCancelable(false)
+                .setAdapter(new ArrayAdapter<String>(GestionSuperUsuario.this, android.R.layout.simple_list_item_1, listItems),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int item) {
+                                switch (item) {
+                                    case 0:
+                                        actualizarPortada();
+                                        break;
+                                    case 1:
+                                        actualizarEstado();
+                                        break;
+                                }
+                            }
+                        }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        }).show();
+
+
+    }
+
+    private void actualizarEstado() {
+        final Dialog ventana_emergente = new Dialog(GestionSuperUsuario.this);
+        ventana_emergente.setTitle("Actualizar Estado");
+        ventana_emergente.setContentView(R.layout.ventana_emergente2);
+        final EditText editText = (EditText) ventana_emergente.findViewById(R.id.et_ventana_ingresar);
+        Button boton = (Button) ventana_emergente.findViewById(R.id.bt_ventana_aceptar);
+        final TextView textView = (TextView) ventana_emergente.findViewById(R.id.tv_ventana_titulo);
+        textView.setText("Actualizar Estado");
+        int width = (int) (GestionSuperUsuario.this.getResources().getDisplayMetrics().widthPixels * 0.99);
+        int height = (int) (GestionSuperUsuario.this.getResources().getDisplayMetrics().heightPixels * 0.6);
+        ventana_emergente.getWindow().setLayout(width, height);
+        boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference dbBloqueados;
+                dbBloqueados = database.getReference("estado").child("info");
+                if (editText.getText().toString().equals("")) {
+                    dbBloqueados.setValue(" ");
+                } else {
+                    dbBloqueados.setValue(editText.getText().toString().trim());
+                }
+                ventana_emergente.cancel();
+            }
+        });
+        ventana_emergente.show();
+
+
+    }
+
+    private void actualizarPortada() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
-        final Dialog registrar_gasto = new Dialog(GestionDePublicaciones.this);
+        final Dialog registrar_gasto = new Dialog(GestionSuperUsuario.this);
         registrar_gasto.setTitle("Actualizar Imagen");
         registrar_gasto.setContentView(R.layout.gestion_fondo_pantalla);
         imagen = (ImageView) registrar_gasto.findViewById(R.id.iv_portadaVistaPrevia);
@@ -109,7 +182,7 @@ public class GestionDePublicaciones extends AppCompatActivity {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(GestionDePublicaciones.this, "Imagen Cargando \n Esperar Segundos para la Actualizacion", Toast.LENGTH_LONG).show();
+                Toast.makeText(GestionSuperUsuario.this, "Imagen Cargando \n Esperar Segundos para la Actualizacion", Toast.LENGTH_LONG).show();
                 registrar_gasto.dismiss();
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 dbPublicaciones = database.getReference("perfil");
@@ -124,8 +197,8 @@ public class GestionDePublicaciones extends AppCompatActivity {
                 });
             }
         });
-        int width = (int) (GestionDePublicaciones.this.getResources().getDisplayMetrics().widthPixels);
-        int height = (int) (GestionDePublicaciones.this.getResources().getDisplayMetrics().heightPixels * 0.85);
+        int width = (int) (GestionSuperUsuario.this.getResources().getDisplayMetrics().widthPixels);
+        int height = (int) (GestionSuperUsuario.this.getResources().getDisplayMetrics().heightPixels * 0.9);
         registrar_gasto.getWindow().setLayout(width, height);
         registrar_gasto.show();
     }

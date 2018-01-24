@@ -35,8 +35,10 @@ import com.informaciones.facultad.contaduriaalacima.Documentos.Documentos;
 import com.informaciones.facultad.contaduriaalacima.Email.Contacto;
 import com.informaciones.facultad.contaduriaalacima.Fragmentos.AcercaDeFragment;
 import com.informaciones.facultad.contaduriaalacima.Fragmentos.HomeFragment;
+import com.informaciones.facultad.contaduriaalacima.GaleriaDeImagenes.CarpetasDeImagenes;
 import com.informaciones.facultad.contaduriaalacima.Informacion.Informacion;
 import com.informaciones.facultad.contaduriaalacima.R;
+import com.informaciones.facultad.contaduriaalacima.RegistroDeDatos.CambioDatos;
 import com.informaciones.facultad.contaduriaalacima.RegistroDeDatos.Registro_Datos;
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ResideMenuItem itemFacebook;
     private ResideMenuItem itemInformacion;
     private ResideMenuItem itemConfiguraciones;
+    private ResideMenuItem itemGaleria;
     SharedPreferences sharedPreferences;
     private static final int STORAGE_PERMISSION_CODE = 23;
     FrameLayout frPrincipal;
@@ -233,10 +236,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         itemPreguntas = new ResideMenuItem(this, R.drawable.img_categ_menu, "Publicaciones");
         itemAbout = new ResideMenuItem(this, R.drawable.desarroladores, "Desarrolladores");
         itemContacto = new ResideMenuItem(this, R.drawable.img_mail_menu, "Contacto");
+        // TODO: 22/01/2018 comentar para subir a play store
         itemGestion = new ResideMenuItem(this, R.drawable.super_user, "Gestion");
         itemFacebook = new ResideMenuItem(this, R.drawable.facebook, "Facebook");
         itemInformacion = new ResideMenuItem(this, R.drawable.img_acercade_menu, "Informacion");
         itemConfiguraciones = new ResideMenuItem(this, R.drawable.configuraciones, "Ajustes");
+        itemGaleria = new ResideMenuItem(this, R.drawable.menu_galeria, "Eventos");
 
         itemHomeR.setOnClickListener(this);
         itemHomeI.setOnClickListener(this);
@@ -247,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         itemFacebook.setOnClickListener(this);
         itemAbout.setOnClickListener(this);
         itemContacto.setOnClickListener(this);
+        itemGaleria.setOnClickListener(this);
         // TODO: 22/01/2018 comentar para subir a play store
         itemConfiguraciones.setOnClickListener(this);
         itemGestion.setOnClickListener(this);
@@ -261,8 +267,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.addMenuItem(itemFacebook, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemContacto, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemAbout, ResideMenu.DIRECTION_LEFT);
-        // resideMenu.addMenuItem(itemConfiguraciones, ResideMenu.DIRECTION_LEFT);
+        resideMenu.addMenuItem(itemGaleria, ResideMenu.DIRECTION_RIGHT);
+        resideMenu.addMenuItem(itemConfiguraciones, ResideMenu.DIRECTION_LEFT);
         // TODO: 19/01/2018 COMENTAR PARA SER ESTUDIANTE
+
         resideMenu.addMenuItem(itemGestion, ResideMenu.DIRECTION_LEFT);
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,10 +313,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view == itemInformacion) {
             startActivity(new Intent(MainActivity.this, Informacion.class));
         } else if (view == itemConfiguraciones) {
-            startActivity(new Intent(MainActivity.this, Registro_Datos.class));
+            startActivity(new Intent(MainActivity.this, CambioDatos.class));
         } else if (view == itemGestion) {
-            startActivity(new Intent(MainActivity.this, GestionDePublicaciones.class));
-            //verificarIngreso();
+            startActivity(new Intent(MainActivity.this, GestionSuperUsuario.class));
+        } else if (view == itemGaleria) {
+            startActivity(new Intent(MainActivity.this, CarpetasDeImagenes.class));
         } else if (view == itemFacebook) {
             Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
             String facebookUrl = getFacebookPageURL(this);
@@ -379,7 +388,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void verificarIngreso() {
-        startActivity(new Intent(MainActivity.this, GestionDePublicaciones.class));
+        startActivity(new Intent(MainActivity.this, GestionSuperUsuario.class));
+/*
+        final Dialog login_ventana = new Dialog(MainActivity.this);
+        login_ventana.setTitle("Ingresar Contraseña");
+        login_ventana.setContentView(R.layout.gestionar_contra);
+        final EditText contra = (EditText) login_ventana.findViewById(R.id.et_gestion_contra);
+        Button boton = (Button) login_ventana.findViewById(R.id.btn_gestion_contra);
+        int width = (int) (MainActivity.this.getResources().getDisplayMetrics().widthPixels * 0.9);
+        // set height for dialog
+        int height = (int) (MainActivity.this.getResources().getDisplayMetrics().heightPixels * 0.35);
+        login_ventana.getWindow().setLayout(width, height);
+
+        boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String c = contra.getText().toString().trim();
+                if (c.equals("cp2017")) {
+                    startActivity(new Intent(MainActivity.this, GestionDePublicaciones.class));
+                }
+                login_ventana.cancel();
+            }
+        });
+        login_ventana.show();*/
     }
 
     private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {

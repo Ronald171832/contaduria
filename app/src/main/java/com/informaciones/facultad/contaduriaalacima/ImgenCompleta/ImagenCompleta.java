@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.informaciones.facultad.contaduriaalacima.Chat.PasoDeParametros;
 import com.informaciones.facultad.contaduriaalacima.R;
 
 import java.io.File;
@@ -33,10 +34,11 @@ public class ImagenCompleta extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.imagen_completa);
         imagen = (ImageView) findViewById(R.id.iv_completa);
-        url = getIntent().getStringExtra("url");
+        url = PasoDeParametros.URL_IMAGEN;
         Glide.with(ImagenCompleta.this).load(url).into(imagen);
         permisoMemoriaInterna();
     }
+
     final int REQUEST_CODE_GALLERY = 999;
 
     private void permisoMemoriaInterna() {
@@ -46,6 +48,7 @@ public class ImagenCompleta extends AppCompatActivity {
                 REQUEST_CODE_GALLERY
         );
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CODE_GALLERY) {
@@ -60,6 +63,7 @@ public class ImagenCompleta extends AppCompatActivity {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
     public void guardar(View view) {
         AlertDialog.Builder cliente = new AlertDialog.Builder(ImagenCompleta.this);
         cliente.setTitle("Guardar");

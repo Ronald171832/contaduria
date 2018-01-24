@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/loggin1"
     tools:context="com.informaciones.facultad.contaduriaalacima.RegistroDeDatos.Registro_Datos">
 
     <ScrollView
@@ -19,8 +18,8 @@
 
             <ImageView
                 android:id="@+id/iv_perfil_foto"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
                 android:onClick="elegirImagenPerfil"
@@ -52,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Ingrese Nombre..."
                     android:imeOptions="actionSend"
-                    android:inputType="textMultiLine"
+                    android:inputType="textCapSentences"
                     android:maxLength="50"
                     android:textAlignment="center"
                     android:scrollbars="vertical"

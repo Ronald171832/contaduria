@@ -220,7 +220,7 @@ public class Categorias extends AppCompatActivity {
                                     dbVisitas = FirebaseDatabase.getInstance().getReference("categorias/" + categoria + "/visitas");
                                     dbVisitas.setValue(model.getVisitas() + 1);
                                     Intent intent = new Intent(Categorias.this, Publicaciones.class);
-                                    intent.putExtra("categoria", categoria);
+                                    PasoDeParametros.CATEGORIA=categoria;
                                     startActivity(intent);
                                 }
                             });

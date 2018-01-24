@@ -35,6 +35,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.informaciones.facultad.contaduriaalacima.Chat.PasoDeParametros;
 import com.informaciones.facultad.contaduriaalacima.ImgenCompleta.ImagenCompleta;
 import com.informaciones.facultad.contaduriaalacima.R;
 
@@ -381,7 +382,7 @@ public class Informacion extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent=new Intent(Informacion.this,ImagenCompleta.class);
-                    intent.putExtra("url",publicacionesFilterList.get(i).getImagen());
+                    PasoDeParametros.URL_IMAGEN =publicacionesFilterList.get(i).getImagen();
                     startActivity(intent);
                 }
             });

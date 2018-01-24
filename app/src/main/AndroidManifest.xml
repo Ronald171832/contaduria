@@ -62,7 +62,7 @@
             android:name=".Documentos.Documentos"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PantallaPrincipal.GestionDePublicaciones"
+            android:name=".PantallaPrincipal.GestionSuperUsuario"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Email.Contacto" />
@@ -80,8 +80,13 @@
 
         <activity
             android:name=".RegistroDeDatos.Registro_Datos"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:label="Registro de Datos"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegistroDeDatos.CambioDatos"
+            android:label="Editar Perfil"
+            android:screenOrientation="portrait"></activity>
+
 
         <service android:name=".Notificaciones.FirebaseMessagingService">
             <intent-filter>
@@ -95,20 +100,32 @@
         </service>
 
         <activity
-            android:screenOrientation="portrait"
             android:name=".Bloqueados.Bloqueados"
-            android:label="Lista de Bloqueados" />
+            android:label="Lista de Bloqueados"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".Informacion.Informacion"
-            android:label="Informaciónes" />
+            android:label="Informaciónes"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".Informacion.InformacionCrear"
-            android:label="Información Crear"></activity>
+            android:label="Información Crear"
+            android:screenOrientation="portrait"></activity>
         <activity
 
             android:name=".ImgenCompleta.ImagenCompleta"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
+        <activity
+            android:name=".GaleriaDeImagenes.GaleriaSubirImagenes"
+            android:label="Subir Imagenes"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GaleriaDeImagenes.CarpetasDeImagenes"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GaleriaDeImagenes.Imagenes"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
     </application>

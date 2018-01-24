@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.informaciones.facultad.contaduriaalacima.PantallaPrincipal.GestionDePublicaciones">
+    tools:context="com.informaciones.facultad.contaduriaalacima.PantallaPrincipal.GestionSuperUsuario">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -153,7 +153,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:background="@color/md_indigo_300"
+                android:background="@color/md_indigo_500"
                 android:onClick="informacion"
                 android:orientation="vertical">
 
@@ -182,13 +182,46 @@
                     android:textSize="20dp"
                     android:textStyle="bold" />
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/bt_ges_gale"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/md_indigo_400"
+                android:onClick="gestion_galeria"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:onClick="gestion_galeria"
+                    android:text="G"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="80dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/colorNegroBajo"
+                    android:gravity="center"
+                    android:onClick="gestion_galeria"
+                    android:text="Galeria de Imagenes"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
 
 
             <RelativeLayout
                 android:id="@+id/bt_ges_bloque"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:background="@color/md_indigo_500"
+                android:background="@color/md_indigo_300"
                 android:onClick="bloqueados"
                 android:orientation="vertical">
 
@@ -219,7 +252,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:background="@color/md_indigo_400"
+                android:background="@color/md_indigo_200"
                 android:onClick="notificacion"
                 android:orientation="vertical">
 

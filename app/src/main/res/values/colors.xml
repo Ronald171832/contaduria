@@ -14,12 +14,14 @@
     <color name="colorNegroBajo">#80000000</color>
     <color name="colorAzul1">#396787</color>
 
-    <color name="md_indigo_300">#03a9f4</color>
-    <color name="md_indigo_400">#64ffda</color>
-    <color name="md_indigo_500">#00bcd4</color>
-    <color name="md_indigo_600">#40c4ff</color>
-    <color name="md_indigo_700">#2979ff</color>
-    <color name="md_indigo_800">#1565c0</color>
     <color name="md_indigo_900">#1a237e</color>
+    <color name="md_indigo_800">#303f9f</color>
+    <color name="md_indigo_700">#1565c0</color>
+    <color name="md_indigo_600">#2979ff</color>
+    <color name="md_indigo_500">#40c4ff</color>
+    <color name="md_indigo_400">#00bcd4</color>
+    <color name="md_indigo_300">#03a9f4</color>
+    <color name="md_indigo_200">#64ffda</color>
+
 
 </resources>
