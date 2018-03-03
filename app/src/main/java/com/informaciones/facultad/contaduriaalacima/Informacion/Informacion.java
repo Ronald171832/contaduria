@@ -341,8 +341,6 @@ public class Informacion extends AppCompatActivity {
     }
 
 
-
-
     // CLASE ADAPTER PARA LAS PUBLICACIONES
     public class ClienteAdapter extends RecyclerView.Adapter<myViewHolader> implements Filterable {
         private ArrayList<InformacionModel> publicacionesList;

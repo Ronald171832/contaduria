@@ -13,6 +13,7 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/fondo_principal"
         android:supportsRtl="true"
+        android:hardwareAccelerated="true"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -81,6 +82,7 @@
         <activity
             android:name=".RegistroDeDatos.Registro_Datos"
             android:label="Registro de Datos"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".RegistroDeDatos.CambioDatos"

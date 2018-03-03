@@ -1,5 +1,9 @@
 package com.informaciones.facultad.contaduriaalacima.PantallaPrincipal;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -26,6 +31,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.informaciones.facultad.contaduriaalacima.Categorias.Categorias;
@@ -44,6 +55,7 @@ import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -69,16 +81,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ///carrusel de imagenes
     private ImageSwitcher imageSwitcher;
     private Timer timer = null;
-    private int[] gallery = {R.drawable.p1, R.drawable.p2, R.drawable.p3,
+    private int[] galleryDefault = {R.drawable.p1, R.drawable.p2, R.drawable.p3,
             R.drawable.p4, R.drawable.p5, R.drawable.p6};
-    private int position;
+    private int position,position2;
     private static final Integer DURATION = 4000;
-
+    public String[] galleryFirebase;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*imageViewX = (ImageView)findViewById(R.id.imageSwitcher);
+
+        Animation startAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+        //imageViewX.startAnimation(startAnimation);
+
+        Animation startAnimation2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
+
+
+        AnimationSet animation = new AnimationSet(false); // change to false
+        animation.addAnimation(startAnimation);
+        animation.addAnimation(startAnimation2);
+        animation.setRepeatCount(1);
+        imageViewX.setAnimation(animation);*/
+
+        //imageViewX.startAnimation(startAnimation2);
+
+        /*ObjectAnimator fadeOut = ObjectAnimator.ofFloat(imageViewX, "alpha",  1f, .3f);
+        fadeOut.setDuration(2000);
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(imageViewX, "alpha", .3f, 1f);
+        fadeIn.setDuration(2000);
+
+        final AnimatorSet mAnimationSet = new AnimatorSet();
+
+        mAnimationSet.play(fadeIn).after(fadeOut);
+
+        mAnimationSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mAnimationSet.start();
+            }
+        });
+        mAnimationSet.start();*/
         frPrincipal = (FrameLayout) findViewById(R.id.frPrincipal);
         cosultarRegistroDeDatos();
         if (getIntent().getStringExtra("saludo") != null) { // viene desde registro de datos
@@ -93,29 +138,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String error = e.getMessage().toString();
         }
         isAlowedReadPermission();
-
         setUpMenu();
         if (savedInstanceState == null) {
             changeFragment(new HomeFragment());
         }
-        iniciarCarrusel();
+
     }
 
+    ImageView imageViewX;
     private void iniciarCarrusel() {
         imageSwitcher = (ImageSwitcher) findViewById(R.id.imageSwitcher);
         imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             public View makeView() {
                 ImageView imageView = new ImageView(MainActivity.this);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
                 return imageView;
             }
         });
         Animation fadeIn = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_in);
         Animation fadeOut = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
         imageSwitcher.setInAnimation(fadeIn);
+
         imageSwitcher.setOutAnimation(fadeOut);
+
+
         ///rotar las imagenes
+        position=0; position2=0;
         timer = new Timer();
     }
 
@@ -128,16 +176,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // "Only the original thread that created a view hierarchy can touch its views"
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        imageSwitcher.setImageResource(gallery[position]);
+                        //Glide.with(getApplicationContext()).load(galleryFirebase[position]).into(imageViewX);
+                        imageSwitcher.setImageResource(galleryDefault[position]);
                         position++;
-                        if (position == gallery.length) {
-                            position = 0;
+                        if (position==galleryDefault.length){
+                            position=0;
                         }
+                        /*if (galleryFirebase==null ||galleryFirebase.length==0){
+                            imageSwitcher.setImageResource(galleryDefault[position]);
+                            position++;
+                            if (position == galleryDefault.length) {
+                                position = 0;
+                            }
+                        } else {
+                            System.out.println(position+" ...................");
+                            String rutaImgDB=galleryFirebase[position2];
+                            //String ff="https://firebasestorage.googleapis.com/v0/b/contaduria-6cc7f.appspot.com/o/presentacion_img%2Fimg+0_1516802925961.jpg?alt=media&token=ef396e8e-d575-4f7d-814c-d78e769461ac";
+                            Glide.with(getApplicationContext()).load(rutaImgDB).into(imageViewX);
+                            imageViewX.setVisibility(View.VISIBLE);
+                            imageSwitcher.setImageDrawable(imageViewX.getDrawable());
+                            imageViewX.setVisibility(View.GONE);
+                            position2++;
+                            if (position2==galleryFirebase.length){
+                                position2=0;
+                            }
+                        }*/
                     }
                 });
             }
 
         }, 0, DURATION);
+    }
+
+
+
+    private void cargarImagenesPresentacion() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final List<String> urlImgs=new ArrayList<>();
+        final DatabaseReference dbPresentacion;
+        dbPresentacion = database.getReference("presentacion");
+        dbPresentacion.keepSynced(true);
+        dbPresentacion.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String imgModel = snapshot.getValue(String.class);
+                    urlImgs.add(imgModel);
+                    //Glide.with(MainActivity.this).load(perfilModel).into(portada);
+                }
+                galleryFirebase=new String[urlImgs.size()]; // redimensionar
+                for (int i=0;i<galleryFirebase.length;i++){
+                    galleryFirebase[i]=urlImgs.get(i);
+                    //p.setText(p.getText()+"\n"+galleryFirebase[i]);
+                    //Toast.makeText(getApplicationContext(),galleryFirebase[i].toString(),Toast.LENGTH_LONG).show();
+                }
+                startSlider();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     // Stops the slider when the Activity is going into the background
@@ -218,6 +317,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         boolean registrarDatos = sharedPreferences.getBoolean("registrarDatos", true);
         if (registrarDatos) {
             startActivity(new Intent(MainActivity.this, Registro_Datos.class));
+        } else {
+            iniciarCarrusel();
+            cargarImagenesPresentacion();
         }
     }
 
@@ -227,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.setBackground(R.drawable.menu_contaduria);
         resideMenu.attachToActivity(this);
         resideMenu.setMenuListener(menuListener);
-        resideMenu.setScaleValue(0.5f);
+        resideMenu.setScaleValue(0.65f);
         // create menu items;
         itemHomeR = new ResideMenuItem(this, R.drawable.img_opciones_menu, "Inicio");
         itemHomeI = new ResideMenuItem(this, R.drawable.img_opciones_menu, "Inicio");
@@ -270,7 +372,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.addMenuItem(itemGaleria, ResideMenu.DIRECTION_RIGHT);
         resideMenu.addMenuItem(itemConfiguraciones, ResideMenu.DIRECTION_LEFT);
         // TODO: 19/01/2018 COMENTAR PARA SER ESTUDIANTE
-
         resideMenu.addMenuItem(itemGestion, ResideMenu.DIRECTION_LEFT);
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -452,7 +553,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         AlertDialog.Builder ventana = new AlertDialog.Builder(MainActivity.this);
-        ventana.setTitle("Desar Salir de Contaduria a la cima ???");
+        ventana.setTitle("Desea Salir de Contaduria???");
         ventana.setMessage("Elija una opcion:");
         ventana.setPositiveButton("SI", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -465,6 +566,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         ventana.show();
+
     }
+
 }
 

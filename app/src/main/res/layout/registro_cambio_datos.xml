@@ -68,10 +68,10 @@
                             android:textColor="@color/colorNegro"
                             android:textSize="18dp" />
 
-                        <TextView
+                        <!--<TextView
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@color/colorPlomoBajo" />
+                            android:background="@color/colorPlomoBajo" />-->
 
                         <TextView
                             android:id="@+id/tv_editar_foto"

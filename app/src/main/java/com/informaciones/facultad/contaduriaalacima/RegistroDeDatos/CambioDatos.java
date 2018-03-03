@@ -111,9 +111,9 @@ public class CambioDatos extends AppCompatActivity {
         final Dialog ventana_emergente = new Dialog(CambioDatos.this);
         ventana_emergente.setTitle("Editar " + titulo);
         ventana_emergente.setContentView(R.layout.ventana_emergente);
-        final EditText editText = (EditText) ventana_emergente.findViewById(R.id.et_ventana_ingresar);
-        Button boton = (Button) ventana_emergente.findViewById(R.id.bt_ventana_aceptar);
-        final TextView textView = (TextView) ventana_emergente.findViewById(R.id.tv_ventana_titulo);
+        final EditText editText = (EditText) ventana_emergente.findViewById(R.id.et_nombre_ventana_emergente);
+        Button boton = (Button) ventana_emergente.findViewById(R.id.bt_ventana_emergente);
+        final TextView textView = (TextView) ventana_emergente.findViewById(R.id.textViewTitulo_ventana);
         textView.setText("Editar " + titulo);
         editText.setText(dato);
         if (titulo.equals("numero")) {

@@ -161,12 +161,6 @@ public class CrearPublicacion extends AppCompatActivity {
                 String error = e.getMessage().toString();
                 System.out.println(error);
             }
-            /*if (data.getClipData().getItemCount()>0){
-
-            } else {
-                Toast.makeText(this,"SELECCIONE POR LO MENOS UNA IMAGEN PARA SUBIR LA PUBLICACION",Toast.LENGTH_SHORT).show();
-            }*/
-
         }
     }
 
@@ -226,7 +220,6 @@ public class CrearPublicacion extends AppCompatActivity {
             SharePhoto foto=new SharePhoto.Builder()
                     .setImageUrl(img[i]).setCaption(contenido)
                     .build();
-
             SharePhotoContent content = new SharePhotoContent.Builder()
                     .addPhoto(foto)
                     .build();

@@ -47,7 +47,6 @@ public class HomeFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String perfilModel = snapshot.getValue(String.class);
-                    System.out.println(perfilModel+"/////////////////////////////////");
                     if (perfilModel.equals("")) {
                         estado.setVisibility(View.GONE);
                     } else {

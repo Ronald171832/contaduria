@@ -1,8 +1,9 @@
 <component name="libraryTable">
   <library name="com.specyci:residemenu-1.6">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/db68ef0fdbed0c0d5be28410c57507fa3bf25552/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/db68ef0fdbed0c0d5be28410c57507fa3bf25552/output/res" />
+      <root url="file://$USER_HOME$/.android/build-cache/689ca2a72b8894c041c4aaebe167b155558c372c/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/689ca2a72b8894c041c4aaebe167b155558c372c/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/689ca2a72b8894c041c4aaebe167b155558c372c/output/jars/libs/nineoldandroids-library-2.4.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
