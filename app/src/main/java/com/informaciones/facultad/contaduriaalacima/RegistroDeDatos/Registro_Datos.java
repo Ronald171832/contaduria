@@ -1,5 +1,7 @@
 package com.informaciones.facultad.contaduriaalacima.RegistroDeDatos;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -7,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -15,7 +18,9 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,6 +29,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -47,6 +58,7 @@ import com.informaciones.facultad.contaduriaalacima.ImgenCompleta.ImagenCompleta
 import com.informaciones.facultad.contaduriaalacima.ImgenCompleta.Save;
 import com.informaciones.facultad.contaduriaalacima.PantallaPrincipal.MainActivity;
 import com.informaciones.facultad.contaduriaalacima.R;
+import com.informaciones.facultad.contaduriaalacima.WebServices.Constantes;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,7 +79,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Registro_Datos extends AppCompatActivity {
     private ImageView foto;
-    private EditText nombre;
+    private EditText nombre,email,telefono;
     Button tipoUsuario;
     StorageReference storageReference;
     SharedPreferences sharedPreferences;
@@ -91,11 +103,13 @@ public class Registro_Datos extends AppCompatActivity {
     private void iniciar() {
         sharedPreferences = getSharedPreferences("nombre", MODE_PRIVATE);
         storage = FirebaseStorage.getInstance();
-        callbackManager=CallbackManager.Factory.create();
+        callbackManager = CallbackManager.Factory.create();
         foto = (ImageView) findViewById(R.id.iv_perfil_foto);
         nombre = (EditText) findViewById(R.id.et_perfil_nombre);
+        email = (EditText) findViewById(R.id.et_perfil_email);
+        telefono = (EditText) findViewById(R.id.et_perfil_telefono);
         tipoUsuario = (Button) findViewById(R.id.bt_registro_usuario);
-        loginButton=(LoginButton) findViewById(R.id.loginFB);
+        loginButton = (LoginButton) findViewById(R.id.loginFB);
         loginButton.setReadPermissions("public_profile email");
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -105,25 +119,24 @@ public class Registro_Datos extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                Toast.makeText(Registro_Datos.this  ,"Prueba nuevamente",Toast.LENGTH_LONG).show();
+                Toast.makeText(Registro_Datos.this, "Prueba nuevamente", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(Registro_Datos.this  ,error.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(Registro_Datos.this, error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     // EMPEZAR A RECUPERAR CAMPOS DE FACEBOOK
-    public void RequestData(){
-        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+    public void RequestData() {
+        final GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
-
                 JSONObject json = response.getJSONObject();
                 try {
-                    if(json != null){
+                    if (json != null) {
                         final String nombre = json.getString("name");//+"<br><br><b>Email :</b> "+json.getString("email")+"<br><br><b>Profile link :</b> "+json.getString("link");
                         String idFotoUsuario = "";
                         // GUARDAR EL NOMBRE DEL USUARIO
@@ -146,14 +159,16 @@ public class Registro_Datos extends AppCompatActivity {
                         //Uri uriImage = Uri.parse("android.resource://" + getPackageName() +"/"+R.drawable.user1);
                         //String urlFB=(String)json.getJSONObject("picture").getJSONObject("data").get("url");
                         //Bitmap profilePic = BitmapFactory.decodeStream(new URL(urlFB).openConnection().getInputStream());
-                        String userID=Profile.getCurrentProfile().getId();
-                        Bitmap fotoFBBitmap=getFacebookProfilePicture(userID);
+                        String userID = Profile.getCurrentProfile().getId();
+                        Bitmap fotoFBBitmap = getFacebookProfilePicture(userID);
                         foto.setImageBitmap(fotoFBBitmap);
                         //Glide.with(getApplicationContext()).load(urlFB).into(foto);
-                        Uri uriFotoFB=bitmapToUriConverter(fotoFBBitmap);
+                        Uri uriFotoFB = bitmapToUriConverter(fotoFBBitmap);
                         //foto.setImageURI(Uri.parse(picUrlString));
                         storageReference = storage.getReference("foto_perfil");//imagenes_chat
                         final StorageReference fotoReferencia = storageReference.child(idFotoUsuario);
+                        registarUserDB("2",json.getString("name"),json.getString("email"),"S/N",json.getString("link"));
+
                         fotoReferencia.putFile(uriFotoFB).addOnSuccessListener(Registro_Datos.this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -184,7 +199,7 @@ public class Registro_Datos extends AppCompatActivity {
 
                                     @Override
                                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                                                                            }
+                                    }
                                 });
 
                         //details_txt.setText(Html.fromHtml(text));
@@ -199,7 +214,7 @@ public class Registro_Datos extends AppCompatActivity {
             }
         });
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,link,email,picture");
+        parameters.putString("fields", "id,name,cover,locale,age_range,link,email,gender,birthday,picture");
         request.setParameters(parameters);
         request.executeAsync();
     }
@@ -234,21 +249,23 @@ public class Registro_Datos extends AppCompatActivity {
 
     // TODO FUNCION PARA CONVERTIR UN LA FOTO DE PERFIL DE FACEBOOK A BITMAP
     public static Bitmap getFacebookProfilePicture(String userID) throws IOException {
-        Bitmap bitmap = null; URL url = new URL("https://graph.facebook.com/"+userID+"/picture?type=large");
+        Bitmap bitmap = null;
+        URL url = new URL("https://graph.facebook.com/" + userID + "/picture?type=large");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             bitmap = BitmapFactory.decodeStream(in);
-        } catch (Exception e){
-            String error=e.getMessage();
-            Log.d("MIRA",error);
-        } finally { urlConnection.disconnect(); }
+        } catch (Exception e) {
+            String error = e.getMessage();
+            Log.d("MIRA", error);
+        } finally {
+            urlConnection.disconnect();
+        }
         /*URL imageURL = new URL("http://graph.facebook.com/"+userID+"/picture?type=square&type=large&redirect=false");
         HttpURLConnection.setFollowRedirects(false);
         Bitmap bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());*/
         return bitmap;
     }
-
 
 
     public void elegirImagenPerfil(View v) {
@@ -262,11 +279,10 @@ public class Registro_Datos extends AppCompatActivity {
             imguri = data.getData();
             foto.setImageURI(imguri);
         }
-        callbackManager.onActivityResult(requestCode,resultCode,data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     public void selecionarTipo(View view) {
-
         final ArrayList<String> listItems = new ArrayList<>();
         listItems.add("ESTUDIANTE");
         listItems.add("DOCENTE");
@@ -329,6 +345,26 @@ public class Registro_Datos extends AppCompatActivity {
         login_ventana.show();
     }
 
+
+    private void registarUserDB(String tipo,String nombre,String email,String telefono,String link) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String urlFinal= Constantes.URL_REGISTRAR_DATOS+"?tipo="+tipo+"&name="+nombre+"&email="+email+"&link="+link+"&phone="+telefono;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, urlFinal, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "El usuario no se puedo regustrar en la base de datos", Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+
+
     public void registrarDatos(final View view) {
         if (imguri == null) {
             //Toast.makeText(getApplicationContext(), "Elije una imagen porfavor!", Toast.LENGTH_SHORT).show();
@@ -337,18 +373,28 @@ public class Registro_Datos extends AppCompatActivity {
             return;
         }
         if (nombre.getText().toString().equals("")) {
-            //Toast.makeText(getApplicationContext(), "Ingresa tu nombre porfavor!", Toast.LENGTH_SHORT).show();
             nombre.setError("Registro insatisfactorio, Escriba su nombre completo porfavor");
             nombre.requestFocus();
             return;
         }
+        if (email.getText().toString().equals("")) {
+            email.setError("Registro insatisfactorio, Escriba su eamil completo porfavor");
+            email.requestFocus();
+            return;
+        }
+        if (telefono.getText().toString().equals("")) {
+            telefono.setError("Registro insatisfactorio, Escriba su telefono completo porfavor");
+            telefono.requestFocus();
+            return;
+        }
+
         String TIPO = sharedPreferences.getString("tipoUsuario", "");
         if (TIPO.equals("")) {
             Snackbar.make(view, "Elije Tipo de Usuario porfavor!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             return;
         }
-
+        registarUserDB("1",nombre.getText().toString(),email.getText().toString(),telefono.getText().toString(),"sin link");
         sharedPreferences.edit().putString("nombre", nombre.getText().toString().trim()).apply();
         Uri u = imguri;
         final ProgressDialog subirImagen = new ProgressDialog(this);
@@ -418,3 +464,15 @@ public class Registro_Datos extends AppCompatActivity {
         //
     }
 }
+
+
+/*
+* CREATE TABLE `u854977660_conta`.`estudiante`
+* ( `ID` INT NOT NULL AUTO_INCREMENT ,
+* `NombreCompleto` VARCHAR(200) NOT NULL ,
+* `Telefono` VARCHAR(60) NOT NULL ,
+* `Email` VARCHAR(60) NOT NULL ,
+ * PRIMARY KEY (`ID`))
+ * ENGINE = InnoDB;
+*
+* */

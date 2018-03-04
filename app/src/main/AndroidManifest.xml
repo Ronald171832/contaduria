@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -126,10 +127,16 @@
         <activity
             android:name=".GaleriaDeImagenes.CarpetasDeImagenes"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".Videos.Videos"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".GaleriaDeImagenes.Imagenes"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
+        <activity android:name=".Videos.CrearVideo" />
     </application>
 
 </manifest>

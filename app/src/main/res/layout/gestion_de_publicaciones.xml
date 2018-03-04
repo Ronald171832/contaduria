@@ -221,7 +221,39 @@
                     android:textStyle="bold" />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/bt_ges_vide"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/md_indigo_400"
+                android:onClick="gestion_video"
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:onClick="gestion_video"
+                    android:text="V"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="80dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/colorNegroBajo"
+                    android:gravity="center"
+                    android:onClick="gestion_video"
+                    android:text="Subir Video"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/bt_ges_bloque"
                 android:layout_width="match_parent"

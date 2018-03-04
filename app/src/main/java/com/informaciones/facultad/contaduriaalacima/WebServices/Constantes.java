@@ -36,6 +36,8 @@ public class Constantes {
     public static final String INSERT = "http://" + IP + PUERTO_HOST + "/I%20Wish/insertar_meta.php";*/
 
     public static final String URL_PETICION_NOTIFICACION = "http://" + IP + PUERTO_HOST + "/rm/Notificacion_Contaduria/push_notification.php";
+    public static final String URL_REGISTRAR_DATOS = "http://" + IP + PUERTO_HOST + "/rm/Notificacion_Contaduria/registrarUsers.php";
+
 
 
 

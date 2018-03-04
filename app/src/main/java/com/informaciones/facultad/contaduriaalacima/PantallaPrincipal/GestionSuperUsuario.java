@@ -43,6 +43,7 @@ import com.informaciones.facultad.contaduriaalacima.Informacion.InformacionCrear
 import com.informaciones.facultad.contaduriaalacima.Notificaciones.CrearNotificacion;
 import com.informaciones.facultad.contaduriaalacima.Publicaciones.CrearPublicacion;
 import com.informaciones.facultad.contaduriaalacima.R;
+import com.informaciones.facultad.contaduriaalacima.Videos.CrearVideo;
 
 import java.util.ArrayList;
 
@@ -112,6 +113,9 @@ public class GestionSuperUsuario extends AppCompatActivity {
         startActivity(new Intent(this, CrearPublicacion.class));
     }
 
+    public void gestion_video(View view) {
+        startActivity(new Intent(this, CrearVideo.class));
+    }
     public void gestion_categoria(View view) {
         startActivity(new Intent(this, CrearCategorias.class));
     }

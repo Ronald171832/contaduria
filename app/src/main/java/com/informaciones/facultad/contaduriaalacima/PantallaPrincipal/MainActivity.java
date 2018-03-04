@@ -51,6 +51,7 @@ import com.informaciones.facultad.contaduriaalacima.Informacion.Informacion;
 import com.informaciones.facultad.contaduriaalacima.R;
 import com.informaciones.facultad.contaduriaalacima.RegistroDeDatos.CambioDatos;
 import com.informaciones.facultad.contaduriaalacima.RegistroDeDatos.Registro_Datos;
+import com.informaciones.facultad.contaduriaalacima.Videos.Videos;
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
 
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ResideMenuItem itemInformacion;
     private ResideMenuItem itemConfiguraciones;
     private ResideMenuItem itemGaleria;
+    private ResideMenuItem itemVideo;
+
     SharedPreferences sharedPreferences;
     private static final int STORAGE_PERMISSION_CODE = 23;
     FrameLayout frPrincipal;
@@ -344,8 +347,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         itemInformacion = new ResideMenuItem(this, R.drawable.img_acercade_menu, "Informacion");
         itemConfiguraciones = new ResideMenuItem(this, R.drawable.configuraciones, "Ajustes");
         itemGaleria = new ResideMenuItem(this, R.drawable.menu_galeria, "Eventos");
+        itemVideo = new ResideMenuItem(this, R.drawable.menu_video, "Videos");
 
         itemHomeR.setOnClickListener(this);
+        itemVideo.setOnClickListener(this);
         itemHomeI.setOnClickListener(this);
         itemDocumento.setOnClickListener(this);
         itemInformacion.setOnClickListener(this);
@@ -364,6 +369,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.addMenuItem(itemDocumento, ResideMenu.DIRECTION_RIGHT);
         resideMenu.addMenuItem(itemInformacion, ResideMenu.DIRECTION_RIGHT);
         resideMenu.addMenuItem(itemChat, ResideMenu.DIRECTION_RIGHT);
+        resideMenu.addMenuItem(itemVideo, ResideMenu.DIRECTION_RIGHT);
 
         resideMenu.addMenuItem(itemHomeI, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemFacebook, ResideMenu.DIRECTION_LEFT);
@@ -419,6 +425,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(MainActivity.this, GestionSuperUsuario.class));
         } else if (view == itemGaleria) {
             startActivity(new Intent(MainActivity.this, CarpetasDeImagenes.class));
+        }  else if (view == itemVideo) {
+            startActivity(new Intent(MainActivity.this, Videos.class));
         } else if (view == itemFacebook) {
             Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
             String facebookUrl = getFacebookPageURL(this);
