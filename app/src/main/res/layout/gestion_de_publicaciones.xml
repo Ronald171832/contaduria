@@ -345,6 +345,36 @@
                     android:textSize="20dp"
                     android:textStyle="bold" />
             </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/md_indigo_1000"
+                android:onClick="notificacion"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center"
+                    android:onClick="generarListadoEstudiantes"
+                    android:text="L"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="80dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/colorNegroBajo"
+                    android:gravity="center"
+                    android:onClick="generarListadoEstudiantes"
+                    android:text="GENERAR LISTADO ESTUDIANTES"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 

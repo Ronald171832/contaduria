@@ -2,16 +2,17 @@ package com.informaciones.facultad.contaduriaalacima.PantallaPrincipal;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,12 +47,23 @@ import com.informaciones.facultad.contaduriaalacima.Categorias.CrearCategorias;
 import com.informaciones.facultad.contaduriaalacima.Documentos.CrearDocumentos;
 import com.informaciones.facultad.contaduriaalacima.GaleriaDeImagenes.GaleriaSubirImagenes;
 import com.informaciones.facultad.contaduriaalacima.Informacion.InformacionCrear;
+import com.informaciones.facultad.contaduriaalacima.LectorPDF.ModelPDF;
 import com.informaciones.facultad.contaduriaalacima.Notificaciones.CrearNotificacion;
 import com.informaciones.facultad.contaduriaalacima.Publicaciones.CrearPublicacion;
 import com.informaciones.facultad.contaduriaalacima.R;
 import com.informaciones.facultad.contaduriaalacima.Videos.CrearVideo;
+import com.informaciones.facultad.contaduriaalacima.WebServices.Constantes;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class GestionSuperUsuario extends AppCompatActivity {
     RelativeLayout categoria, publicaciones, documento, pantalla, bloqueados;
@@ -60,12 +78,15 @@ public class GestionSuperUsuario extends AppCompatActivity {
     public Uri[] imgsUri;
     public ImagePagerAdapter adaptadorImgSlide;
     public EditText txtEstado;
+    ModelPDF modeloPDF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gestion_de_publicaciones);
         iniciar();
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
     }
 
     private void iniciar() {
@@ -86,6 +107,7 @@ public class GestionSuperUsuario extends AppCompatActivity {
         documento.setAnimation(animationizq);
         pantalla.setAnimation(animationder);
         bloqueados.setAnimation(animationizq);
+        modeloPDF=new ModelPDF(getApplicationContext());
 
     }
 
@@ -337,6 +359,182 @@ public class GestionSuperUsuario extends AppCompatActivity {
 
     }
 
+    public static final String NOMBRE_CARPETA_APP="com.informaciones.facultad.contaduriaalacima";
+    public static final String GENERADOS="Mis Archivos";
+
+    public String getDate(){
+        Date date = new Date();
+        DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String fechaHora = hourdateFormat.format(date);
+        return fechaHora;
+    }
+
+    public void generarListadoEstudiantes(View view) {
+        modeloPDF.openDocument();
+        modeloPDF.addMetaData("Listado de Estudiantes App Contaduria","Contaduria a la Cima","Manuel Saavedra & Ronal Lopez");
+        modeloPDF.addTitulos("LISTADO DE ESTUDIANTES REGISTRADOS EN APP CONTADURIA","La informacion actual contiene los datos relevantes de todos los estudiantes registrados en la aplicacion",getDate());
+        final String header[]={"Nro.","Estudiante","Telefono","Email","Link Facebook"};
+        modeloPDF.addParrafo("mira este nuevo texto");
+        modeloPDF.addParrafo("otra prueba mas que sale bien");
+        getListadoEstudiantes(new CallBackWebServices() {
+            @Override
+            public void onSuccess(List<String[]> datos) {
+
+                modeloPDF.crearTabla(header,listaAlumnos);
+                modeloPDF.closeDocument();
+            }
+
+            @Override
+            public void onFailed(String mensaje) {
+                Toast.makeText(getApplicationContext(),mensaje,Toast.LENGTH_LONG).show();
+            }
+        });
+
+        final ArrayList<String> listItems = new ArrayList<>();
+        listItems.add("Visor App Contaduria");
+        listItems.add("Aplicacion Externa");
+
+        new AlertDialog.Builder(view.getContext())
+                .setTitle("Abrir el Documnento con:")
+                .setCancelable(false)
+                .setAdapter(new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, listItems),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(final DialogInterface dialog, int item) {
+                                switch (item) {
+                                    case 0:
+                                        modeloPDF.viewPDF();
+                                        break;
+                                    case 1:
+                                        modeloPDF.appVidewPDF(GestionSuperUsuario.this);
+                                        break;
+                                }
+                            }
+                        }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        }).show();
+        //modeloPDF.viewPDF();
+        /*Document document=new Document(PageSize.LETTER);
+        Date date = new Date();
+        DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        final String fechaHora = hourdateFormat.format(date);
+        String nombreFile="Listado_Estudiantes_Fac_Contaduria_"+fechaHora+".pdf";
+        String tarjetaSD= Environment.getExternalStorageDirectory().getAbsolutePath();
+        File pdfDir=new File(tarjetaSD+File.separator+NOMBRE_CARPETA_APP);
+        if (!pdfDir.exists()){
+            pdfDir.mkdirs();
+        }
+        File pdfSubDir=new File(pdfDir.getPath()+File.separator+GENERADOS);
+        if (!pdfSubDir.exists()){
+            pdfSubDir.mkdirs();
+        }
+        String nombreCompleto=Environment.getExternalStorageDirectory()+File.separator+NOMBRE_CARPETA_APP+
+                                File.separator+GENERADOS+File.separator+nombreFile;
+        File outPutFile=new File(nombreCompleto);
+        if (outPutFile.exists()){
+            outPutFile.delete();
+        }
+
+        try {
+            PdfWriter pdfWriter= PdfWriter.getInstance(document,new FileOutputStream(nombreCompleto));
+            document.open();
+            document.addAuthor("Manuel Saavedra & Ronald Lopez");
+            document.addCreator("RL DEVELOPERS");
+            document.addSubject("LISTADO DE ESTUDIANTES DE LA FACULTAD DE CONTADURIA PUBLICAC");
+            document.addCreationDate();
+            document.addTitle("TITULO XXX");
+
+            // CREA EL PDF EN FORMATO HTKL
+            /*XMLWorkerHelper worker=XMLWorkerHelper.getInstance();
+            String htmlToPDF="<html><body><h1>Hola que hace Bro</h1><p>primer parrafo al pedo</p></body></html>";
+            try {
+                //worker.parseXHtml(pdfWriter,document, new StringReader(htmlToPDF));
+                document.close();
+                Toast.makeText(this,"PDF Generado correctamente",Toast.LENGTH_LONG).show();
+                showPDF(nombreCompleto,this);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }*/
+
+    }
+
+    public List<String[]> listaAlumnos=new ArrayList<>();
+    private void getListadoEstudiantes(final CallBackWebServices callback) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        listaAlumnos=new ArrayList<>();
+        JsonObjectRequest peticion=new JsonObjectRequest(
+                Request.Method.GET,
+                Constantes.URL_REGISTRAR_CONSULTA_DATOS,
+                new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            String estado=response.getString("estado");
+                            if (estado.equals("1")){
+                                JSONArray listado=response.getJSONArray("info");
+                                for (int i=0;i<listado.length();i++){
+                                    String[] datos=new String[listado.length()];
+                                    JSONObject alumnoActual=listado.getJSONObject(i);
+                                    datos[0]=alumnoActual.getString("id");
+                                    datos[1]=alumnoActual.getString("nombre");
+                                    datos[2]=alumnoActual.getString("telf");
+                                    datos[3]=alumnoActual.getString("email");
+                                    datos[4]=alumnoActual.getString("link");
+                                    listaAlumnos.add(datos);
+                                }
+                            }
+                            callback.onSuccess(listaAlumnos);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        callback.onFailed("error al procesar la peticion");
+                    }
+                }
+        );
+        queue.add(peticion);
+        /*List<String[]> estudiantes=new ArrayList<>();
+        estudiantes.add(new String[]{"1","Manuel Saavedra","saavedramanuel100@gmail.com","78054581","no hay"});
+        estudiantes.add(new String[]{"2","Miguel Saavedra","amanuel100@gmail.com","7805181","no hay"});
+        estudiantes.add(new String[]{"3","Manuel Saavedra","saavedramanuel100@gmail.com","7843131","no hay"});
+        return estudiantes;*/
+    }
+
+    public interface CallBackWebServices {
+        void onSuccess(List<String[]> datos);
+
+        void onFailed(String mensaje);
+    }
+
+    private void showPDF(String nombre  , Context context) {
+        Toast.makeText(context,"Leyedno el Archivo PDF...",Toast.LENGTH_LONG).show();
+        File file=new File(nombre);
+        Intent intent=new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(file),"application/pdf");
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try{
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e){
+            Toast.makeText(this,"No tiene una app para abrir el documento PDF",Toast.LENGTH_LONG).show();
+
+        }
+
+    }
 
 
     // CLASE PARA EL VIEW PAGER DE IMAGENES

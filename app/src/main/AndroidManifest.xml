@@ -10,15 +10,16 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/fondo_principal"
         android:label="@string/app_name"
         android:roundIcon="@drawable/fondo_principal"
         android:supportsRtl="true"
-        android:hardwareAccelerated="true"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider576717146011163"
@@ -69,7 +70,6 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Email.Contacto" />
 
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.informaciones.facultad.contaduriaalacima.fileprovider"
@@ -83,13 +83,12 @@
         <activity
             android:name=".RegistroDeDatos.Registro_Datos"
             android:label="Registro de Datos"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".RegistroDeDatos.CambioDatos"
             android:label="Editar Perfil"
-            android:screenOrientation="portrait"></activity>
-
+            android:screenOrientation="portrait" />
 
         <service android:name=".Notificaciones.FirebaseMessagingService">
             <intent-filter>
@@ -113,13 +112,11 @@
         <activity
             android:name=".Informacion.InformacionCrear"
             android:label="Información Crear"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
-
             android:name=".ImgenCompleta.ImagenCompleta"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
-
         <activity
             android:name=".GaleriaDeImagenes.GaleriaSubirImagenes"
             android:label="Subir Imagenes"
@@ -127,7 +124,6 @@
         <activity
             android:name=".GaleriaDeImagenes.CarpetasDeImagenes"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".Videos.Videos"
             android:screenOrientation="portrait" />
@@ -135,8 +131,8 @@
             android:name=".GaleriaDeImagenes.Imagenes"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
-
         <activity android:name=".Videos.CrearVideo" />
+        <activity android:name=".LectorPDF.ViewPDF"></activity>
     </application>
 
 </manifest>
